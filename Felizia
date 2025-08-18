@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FELIZIA Participants Portal</title>
+
+<!-- PDF libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+<style>
+  :root{
+    --bg:#0b1020; --card:#131a33; --muted:#9fb1ff; --text:#e8ecff; --accent:#7aa2ff; --accent2:#67f0c9;
+    --danger:#ff6b6b; --ok:#2ecc71;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial;color:var(--text);
+       background: radial-gradient(1200px 600px at 10% -10%, #1b2450 0%, #0b1020 45%), var(--bg);}
+  header{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid #233;
+         background: linear-gradient(0deg, rgba(255,255,255,0.02), rgba(255,255,255,0.02));
+         position:sticky;top:0;backdrop-filter:blur(6px);z-index:5}
+  .brand{font-size:clamp(20px,3vw,26px);font-weight:800;letter-spacing:.5px}
+  .brand small{display:block;font-size:.75rem;color:var(--muted);font-weight:600}
+  .tabs{display:flex;gap:10px;align-items:center}
+  .tab-btn{border:1px solid #2a355f;background:#11193a;color:var(--text);padding:9px 14px;border-radius:12px;cursor:pointer;font-weight:700}
+  .tab-btn.active{outline:2px solid var(--accent);box-shadow:0 0 0 3px rgba(122,162,255,.15)}
+  .container{max-width:960px;margin:28px auto;padding:0 16px}
+  .card{background:linear-gradient(180deg, #101736, #0d1430 55%);border:1px solid #24305e;border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+  .grid{display:grid;gap:14px}
+  @media(min-width:700px){.grid-2{grid-template-columns:1fr 1fr}}
+  label{font-weight:700;margin-bottom:6px;display:block}
+  select,input[type="password"],input[type="text"]{width:100%;padding:10px 12px;border-radius:12px;border:1px solid #2a355f;background:#0b1331;color:var(--text)}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid #2a355f;background:#0e1737;font-weight:700}
+  .help{color:var(--muted);font-size:.9rem}
+  .muted{color:var(--muted)}
+  .btn{appearance:none;border:1px solid #2a355f;background:#141d44;color:var(--text);padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:800}
+  .btn:hover{filter:brightness(1.05)}
+  .btn-acc{background:linear-gradient(90deg, var(--accent), #a8b8ff); color:#081225;border-color:transparent}
+  .btn-ok{background:linear-gradient(90deg, var(--accent2), #bdf8e9); color:#06251e;border-color:transparent}
+  .btn-danger{background:linear-gradient(90deg, #ff8a8a, var(--danger)); color:#2b0b0b;border-color:transparent}
+  .btn-soft{background:#0e1737}
+  .stack{display:flex;gap:10px;flex-wrap:wrap}
+  .notice{border:1px dashed #395;background:rgba(103,240,201,.08);color:#bff3e6;padding:10px 14px;border-radius:12px}
+  .danger{border:1px dashed #a33;background:rgba(255,107,107,.09);color:#ffd7d7;padding:10px 14px;border-radius:12px}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:10px;border-bottom:1px solid #27315a;text-align:left}
+  .kicker{font-size:.92rem;letter-spacing:.2px;color:var(--muted);font-weight:700}
+  .tag{font-size:.8rem;padding:.2rem .5rem;border:1px solid #2a355f;border-radius:999px;margin-left:.4rem;color:var(--muted)}
+  .footer{opacity:.8;font-size:.85rem;text-align:center;padding:24px}
+  .hidden{display:none !important}
+  .lock{color:#ffcdcd}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    FELIZIA <span class="tag">Arts Fest</span>
+    <small>Participants Portal</small>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="participant">Participant</button>
+    <button class="tab-btn" data-tab="admin">Admin</button>
+  </div>
+</header>
+
+<div class="container">
+  <!-- DEADLINE BANNER -->
+  <div id="deadlineBanner" class="card">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <div>
+        <div class="kicker">Submission Window</div>
+        <div><strong>Closes:</strong> 20 Aug, 11:59 PM (IST). After this, uploads & edits are disabled.</div>
+      </div>
+      <div class="pill"><span>Now:</span> <span id="nowTime">—</span></div>
+    </div>
+  </div>
+
+  <!-- PARTICIPANT TAB -->
+  <section id="participantTab" class="tab card">
+    <!-- Login -->
+    <div id="loginView" class="grid grid-2">
+      <div>
+        <label for="groupSelect">Step 1 — Select Group</label>
+        <select id="groupSelect">
+          <option value="">Choose…</option>
+          <option value="Qairuvan">Qairuvan</option>
+          <option value="Ribath">Ribath</option>
+          <option value="Fustat">Fustat</option>
+          <option value="Ariyilla">Ariyilla</option>
+        </select>
+      </div>
+      <div>
+        <label for="groupPass">Group Password</label>
+        <input id="groupPass" type="password" placeholder="Enter group password" />
+      </div>
+      <div class="stack">
+        <button id="loginBtn" class="btn btn-acc">Enter</button>
+        <span id="loginMsg" class="help"></span>
+      </div>
+      <div class="help">Each group has a unique password. Ask your coordinator if you don’t know it.</div>
+    </div>
+
+    <!-- Form -->
+    <div id="formView" class="hidden">
+      <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:6px">
+        <div class="pill">Logged in as <strong id="activeGroup">—</strong></div>
+        <div class="stack">
+          <button id="logoutBtn" class="btn btn-soft">Change Group</button>
+          <span id="lockedBadge" class="pill lock hidden">Submitted (Locked)</span>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+        <div>
+          <label for="categorySelect">Step 2 — Category</label>
+          <select id="categorySelect">
+            <option value="">Choose…</option>
+            <option value="lower">Lower</option>
+            <option value="primary">Primary</option>
+            <option value="major">Major</option>
+            <option value="popular">Popular</option>
+          </select>
+        </div>
+        <div>
+          <label for="programSelect">Program</label>
+          <select id="programSelect" disabled>
+            <option value="">Select category first…</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="kicker" style="margin-bottom:8px">Step 3 — Students</div>
+        <div id="studentChooser"></div>
+        <div class="help" id="studentHelp"></div>
+      </div>
+
+      <div class="card">
+        <div class="kicker" style="margin-bottom:8px">Preview</div>
+        <table>
+          <tbody>
+            <tr><th>Group</th><td id="pvGroup">—</td></tr>
+            <tr><th>Category</th><td id="pvCategory">—</td></tr>
+            <tr><th>Program</th><td id="pvProgram">—</td></tr>
+            <tr><th>Students</th><td id="pvStudents">—</td></tr>
+            <tr><th>Status</th><td id="pvStatus">Draft</td></tr>
+            <tr><th>Last Saved</th><td id="pvSaved">—</td></tr>
+            <tr><th>Submitted At</th><td id="pvSubmitted">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="stack">
+        <button id="saveBtn" class="btn">Save</button>
+        <button id="submitBtn" class="btn btn-ok">Submit (Final)</button>
+        <button id="clearBtn" class="btn btn-danger">Clear Draft</button>
+        <span id="actMsg" class="help"></span>
+      </div>
+
+      <div class="notice" style="margin-top:12px">
+        After you press <b>Submit</b>, your entry is locked for this group. Admin can correct/unlock only before the deadline.
+      </div>
+    </div>
+  </section>
+
+  <!-- ADMIN TAB -->
+  <section id="adminTab" class="tab card hidden">
+    <div id="adminLogin" class="grid grid-2">
+      <div>
+        <label for="adminPass">Admin Password</label>
+        <input id="adminPass" type="password" placeholder="Enter admin password" />
+      </div>
+      <div class="stack" style="align-items:flex-end">
+        <button id="adminLoginBtn" class="btn btn-acc">Enter Admin</button>
+        <span id="adminLoginMsg" class="help"></span>
+      </div>
+      <div class="help">Admin can review all groups and (before deadline) edit/unlock as needed.</div>
+    </div>
+
+    <div id="adminPanel" class="hidden">
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <div class="kicker">Submissions Overview</div>
+        <div class="pill">Deadline lock: <strong id="dlState">—</strong></div>
+      </div>
+
+      <div class="card">
+        <table id="adminTable">
+          <thead>
+            <tr>
+              <th>Group</th><th>Category</th><th>Program</th><th>Students</th><th>Status</th><th>Saved</th><th>Submitted</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody><!-- rows injected --></tbody>
+        </table>
+      </div>
+
+      <div class="stack">
+        <button id="exportBtn" class="btn">Export JSON</button>
+        <a id="downloadLink" class="btn btn-soft hidden" download="felizia-entries.json">Download Export</a>
+        <button id="pdfBtn" class="btn btn-ok hidden">Print</button>
+        <button id="wipeAllBtn" class="btn btn-danger">Wipe All (local)</button>
+      </div>
+
+      <div class="danger" style="margin-top:12px">
+        All data is stored in this browser (localStorage). For central collation, run on one device or export JSON regularly.
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">© FELIZIA Arts Fest — Participant Portal</div>
+</div>
+
+<script>
+/* ------------------------- CONFIG ------------------------- */
+const CONFIG = {
+  passwords: {
+    groups: {
+      Qairuvan: "Qairuvan@123",
+      Ribath:   "Ribath@456",
+      Fustat:   "Fustat@789",
+      Ariyilla: "Ariyilla@321",
+    },
+    admin: "FELIZIA-ADMIN-2025"
+  },
+  deadlineISO: "2025-08-20T23:59:00+05:30", // IST
+  keyPrefix: "felizia.v2",
+  categories: {
+    lower:   { label:"Lower", programs:["Madh song","Writing"], students:["Fawas","Sinan"], mode:"fixed" },
+    primary: { label:"Primary", programs:["Mappilla","Malappattu"], students:["Sahal","Shiyas"], mode:"fixed" },
+    major:   { label:"Major", programs:["Reading","Qawalli"], students:["Midhlaj","Swalih"], mode:"fixed" },
+    popular: { label:"Popular", programs:["News reading"], students:["Fawas","Sinan","Sahal","Shiyas","Midhlaj","Swalih"], mode:"multi" }
+  }
+};
+/* --------------------- Utilities & State ------------------ */
+const $ = s=>document.querySelector(s);
+const $$ = s=>document.querySelectorAll(s);
+const nowIST = ()=> new Date(new Date().toLocaleString("en-US",{timeZone:"Asia/Kolkata"}));
+const deadline = new Date(CONFIG.deadlineISO);
+const isAfterDeadline = ()=> nowIST() > deadline;
+const K = {
+  groupState: g=> `${CONFIG.keyPrefix}:group:${g}`,
+  allGroups:  `${CONFIG.keyPrefix}:allGroups`
+};
+const groups = Object.keys(CONFIG.passwords.groups);
+function loadGroupObj(g){
+  const raw = localStorage.getItem(K.groupState(g));
+  return raw ? JSON.parse(raw) : {
+    group: g, category:"", program:"", students:[], savedAt:null, submittedAt:null, isSubmitted:false
+  };
+}
+function saveGroupObj(obj){
+  localStorage.setItem(K.groupState(obj.group), JSON.stringify(obj));
+  const set = new Set(JSON.parse(localStorage.getItem(K.allGroups)||"[]"));
+  set.add(obj.group);
+  localStorage.setItem(K.allGroups, JSON.stringify([...set]));
+}
+function clearGroup(g){ localStorage.removeItem(K.groupState(g)); }
+function fmt(dt){ if(!dt) return "—"; const d=new Date(dt); return d.toLocaleString('en-IN',{hour12:true}); }
+/* ------------------------ Tabs ---------------------------- */
+const tabButtons = $$(".tab-btn");
+const participantTab = $("#participantTab");
+const adminTab = $("#adminTab");
+tabButtons.forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    tabButtons.forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    const tab = btn.dataset.tab;
+    participantTab.classList.toggle("hidden", tab!=="participant");
+    adminTab.classList.toggle("hidden", tab!=="admin");
+  });
+});
+/* ------------------- Deadline banner ---------------------- */
+function renderNow(){
+  $("#nowTime").textContent = nowIST().toLocaleString('en-IN', { hour12:true });
+  $("#dlState").textContent = isAfterDeadline() ? "Closed" : "Open";
+}
+renderNow(); setInterval(renderNow, 1000);
+/* ------------------- Participant Flow --------------------- */
+const state = { loggedGroup: null, cache: null };
+function resetParticipant(){
+  $("#loginView").classList.remove("hidden");
+  $("#formView").classList.add("hidden");
+  $("#groupSelect").value=""; $("#groupPass").value=""; $("#loginMsg").textContent="";
+  state.loggedGroup = null; state.cache = null;
+}
+$("#logoutBtn").addEventListener("click", resetParticipant);
+
+$("#loginBtn").addEventListener("click", ()=>{
+  const g = $("#groupSelect").value;
+  const p = $("#groupPass").value.trim();
+  if(!g){ $("#loginMsg").textContent = "Please choose a group."; return; }
+  if(p !== CONFIG.passwords.groups[g]){ $("#loginMsg").textContent = "Incorrect password."; return; }
+  if(isAfterDeadline()){ $("#loginMsg").textContent = "Submissions are closed after the deadline."; return; }
+  loginGroup(g);
+});
+function loginGroup(g){
+  state.loggedGroup = g;
+  state.cache = loadGroupObj(g);
+  $("#activeGroup").textContent = g;
+  $("#pvGroup").textContent = g;
+  $("#loginView").classList.add("hidden");
+  $("#formView").classList.remove("hidden");
+  $("#categorySelect").value = state.cache.category || "";
+  populatePrograms();
+  renderStudentsUI();
+  renderPreview();
+  renderLockUI();
+}
+function populatePrograms(){
+  const cat = $("#categorySelect").value;
+  const programSelect = $("#programSelect");
+  programSelect.innerHTML = "";
+  if(!cat){
+    programSelect.disabled = true;
+    programSelect.innerHTML = `<option value="">Select category first…</option>`;
+    return;
+  }
+  const list = CONFIG.categories[cat].programs;
+  programSelect.disabled = false;
+  programSelect.appendChild(new Option("Choose…",""));
+  list.forEach(p => programSelect.appendChild(new Option(p, p)));
+  if(state.cache && state.cache.program && state.cache.category===cat){
+    programSelect.value = state.cache.program;
+  }
+}
+$("#categorySelect").addEventListener("change", ()=>{
+  state.cache.category = $("#categorySelect").value;
+  state.cache.program = "";
+  state.cache.students = [];
+  populatePrograms();
+  renderStudentsUI();
+  renderPreview();
+});
+$("#programSelect").addEventListener("change", ()=>{
+  state.cache.program = $("#programSelect").value;
+  renderPreview();
+});
+
+function renderStudentsUI(){
+  const host = $("#studentChooser");
+  const help = $("#studentHelp");
+  host.innerHTML = ""; help.textContent = "";
+  const cat = $("#categorySelect").value;
+  if(!cat){ help.textContent = "Choose a category to pick students."; return; }
+  const meta = CONFIG.categories[cat];
+  if(meta.mode==="fixed"){
+    const wrap = document.createElement("div"); wrap.className="stack";
+    meta.students.forEach(name=>{
+      const id = `stu_${name}`;
+      const lbl = document.createElement("label"); lbl.className="pill";
+      const cb = document.createElement("input");
+      cb.type="checkbox"; cb.id=id; cb.value=name;
+      cb.checked = (state.cache.students || []).includes(name);
+      cb.addEventListener("change", ()=>{
+        const picked = new Set(state.cache.students||[]);
+        if(cb.checked) picked.add(name); else picked.delete(name);
+        state.cache.students = [...picked]; renderPreview();
+      });
+      lbl.appendChild(cb); lbl.append(" "+name);
+      wrap.appendChild(lbl);
+    });
+    host.appendChild(wrap);
+    help.textContent = "Tick the student(s) participating in this entry.";
+  }else{
+    const wrap = document.createElement("div"); wrap.className="grid";
+    const allBox = document.createElement("label"); allBox.className="pill";
+    const cb = document.createElement("input"); cb.type="checkbox";
+    cb.addEventListener("change", ()=>{
+      if(cb.checked){
+        state.cache.students = [...meta.students];
+        $("#studentText").value = meta.students.join(", ");
+      }else{
+        state.cache.students = []; $("#studentText").value = "";
+      }
+      renderPreview();
+    });
+    allBox.appendChild(cb); allBox.append(" Select all students");
+    const txt = document.createElement("input"); txt.type="text"; txt.id="studentText";
+    txt.placeholder="Type names separated by commas";
+    txt.value = (state.cache.students||[]).join(", ");
+    txt.addEventListener("input", ()=>{
+      const arr = txt.value.split(",").map(s=>s.trim()).filter(Boolean);
+      state.cache.students = arr; renderPreview();
+    });
+    wrap.appendChild(allBox); wrap.appendChild(txt); host.appendChild(wrap);
+    help.textContent = "Popular category allows all students. You can tick all or type custom list.";
+  }
+}
+
+function renderPreview(){
+  $("#pvCategory").textContent = state.cache.category ? CONFIG.categories[state.cache.category].label : "—";
+  $("#pvProgram").textContent = state.cache.program || "—";
+  $("#pvStudents").textContent = (state.cache.students && state.cache.students.length) ? state.cache.students.join(", ") : "—";
+  $("#pvStatus").textContent = state.cache.isSubmitted ? "Submitted (Locked)" : "Draft";
+  $("#pvSaved").textContent = fmt(state.cache.savedAt);
+  $("#pvSubmitted").textContent = fmt(state.cache.submittedAt);
+}
+function canEdit(){
+  if(!state.cache) return false;
+  if(isAfterDeadline()) return false;
+  return !state.cache.isSubmitted; // participant cannot edit after submit
+}
+function renderLockUI(){
+  const locked = state.cache?.isSubmitted;
+  $("#lockedBadge").classList.toggle("hidden", !locked);
+  const disableAll = isAfterDeadline() || locked;
+  ["categorySelect","programSelect"].forEach(id=> $("#"+id).disabled = disableAll);
+  $("#studentChooser").querySelectorAll("input").forEach(el=> el.disabled = disableAll);
+  $("#saveBtn").disabled = disableAll;
+  $("#submitBtn").disabled = isAfterDeadline() || locked || !isValidForSubmit();
+  $("#clearBtn").disabled = isAfterDeadline() || locked;
+}
+function isValidForSubmit(){
+  const c = state.cache;
+  return !!(c && c.group && c.category && c.program && (c.students||[]).length);
+}
+$("#saveBtn").addEventListener("click", ()=>{
+  if(!state.loggedGroup) return;
+  if(!canEdit()){ $("#actMsg").textContent = "Editing is locked."; return; }
+  state.cache.savedAt = new Date().toISOString();
+  saveGroupObj(state.cache); renderPreview();
+  $("#actMsg").textContent = "Saved."; setTimeout(()=>$("#actMsg").textContent="", 2000);
+});
+$("#submitBtn").addEventListener("click", ()=>{
+  if(!state.loggedGroup) return;
+  if(isAfterDeadline()){ $("#actMsg").textContent = "Deadline passed. Cannot submit."; return; }
+  if(!isValidForSubmit()){ $("#actMsg").textContent = "Please complete all fields first."; return; }
+  state.cache.isSubmitted = true;
+  state.cache.submittedAt = new Date().toISOString();
+  saveGroupObj(state.cache); renderPreview(); renderLockUI();
+  $("#actMsg").textContent = "Submitted. Entry is now locked.";
+});
+$("#clearBtn").addEventListener("click", ()=>{
+  if(!state.loggedGroup) return;
+  if(!canEdit()){ $("#actMsg").textContent = "Locked. Cannot clear."; return; }
+  state.cache.category=""; state.cache.program=""; state.cache.students=[];
+  state.cache.savedAt=new Date().toISOString();
+  saveGroupObj(state.cache);
+  $("#categorySelect").value=""; populatePrograms(); renderStudentsUI(); renderPreview();
+  $("#actMsg").textContent = "Draft cleared.";
+});
+
+/* ------------------------ Admin --------------------------- */
+let adminOK = false;
+function refreshAdminTable(){
+  const tbody = $("#adminTable tbody");
+  tbody.innerHTML = "";
+  const all = JSON.parse(localStorage.getItem(K.allGroups)||"[]");
+  const seen = new Set(all.concat(groups)); // ensure rows for all groups
+  [...seen].sort().forEach(g=>{
+    const o = loadGroupObj(g);
+    const tr = document.createElement("tr");
+    const status = isAfterDeadline() ? "Deadline Closed" : (o.isSubmitted ? "Submitted" : "Draft");
+    tr.innerHTML = `
+      <td>${g}</td>
+      <td>${o.category ? CONFIG.categories[o.category].label : "—"}</td>
+      <td>${o.program || "—"}</td>
+      <td>${(o.students||[]).join(", ") || "—"}</td>
+      <td>${status}</td>
+      <td>${fmt(o.savedAt)}</td>
+      <td>${fmt(o.submittedAt)}</td>
+      <td class="stack">
+        <button class="btn btn-soft" data-act="imp" data-g="${g}" ${ isAfterDeadline() ? "disabled":"" }>Impersonate</button>
+        <button class="btn" data-act="unlock" data-g="${g}" ${ (isAfterDeadline()||!o.isSubmitted) ? "disabled":"" }>Unlock</button>
+        <button class="btn btn-danger" data-act="clear" data-g="${g}" ${ isAfterDeadline() ? "disabled":"" }>Reset</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+  // Show Print button only AFTER deadline
+  $("#pdfBtn").classList.toggle("hidden", !isAfterDeadline());
+
+  // bind actions
+  tbody.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const g = btn.dataset.g;
+      const act = btn.dataset.act;
+      const obj = loadGroupObj(g);
+      if(act==="imp"){
+        if(isAfterDeadline()){ alert("Deadline closed."); return; }
+        loginGroup(g);
+        document.querySelector('[data-tab="participant"]').click();
+      }else if(act==="unlock"){
+        if(isAfterDeadline()){ alert("Deadline closed."); return; }
+        obj.isSubmitted=false;
+        saveGroupObj(obj);
+        refreshAdminTable();
+        alert(`Unlocked ${g}. They can edit again.`);
+      }else if(act==="clear"){
+        if(isAfterDeadline()){ alert("Deadline closed."); return; }
+        clearGroup(g);
+        refreshAdminTable();
+        alert(`Cleared data for ${g}.`);
+      }
+    });
+  });
+}
+$("#adminLoginBtn").addEventListener("click", ()=>{
+  const p = $("#adminPass").value.trim();
+  if(p !== CONFIG.passwords.admin){
+    $("#adminLoginMsg").textContent = "Incorrect admin password.";
+    return;
+  }
+  $("#adminLoginMsg").textContent = isAfterDeadline() ? "View-only mode (deadline passed)." : "Welcome, Admin.";
+  adminOK = true;
+  $("#adminLogin").classList.add("hidden");
+  $("#adminPanel").classList.remove("hidden");
+  refreshAdminTable();
+});
+$("#exportBtn").addEventListener("click", ()=>{
+  const all = {};
+  const names = new Set(JSON.parse(localStorage.getItem(K.allGroups)||"[]").concat(groups));
+  names.forEach(g=> all[g] = loadGroupObj(g));
+  const blob = new Blob([JSON.stringify({exportedAt: new Date().toISOString(), data: all}, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = $("#downloadLink"); a.href = url; a.classList.remove("hidden");
+});
+$("#wipeAllBtn").addEventListener("click", ()=>{
+  if(!confirm("This erases ALL local entries on THIS BROWSER. Continue?")) return;
+  Object.keys(localStorage).forEach(k=>{ if(k.startsWith(CONFIG.keyPrefix)) localStorage.removeItem(k); });
+  localStorage.removeItem(K.allGroups);
+  refreshAdminTable(); alert("Local storage cleared.");
+});
+
+/* ---------------- PDF Export (Print) ----------------- */
+$("#pdfBtn").addEventListener("click", ()=>{
+  const all = {};
+  const names = new Set(JSON.parse(localStorage.getItem(K.allGroups)||"[]").concat(groups));
+  names.forEach(g=> all[g] = loadGroupObj(g));
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  // Header
+  doc.setFontSize(16);
+  doc.text("FELIZIA Arts Fest — Participants Summary", 14, 16);
+  doc.setFontSize(10);
+  doc.text("Generated: " + new Date().toLocaleString('en-IN', { hour12:true }), 14, 22);
+
+  // Table rows
+  const rows = groups.map(g=>{
+    const o = all[g] || {};
+    const submitted = o.isSubmitted;
+    return [
+      g,
+      submitted ? (o.category ? CONFIG.categories[o.category].label : "—") : "❌ Not submitted",
+      submitted ? (o.program || "—") : "—",
+      submitted ? ((o.students||[]).join(", ") || "—") : "—",
+      submitted ? (o.submittedAt ? new Date(o.submittedAt).toLocaleString('en-IN',{hour12:true}) : "—") : "—"
+    ];
+  });
+
+  // Table
+  doc.autoTable({
+    head: [["Group", "Category", "Program", "Students", "Submitted At"]],
+    body: rows,
+    startY: 28,
+    theme: "grid",
+    styles: { fontSize: 11, cellPadding: 3, valign: 'middle' },
+    headStyles: { fillColor: [122,162,255], textColor: 20, fontStyle: 'bold' },
+    alternateRowStyles: { fillColor: [240, 244, 255] },
+    columnStyles: { 0:{cellWidth:28}, 1:{cellWidth:28}, 2:{cellWidth:35}, 3:{cellWidth:'auto'}, 4:{cellWidth:40} }
+  });
+
+  doc.save("felizia-participants.pdf");
+});
+
+/* ------------- Deadline enforcement everywhere ----------- */
+function enforceDeadlineEverywhere(){
+  const closed = isAfterDeadline();
+  if(closed){
+    $("#loginMsg").textContent = "Submissions are closed after the deadline.";
+    if(state.cache){ renderLockUI(); }
+    if(adminOK){ refreshAdminTable(); }
+  } else {
+    if(adminOK){ refreshAdminTable(); }
+  }
+}
+setInterval(enforceDeadlineEverywhere, 5000);
+
+/* ---------------------- Boot ----------------------------- */
+(function boot(){ /* optional restore hooks */ })();
+</script>
+</body>
+</html>
