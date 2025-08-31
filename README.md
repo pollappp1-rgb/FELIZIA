@@ -1,1482 +1,4517 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>Felizia Inter Campus Fest | Muhyissunna Students' Association</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <style>
-    :root {
-      --bg: #0b1117;
-      --panel: #111a23;
-      --muted: #7b8a9b;
-      --text: #e6eef7;
-      --accent: #2f89ff;
-      --accent-2: #22c55e;
-      --warn: #f59e0b;
-      --danger: #ef4444;
-      --border: #1e2a35;
-      --chip: #0f1720;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; background: var(--bg); color: var(--text);
-      font: 14px/1.5 Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
-    }
-    a { color: var(--accent); text-decoration: none; }
-    input, select, button, textarea {
-      background: #0e1620; border: 1px solid var(--border); color: var(--text); border-radius: 8px; padding: 10px;
-      outline: none; width: 100%;
-    }
-    button { cursor: pointer; background: var(--accent); border: none; color: white; font-weight: 600; }
-    button.secondary { background: #0e1620; border: 1px solid var(--border); }
-    button.success { background: var(--accent-2); }
-    button.warn { background: var(--warn); color: #0b1117; }
-    button.danger { background: var(--danger); }
-    button.ghost { background: transparent; border: 1px solid var(--border); }
-    button:disabled { opacity: .6; cursor: not-allowed; }
-    label { display: block; margin: 10px 0 6px; color: var(--muted); }
-    .container { max-width: 1280px; margin: 0 auto; padding: 20px; }
-    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
-    .row { display: grid; grid-template-columns: 1fr; gap: 16px; }
-    @media(min-width: 900px){ .row-2{ grid-template-columns: 1fr 1fr; } .row-3 { grid-template-columns: 1fr 1fr 1fr; } }
-    .flex { display: flex; gap: 10px; align-items: center; }
-    .flex-wrap { flex-wrap: wrap; }
-    .space { flex: 1; }
-    .muted { color: var(--muted); }
-    .badge { display: inline-block; padding: 4px 8px; background: var(--chip); border: 1px solid var(--border); border-radius: 999px; font-size: 12px; }
-    .pill { padding: 6px 10px; border-radius: 999px; }
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
-    .hidden { display: none !important; }
-    .tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 16px; flex-wrap: wrap; }
-    .tab { padding: 8px 14px; border-radius: 10px; cursor: pointer; border: 1px solid var(--border); background: #0c141c; }
-    .tab.active { background: #0e1620; color: white; }
-    .table { width: 100%; border-collapse: collapse; }
-    .table th, .table td { border-bottom: 1px solid var(--border); padding: 10px; vertical-align: top; }
-    .table th { text-align: left; color: var(--muted); font-weight: 600; }
-    .grid { display: grid; gap: 10px; }
-    .grid-2 { grid-template-columns: 1fr 1fr; }
-    .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
-    .grid-4 { grid-template-columns: repeat(4, 1fr); }
-    .head { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
-    .h1 { font-size: 22px; font-weight: 700; }
-    .h2 { font-size: 18px; font-weight: 700; }
-    .h3 { font-size: 16px; font-weight: 700; }
-    .sub { font-size: 12px; color: var(--muted); }
-    .hr { border-bottom: 1px solid var(--border); margin: 16px 0; }
-    .kpi { padding: 12px; border-radius: 10px; background: #0d1520; border: 1px solid var(--border); }
-    .chip { background: #0f1720; border: 1px solid var(--border); border-radius: 6px; padding: 4px 6px; font-size: 12px; }
-    .center { text-align: center; }
-    .right { text-align: right; }
-    .danger-text { color: var(--danger); }
-    .success-text { color: var(--accent-2); }
-    .warn-text { color: var(--warn); }
-    .link { color: var(--accent); cursor: pointer; }
-    .sticky { position: sticky; top: 0; z-index: 8; background: var(--bg); padding-top: 10px; }
-    .mini { font-size: 12px; }
-    .list { list-style: none; padding: 0; margin: 0; }
-    .list li { border-bottom: 1px solid var(--border); padding: 8px 0; }
-    .toast { position: fixed; bottom: 14px; right: 14px; background: #0e1620; border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; z-index: 100; }
-    .ok { color: var(--accent-2); }
-    .warnc { color: var(--warn); }
-    .err { color: var(--danger); }
-    .note { padding: 10px; border: 1px dashed var(--border); border-radius: 10px; color: var(--muted); background: #0c141c; }
-    .print-area { background: white; color: black; padding: 16px; }
-    .code { background: #0e1620; border: 1px solid var(--border); border-radius: 10px; padding: 8px; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div id="appRoot">
-      <!-- Login -->
-      <div id="viewLogin" class="card">
-        <div class="head">
-          <div class="h1">Felizia Inter Campus Fest</div>
-          <span class="badge">Muhyissunna Students' Association</span>
-        </div>
-        <div class="row row-2">
-          <div>
-            <div class="h2">Sign in</div>
-            <div class="sub">Choose your role and enter credentials</div>
-            <div class="hr"></div>
-            <label>Role</label>
-            <select id="loginRole">
-              <option value="team">Team Portal (Participation Crew)</option>
-              <option value="event">Event Crew (Admin)</option>
-            </select>
-            <label>ID (email or team ID)</label>
-            <input id="loginEmail" placeholder="e.g., qairuwan@felizia or admin@felizia" />
-            <label>Password</label>
-            <input id="loginPass" type="password" placeholder="Your password" />
-            <div class="flex" style="margin-top:10px;">
-              <button id="btnLogin">Sign in</button>
-              <button id="btnDemo" class="secondary">Use Local Demo Mode</button>
-              <span class="space"></span>
-              <span class="muted mini">Admin can manage accounts in Event Crew → Teams</span>
-            </div>
-            <div id="loginMsg" class="mini muted" style="margin-top:8px;"></div>
-            <div class="note" style="margin-top:12px;">
-              To enable multi-device online mode, configure Firebase in the code (see bottom of this file for steps).
-            </div>
-          </div>
-          <div>
-            <div class="card">
-              <div class="h3">Quick facts</div>
-              <ul class="list">
-                <li>Teams: Qairuwan, Rabath, Fustat, Qazween</li>
-                <li>Categories: Lower, Primary, Minor, High, Major, Popular</li>
-                <li>Event Crew controls lock/unlock, points, bonuses, penalties</li>
-                <li>Team privacy: one team can’t see others’ entries</li>
-                <li>Judge Panel: post results anytime, editable</li>
-                <li>Poster generator for winners</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+<!DOCTYPE html> 
 
-      <!-- Team Portal -->
-      <div id="viewTeam" class="hidden">
-        <div class="sticky">
-          <div class="flex">
-            <div class="h2">Team Portal — <span id="teamNameHdr"></span></div>
-            <span id="teamLockBadge" class="badge"></span>
-            <span class="space"></span>
-            <input id="teamSearch" placeholder="Search student or competition..." style="max-width:360px;" />
-            <button id="btnLogoutTeam" class="ghost">Log out</button>
-          </div>
-          <div class="tabs">
-            <div class="tab active" data-team-tab="students">Students</div>
-            <div class="tab" data-team-tab="register">Register Participation</div>
-            <div class="tab" data-team-tab="mycomps">My Competitions</div>
-            <div class="tab" data-team-tab="list">Participation List</div>
-          </div>
-        </div>
+<html lang="en"> 
 
-        <div id="teamTab-students" class="card">
-          <div class="row row-2">
-            <div>
-              <div class="h3">Add Student</div>
-              <div class="grid">
-                <div>
-                  <label>Chest No</label>
-                  <input id="tAddChest" />
-                </div>
-                <div>
-                  <label>Name</label>
-                  <input id="tAddName" />
-                </div>
-                <div>
-                  <label>Category</label>
-                  <select id="tAddCat"></select>
-                </div>
-              </div>
-              <div class="flex" style="margin-top:10px;">
-                <button id="btnAddStudent">Add Student</button>
-                <span id="tAddMsg" class="mini muted"></span>
-              </div>
-              <div class="note" style="margin-top:12px;">
-                Only your team members are visible here. Chest numbers must be unique within your team.
-              </div>
-            </div>
-            <div>
-              <div class="h3">Students</div>
-              <table class="table" id="tblTeamStudents">
-                <thead><tr>
-                  <th>Chest</th><th>Name</th><th>Category</th><th>Competitions</th><th></th>
-                </tr></thead>
-                <tbody></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+<head> 
 
-        <div id="teamTab-register" class="card hidden">
-          <div class="row row-2">
-            <div>
-              <div class="h3">Select Student</div>
-              <select id="selRegStudent"></select>
-              <div id="regStuInfo" class="mini muted" style="margin-top:8px;"></div>
-              <div class="hr"></div>
-              <div class="h3">Available Competitions</div>
-              <div id="regCompList"></div>
-            </div>
-            <div>
-              <div id="groupBox" class="hidden">
-                <div class="h3">Group Entry</div>
-                <label>Group Name (optional)</label>
-                <input id="groupName" placeholder="e.g., Qairuwan Juniors" />
-                <label>Add Members (same team; same category unless Popular)</label>
-                <div id="groupMembers"></div>
-              </div>
-              <div id="capInfo" class="note">
-                Capacity and rules are enforced automatically by the system.
-              </div>
-            </div>
-          </div>
-        </div>
+<meta charset="utf-8" /> 
 
-        <div id="teamTab-mycomps" class="card hidden">
-          <div class="h3">Team’s Competition Entries</div>
-          <div id="teamCompEntries"></div>
-        </div>
+<meta name="viewport" content="width=device-width, initial-scale=1" /> 
 
-        <div id="teamTab-list" class="card hidden">
-          <div class="flex">
-            <div>
-              <div class="h3">Comprehensive Participation List</div>
-              <div class="sub">Name, Chest No, Category, Competitions</div>
-            </div>
-            <span class="space"></span>
-            <button id="btnPrintTeamList" class="ghost">Print</button>
-          </div>
-          <div id="teamParticipationList"></div>
-        </div>
-      </div>
+<title>Felizia Inter Campus Fest – Digital System</title> 
 
-      <!-- Event Crew Portal -->
-      <div id="viewEvent" class="hidden">
-        <div class="sticky">
-          <div class="flex">
-            <div class="h2">Event Crew Portal</div>
-            <span class="space"></span>
-            <input id="eventSearch" placeholder="Search student or competition..." style="max-width:400px;" />
-            <button id="btnLogoutEvent" class="ghost">Log out</button>
-          </div>
-          <div class="tabs">
-            <div class="tab active" data-event-tab="dashboard">Dashboard</div>
-            <div class="tab" data-event-tab="teams">Teams</div>
-            <div class="tab" data-event-tab="competitions">Competitions</div>
-            <div class="tab" data-event-tab="attendance">Attendance</div>
-            <div class="tab" data-event-tab="judge">Judge Panel</div>
-            <div class="tab" data-event-tab="scoreboard">Scoreboards</div>
-            <div class="tab" data-event-tab="poster">Poster Generator</div>
-          </div>
-        </div>
+<style> 
 
-        <div id="eventTab-dashboard" class="card">
-          <div class="row row-3">
-            <div class="kpi"><div class="muted">Total Students</div><div id="kpiStudents" class="h1">0</div></div>
-            <div class="kpi"><div class="muted">Competitions</div><div id="kpiComps" class="h1">0</div></div>
-            <div class="kpi"><div class="muted">Total Participations</div><div id="kpiParts" class="h1">0</div></div>
-          </div>
-          <div class="hr"></div>
-          <div class="row row-2">
-            <div>
-              <div class="h3">Winners Feed (Latest)</div>
-              <ul id="winnersFeed" class="list"></ul>
-            </div>
-            <div>
-              <div class="h3">Top Teams (Overall)</div>
-              <table class="table" id="tblTopTeams"><thead>
-                <tr><th>Team</th><th class="right">Points</th></tr>
-              </thead><tbody></tbody></table>
-            </div>
-          </div>
-        </div>
+  :root { 
 
-        <div id="eventTab-teams" class="card hidden">
-          <div class="flex">
-            <div class="h3">Teams</div>
-            <span class="space"></span>
-            <button id="btnSeedTeams" class="secondary">Initialize Default Teams</button>
-          </div>
-          <table class="table" id="tblTeams">
-            <thead><tr>
-              <th>Team</th><th>Status</th><th>Bonus</th><th>Penalty</th><th class="right">Actions</th>
-            </tr></thead>
-            <tbody></tbody>
-          </table>
-          <div class="hr"></div>
-          <div class="h3">Accounts (create for login)</div>
-          <div class="row row-3">
-            <div class="card">
-              <div class="h3">Add Team Account</div>
-              <label>Team</label>
-              <select id="accTeam"></select>
-              <label>Email (ID)</label>
-              <input id="accEmail" placeholder="e.g., qairuwan@felizia" />
-              <label>Password</label>
-              <input id="accPass" type="password" />
-              <button id="btnCreateTeamAccount">Create Team Account</button>
-              <div id="accMsg" class="mini muted" style="margin-top:8px;"></div>
-            </div>
-            <div class="card">
-              <div class="h3">Add Event Crew Account</div>
-              <label>Email (ID)</label>
-              <input id="accEventEmail" placeholder="e.g., admin@felizia" />
-              <label>Password</label>
-              <input id="accEventPass" type="password" />
-              <button id="btnCreateEventAccount">Create Event Crew Account</button>
-              <div id="accEventMsg" class="mini muted" style="margin-top:8px;"></div>
-            </div>
-            <div class="card note">
-              Accounts are stored under “profiles” with role and team assignment. Security rules restrict access appropriately.
-            </div>
-          </div>
-        </div>
+    /* Traditional look: ivory + gold + deep green */ 
 
-        <div id="eventTab-competitions" class="card hidden">
-          <div class="row row-2">
-            <div>
-              <div class="h3">Create Competition</div>
-              <label>Name</label>
-              <input id="cName" placeholder="e.g., Malayalam Elocution" />
-              <label>Category</label>
-              <select id="cCat"></select>
-              <label>Type</label>
-              <select id="cType">
-                <option value="individual">Individual</option>
-                <option value="group">Group</option>
-              </select>
-              <label>Max per Team</label>
-              <input id="cMaxTeam" type="number" min="1" value="3" />
-              <button id="btnAddComp">Add Competition</button>
-              <div class="mini muted" id="cMsg" style="margin-top:8px;"></div>
-            </div>
-            <div>
-              <div class="h3">Competitions</div>
-              <table class="table" id="tblComps">
-                <thead><tr>
-                  <th>Name</th><th>Category</th><th>Type</th><th>Max/Team</th><th class="right">Actions</th>
-                </tr></thead>
-                <tbody></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+    --bg: #f6f2e8; 
 
-        <div id="eventTab-attendance" class="card hidden">
-          <div class="h3">Attendance & Code Letters</div>
-          <label>Select Competition</label>
-          <select id="attSelComp"></select>
-          <div id="attList"></div>
-        </div>
+    --panel: #ffffff; 
 
-        <div id="eventTab-judge" class="card hidden">
-          <div class="h3">Judge Panel — Results Entry</div>
-          <label>Select Competition</label>
-          <select id="judgeSelComp"></select>
-          <div id="judgeList"></div>
-          <div class="hr"></div>
-          <div class="h3">Winners</div>
-          <div id="winnersEditor"></div>
-          <div class="flex" style="margin-top:8px;">
-            <button id="btnSaveResults" class="success">Save/Update Results</button>
-            <div id="judgeMsg" class="mini muted"></div>
-          </div>
-        </div>
+    --card: #fffdf7; 
 
-        <div id="eventTab-scoreboard" class="card hidden">
-          <div class="row row-2">
-            <div>
-              <div class="h3">Overall Scoreboard</div>
-              <table class="table" id="tblScoreOverall">
-                <thead><tr><th>Team</th><th class="right">Points</th></tr></thead>
-                <tbody></tbody>
-              </table>
-            </div>
-            <div>
-              <div class="h3">Category Champions</div>
-              <div id="catChampions"></div>
-            </div>
-          </div>
-          <div class="hr"></div>
-          <div class="h3">Winners by Category</div>
-          <div id="winnersByCat"></div>
-        </div>
+    --border: #dcd2bf; 
 
-        <div id="eventTab-poster" class="card hidden">
-          <div class="row row-2">
-            <div>
-              <div class="h3">Poster Generator</div>
-              <div class="note">Load your template image (PNG/JPG), then add text. You can also autofill from a selected winner.</div>
-              <label>Template Image</label>
-              <input id="postImg" type="file" accept="image/*" />
-              <label>Text Lines</label>
-              <div class="grid">
-                <input id="postLine1" placeholder="Name (e.g., Minhaj)" />
-                <input id="postLine2" placeholder="Category (e.g., Lower Zone)" />
-                <input id="postLine3" placeholder="Event & Place (e.g., Malayalam Elocution — 1st)" />
-              </div>
-              <div class="grid grid-3" style="margin-top:8px;">
-                <div><label>Font</label><input id="postFont" value="bold 48px Inter" /></div>
-                <div><label>Text Color</label><input id="postColor" value="#ffffff" /></div>
-                <div><label>Shadow</label><input id="postShadow" value="rgba(0,0,0,0.6)" /></div>
-              </div>
-              <div class="grid grid-3" style="margin-top:8px;">
-                <div><label>Line1 Y</label><input id="y1" type="number" value="200" /></div>
-                <div><label>Line2 Y</label><input id="y2" type="number" value="260" /></div>
-                <div><label>Line3 Y</label><input id="y3" type="number" value="320" /></div>
-              </div>
-              <div class="flex" style="margin-top:8px;">
-                <button id="btnRenderPoster">Render</button>
-                <button id="btnDownloadPoster" class="secondary">Download PNG</button>
-              </div>
-              <div class="hr"></div>
-              <div class="h3">Autofill from Winner</div>
-              <label>Choose Competition</label>
-              <select id="postComp"></select>
-              <label>Winner Place</label>
-              <select id="postPlace">
-                <option value="1">1st</option>
-                <option value="2">2nd</option>
-                <option value="3">3rd</option>
-              </select>
-              <button id="btnAutofillPoster" class="ghost" style="margin-top:8px;">Autofill Text</button>
-            </div>
-            <div>
-              <canvas id="posterCanvas" width="1200" height="628" style="width:100%;background:#000;border-radius:10px;border:1px solid var(--border);"></canvas>
-            </div>
-          </div>
-        </div>
-      </div>
+    --light: #1b1b1b; 
 
-      <!-- Toast -->
-      <div id="toast" class="toast hidden"><span id="toastText"></span></div>
+    --muted: #6b6b6b; 
 
-      <!-- Print -->
-      <div id="printArea" class="hidden"></div>
-    </div>
-  </div>
+    --accent: #106a3b;    /* deep green */ 
 
-  <!-- Firebase (optional for online mode) -->
-  <script type="module">
-    // ========= CONFIG =========
-    // To use multi-device online mode:
-    // 1) Create a Firebase project (Authentication + Firestore)
-    // 2) Fill firebaseConfig below
-    // 3) Deploy rules from "firestore.rules" (see end of this file)
-    // If you do not configure Firebase, app runs in local demo mode.
-    const firebaseConfig = {
-      apiKey: "CHANGE_ME",
-      authDomain: "CHANGE_ME.firebaseapp.com",
-      projectId: "CHANGE_ME",
-      storageBucket: "CHANGE_ME.appspot.com",
-      messagingSenderId: "CHANGE_ME",
-      appId: "CHANGE_ME"
-    };
+    --accent-2: #b88917;  /* warm gold */ 
 
-    // ========= GLOBALS =========
-    const CATEGORIES = ["Lower Zone","Primary Zone","Minor Zone","High Zone","Major Zone","Popular Zone"];
-    const TEAMS = ["Qairuwan","Rabath","Fustat","Qazween"];
-    const State = {
-      mode: "local", // "local" or "cloud"
-      uid: null,
-      role: null, // "team" or "event"
-      teamId: null, // for team role
-      // caches
-      teams: {},      // by id
-      students: {},   // by id
-      competitions: {}, // by id
-      participations: {}, // by id
-      results: {},    // by competitionId
-      profiles: {}, // uid -> {role, teamId}
-      // UI
-      listening: false,
-    };
+    --shadow: rgba(0,0,0,0.08); 
 
-    // ========= UTIL =========
-    const $ = (sel, root=document) => root.querySelector(sel);
-    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-    const safe = (s) => String(s||"");
-    const id = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
-    const toast = (msg, cls="") => {
-      const t = $("#toast"); $("#toastText").textContent = msg; t.classList.remove("hidden");
-      t.classList.remove("ok","warnc","err"); if (cls) t.classList.add(cls);
-      setTimeout(()=>t.classList.add("hidden"), 1800);
-    };
-    const fmtTeam = (t)=>t;
-    const fmtCat = (c)=>c;
+  } 
 
-    function groupBy(arr, keyFn){
-      const m = new Map();
-      for(const x of arr){ const k = keyFn(x); if(!m.has(k)) m.set(k,[]); m.get(k).push(x); }
-      return m;
-    }
+  * { box-sizing: border-box; } 
 
-    // ========= BACKENDS =========
-    // Local store (demo/offline)
-    const LocalStore = {
-      init(){ /* load from localStorage */ 
-        const load = k => { try { return JSON.parse(localStorage.getItem(k)||"{}"); } catch{ return {}; } };
-        State.teams = load("teams") || {};
-        State.students = load("students") || {};
-        State.competitions = load("competitions") || {};
-        State.participations = load("participations") || {};
-        State.results = load("results") || {};
-        State.profiles = load("profiles") || {};
-        // seed teams if empty
-        if(Object.keys(State.teams).length===0){
-          for(const t of TEAMS){ State.teams[t] = { id: t, name: t, locked: false, bonus: 0, penalty: 0 }; }
-          this._save("teams", State.teams);
-        }
-        // minimal default admin account and team accounts for local demo
-        if(Object.keys(State.profiles).length===0){
-          // event admin
-          State.profiles["admin@felizia"] = { uid:"admin@felizia", role:"event", teamId:null, pass:"admin123" };
-          // teams
-          for(const t of TEAMS){
-            const email = t.toLowerCase()+"@felizia";
-            State.profiles[email] = { uid:email, role:"team", teamId:t, pass:"team123" };
-          }
-          this._save("profiles", State.profiles);
-        }
-      },
-      _save(key, obj){ localStorage.setItem(key, JSON.stringify(obj)); },
-      async signIn(email, pass){
-        const u = State.profiles[email];
-        if(!u || u.pass !== pass) throw new Error("Invalid credentials");
-        State.uid = u.uid; State.role = u.role; State.teamId = u.teamId || null;
-        return u;
-      },
-      async signOut(){ State.uid=null; State.role=null; State.teamId=null; },
-      async createAccount({email, pass, role, teamId}){
-        if(State.profiles[email]) throw new Error("Account exists");
-        State.profiles[email] = { uid:email, role, teamId: role==="team"? teamId : null, pass };
-        this._save("profiles", State.profiles);
-        return true;
-      },
-      // Teams
-      async seedTeams(){
-        for(const t of TEAMS){ State.teams[t] = { id:t, name:t, locked:false, bonus:0, penalty:0 }; }
-        this._save("teams", State.teams);
-      },
-      async updateTeam(id, patch){
-        const t = State.teams[id]; if(!t) throw new Error("Team not found");
-        Object.assign(t, patch); this._save("teams", State.teams);
-      },
-      // Students
-      async addStudent(stu){
-        const sid = stu.id || id(); stu.id = sid;
-        // uniqueness chest per team
-        for(const s of Object.values(State.students)){
-          if(s.teamId===stu.teamId && String(s.chestNo).trim()===String(stu.chestNo).trim()){
-            throw new Error("Chest number already exists in your team");
-          }
-        }
-        State.students[sid]=stu; this._save("students", State.students);
-        return sid;
-      },
-      async removeStudent(sid){
-        delete State.students[sid]; this._save("students", State.students);
-        // remove from groups if needed
-        for(const [pid,p] of Object.entries(State.participations)){
-          if(p.studentIds && p.studentIds.includes(sid)){
-            p.studentIds = p.studentIds.filter(x=>x!==sid);
-            this._save("participations", State.participations);
-          }
-        }
-      },
-      // Competitions
-      async addCompetition(c){
-        c.id = id();
-        State.competitions[c.id]=c; this._save("competitions", State.competitions); return c.id;
-      },
-      async removeCompetition(cid){
-        delete State.competitions[cid]; this._save("competitions", State.competitions);
-        // cleanup participations/results
-        for(const [pid,p] of Object.entries(State.participations)){ if(p.competitionId===cid) delete State.participations[pid]; }
-        this._save("participations", State.participations);
-        delete State.results[cid]; this._save("results", State.results);
-      },
-      // Participation
-      async addParticipation(p){
-        // enforce max per team
-        const comp = State.competitions[p.competitionId];
-        const teamCount = Object.values(State.participations).filter(x=>x.competitionId===p.competitionId && x.teamId===p.teamId).length;
-        if(teamCount >= Number(comp.maxPerTeam||0)) throw new Error("Team capacity reached for this competition");
-        p.id = id(); p.attendance = false; p.codeLetter = p.codeLetter || "";
-        State.participations[p.id]=p; this._save("participations", State.participations);
-        return p.id;
-      },
-      async updateParticipation(pid, patch){
-        const p = State.participations[pid]; if(!p) throw new Error("Not found");
-        Object.assign(p, patch); this._save("participations", State.participations);
-      },
-      async removeParticipation(pid){
-        delete State.participations[pid]; this._save("participations", State.participations);
-      },
-      // Results
-      async saveResults(compId, winnersArr){
-        State.results[compId] = { competitionId: compId, winners: winnersArr };
-        this._save("results", State.results);
-      },
-      // Readers
-      subscribeAll(cb){
-        // In local mode, we just call cb immediately; no realtime
-        cb();
-        return ()=>{};
-      }
-    };
+  html, body { 
 
-    // Firestore store (online/cloud)
-    let app, auth, db;
-    let onUnsub = null;
-    const CloudStore = {
-      async init(){
-        // rudimentary check
-        if(!firebaseConfig || firebaseConfig.apiKey==="CHANGE_ME") { State.mode = "local"; return LocalStore.init(); }
-        const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
-        const { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
-        const { getFirestore, collection, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, onSnapshot, query } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
-        app = initializeApp(firebaseConfig);
-        auth = getAuth(app);
-        db = getFirestore(app);
-        State.mode = "cloud";
-        // realtime listeners
-        this._mountRealtime();
-        // expose auth functions
-        this._auth = { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, onAuthStateChanged };
-        this._fs = { collection, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, onSnapshot, query };
-      },
-      async signIn(email, pass){
-        const u = await this._auth.signInWithEmailAndPassword(auth, email, pass);
-        State.uid = u.user.uid;
-        // load profile
-        const ref = this._fs.doc(db, "profiles", State.uid);
-        const snap = await this._fs.getDoc(ref);
-        if(!snap.exists()) throw new Error("Profile not found for this account");
-        const prof = snap.data();
-        State.role = prof.role; State.teamId = prof.role==="team"? prof.teamId : null;
-        return prof;
-      },
-      async signOut(){ await this._auth.signOut(auth); State.uid=null; State.role=null; State.teamId=null; },
-      async createAccount({email, pass, role, teamId}){
-        if(State.role!=="event") throw new Error("Only Event Crew can create accounts");
-        const u = await this._auth.createUserWithEmailAndPassword(auth, email, pass);
-        const profRef = this._fs.doc(db,"profiles",u.user.uid);
-        await this._fs.setDoc(profRef, { role, teamId: role==="team"? teamId : null, email });
-        return true;
-      },
-      async seedTeams(){
-        for(const t of TEAMS){
-          const ref = this._fs.doc(db, "teams", t);
-          await this._fs.setDoc(ref, { id:t, name:t, locked:false, bonus:0, penalty:0 }, { merge:true });
-        }
-      },
-      async updateTeam(id, patch){
-        const ref = this._fs.doc(db,"teams",id); await this._fs.updateDoc(ref, patch);
-      },
-      async addStudent(stu){
-        // chest uniqueness must be enforced client-side + optionally by querying; Firestore does not allow unique constraints
-        // Simple check in cache:
-        for(const s of Object.values(State.students)){ if(s.teamId===stu.teamId && String(s.chestNo).trim()===String(stu.chestNo).trim()) throw new Error("Chest number already exists in your team"); }
-        const { addDoc, collection } = this._fs;
-        const ref = await addDoc(collection(db,"students"), stu);
-        return ref.id;
-      },
-      async removeStudent(sid){
-        const { doc, deleteDoc } = this._fs;
-        await deleteDoc(doc(db,"students",sid));
-      },
-      async addCompetition(c){
-        const { addDoc, collection } = this._fs;
-        const ref = await addDoc(collection(db,"competitions"), c); return ref.id;
-      },
-      async removeCompetition(cid){
-        const { doc, deleteDoc } = this._fs;
-        await deleteDoc(doc(db,"competitions",cid));
-        // participations and results cleanup: recommend Cloud Function; here we rely on UI preventing orphan reads.
-      },
-      async addParticipation(p){
-        // enforce max per team (client-side from cache)
-        const comp = State.competitions[p.competitionId];
-        const teamCount = Object.values(State.participations).filter(x=>x.competitionId===p.competitionId && x.teamId===p.teamId).length;
-        if(teamCount >= Number(comp.maxPerTeam||0)) throw new Error("Team capacity reached for this competition");
-        const { addDoc, collection } = this._fs;
-        const ref = await addDoc(collection(db,"participations"), p); return ref.id;
-      },
-      async updateParticipation(pid, patch){
-        const { doc, updateDoc } = this._fs; await updateDoc(doc(db,"participations",pid), patch);
-      },
-      async removeParticipation(pid){
-        const { doc, deleteDoc } = this._fs; await deleteDoc(doc(db,"participations",pid));
-      },
-      async saveResults(compId, winnersArr){
-        const { doc, setDoc } = this._fs;
-        await setDoc(doc(db,"results",compId), { competitionId: compId, winners: winnersArr }, { merge:true });
-      },
-      subscribeAll(cb){
-        const { collection, onSnapshot } = this._fs;
-        const unsubs = [];
-        unsubs.push(onSnapshot(collection(db,"teams"), snap=>{
-          State.teams = {}; snap.forEach(d=>State.teams[d.id]=d.data()); cb();
-        }));
-        unsubs.push(onSnapshot(collection(db,"students"), snap=>{
-          State.students = {}; snap.forEach(d=>State.students[d.id]={...d.data(), id:d.id}); cb();
-        }));
-        unsubs.push(onSnapshot(collection(db,"competitions"), snap=>{
-          State.competitions = {}; snap.forEach(d=>State.competitions[d.id]={...d.data(), id:d.id}); cb();
-        }));
-        unsubs.push(onSnapshot(collection(db,"participations"), snap=>{
-          State.participations = {}; snap.forEach(d=>State.participations[d.id]={...d.data(), id:d.id}); cb();
-        }));
-        unsubs.push(onSnapshot(collection(db,"results"), snap=>{
-          State.results = {}; snap.forEach(d=>State.results[d.id]=d.data()); cb();
-        }));
-        onUnsub = ()=>unsubs.forEach(u=>u());
-        return onUnsub;
-      },
-      _mountRealtime(){
-        // noop; mounted when subscribeAll is called
-      }
-    };
+    margin: 0; padding: 0; 
 
-    const API = {
-      async init(){
-        try {
-          await CloudStore.init();
-        } catch(e) {
-          console.warn("Cloud init failed, falling back to local", e);
-          State.mode = "local";
-          LocalStore.init();
-        }
-        if(State.mode==="local") LocalStore.init();
-      },
-      signIn: (...a)=> State.mode==="cloud" ? CloudStore.signIn(...a) : LocalStore.signIn(...a),
-      signOut: (...a)=> State.mode==="cloud" ? CloudStore.signOut(...a) : LocalStore.signOut(...a),
-      createAccount: (...a)=> State.mode==="cloud" ? CloudStore.createAccount(...a) : LocalStore.createAccount(...a),
-      seedTeams: (...a)=> State.mode==="cloud" ? CloudStore.seedTeams(...a) : LocalStore.seedTeams(...a),
-      updateTeam: (...a)=> State.mode==="cloud" ? CloudStore.updateTeam(...a) : LocalStore.updateTeam(...a),
-      addStudent: (...a)=> State.mode==="cloud" ? CloudStore.addStudent(...a) : LocalStore.addStudent(...a),
-      removeStudent: (...a)=> State.mode==="cloud" ? CloudStore.removeStudent(...a) : LocalStore.removeStudent(...a),
-      addCompetition: (...a)=> State.mode==="cloud" ? CloudStore.addCompetition(...a) : LocalStore.addCompetition(...a),
-      removeCompetition: (...a)=> State.mode==="cloud" ? CloudStore.removeCompetition(...a) : LocalStore.removeCompetition(...a),
-      addParticipation: (...a)=> State.mode==="cloud" ? CloudStore.addParticipation(...a) : LocalStore.addParticipation(...a),
-      updateParticipation: (...a)=> State.mode==="cloud" ? CloudStore.updateParticipation(...a) : LocalStore.updateParticipation(...a),
-      removeParticipation: (...a)=> State.mode==="cloud" ? CloudStore.removeParticipation(...a) : LocalStore.removeParticipation(...a),
-      saveResults: (...a)=> State.mode==="cloud" ? CloudStore.saveResults(...a) : LocalStore.saveResults(...a),
-      subscribeAll: (cb)=> State.mode==="cloud" ? CloudStore.subscribeAll(cb) : LocalStore.subscribeAll(cb),
-    };
+    background: radial-gradient(1200px 600px at 10% -10%, rgba(184,137,23,0.06), transparent), 
 
-    // ========= UI BINDINGS =========
-    // Populate category selects
-    function fillCategorySelects(){
-      for(const sel of ["tAddCat","cCat"]){
-        const s = $("#"+sel); s.innerHTML=""; for(const c of CATEGORIES){ const o=document.createElement("option"); o.value=c; o.textContent=c; s.appendChild(o); }
-      }
-    }
-    function fillTeamAccountSelect(){
-      const s = $("#accTeam"); s.innerHTML=""; for(const t of TEAMS){ const o=document.createElement("option"); o.value=t; o.textContent=t; s.appendChild(o); }
-    }
-    function fillAttendanceCompSelects(){
-      const comps = Object.values(State.competitions).sort((a,b)=>a.name.localeCompare(b.name));
-      for(const selId of ["attSelComp","judgeSelComp","postComp"]){
-        const s = $("#"+selId); s.innerHTML = "<option value=''>Select...</option>";
-        for(const c of comps){ const o=document.createElement("option"); o.value=c.id; o.textContent = `${c.name} — ${c.category}`; s.appendChild(o); }
-      }
-    }
-    function calcTeamTotals(){
-      // aggregate points from results + bonuses - penalties
-      const teamPoints = {};
-      for(const t of TEAMS){ teamPoints[t] = 0; }
-      for(const [compId,res] of Object.entries(State.results)){
-        const comp = State.competitions[compId]; if(!comp || !res || !res.winners) continue;
-        for(const w of res.winners){
-          if(!w || !w.participationId || !w.points) continue;
-          const part = State.participations[w.participationId]; if(!part) continue;
-          teamPoints[part.teamId] = (teamPoints[part.teamId]||0) + Number(w.points||0);
-        }
-      }
-      // apply bonus/penalty
-      for(const t of TEAMS){
-        const td = State.teams[t]; if(!td) continue;
-        teamPoints[t] = (teamPoints[t]||0) + Number(td.bonus||0) - Number(td.penalty||0);
-      }
-      return teamPoints;
-    }
-    function recalcKPIs(){
-      $("#kpiStudents").textContent = Object.keys(State.students).length;
-      $("#kpiComps").textContent = Object.keys(State.competitions).length;
-      $("#kpiParts").textContent = Object.keys(State.participations).length;
-      // winners feed: show last 10
-      const feed = $("#winnersFeed"); feed.innerHTML="";
-      const items = [];
-      for(const [cid, res] of Object.entries(State.results)){
-        const comp = State.competitions[cid];
-        if(res && res.winners){ for(const w of res.winners){
-          const p = State.participations[w.participationId]; if(!p) continue;
-          const names = (p.studentIds||[]).map(sid=>State.students[sid]?.name).filter(Boolean);
-          const nameStr = names.join(", ");
-          items.push({ ts: w.updatedAt || 0, text: `${comp?.category || ""} • ${comp?.name || ""} — ${nameStr} (${p.teamId}) • ${ordinal(w.place)} • ${w.points} pts` });
-        } }
-      }
-      items.sort((a,b)=>b.ts-a.ts).slice(0,10).forEach(it=>{
-        const li=document.createElement("li"); li.textContent = it.text; feed.appendChild(li);
-      });
-      // top teams
-      const totals = calcTeamTotals();
-      const tb = $("#tblTopTeams tbody"); tb.innerHTML="";
-      Object.entries(totals).sort((a,b)=>b[1]-a[1]).forEach(([team,pts])=>{
-        const tr=document.createElement("tr");
-        tr.innerHTML = `<td>${team}</td><td class="right">${pts}</td>`;
-        tb.appendChild(tr);
-      });
-    }
-    function ordinal(n){ const s=["th","st","nd","rd"], v=n%100; return n+(s[(v-20)%10]||s[v]||s[0]); }
+                linear-gradient(#f7f3ea, #f4efe4); 
 
-    // -------- TEAM UI ----------
-    function setTeamHeader(){
-      $("#teamNameHdr").textContent = State.teamId || "";
-      const t = State.teams[State.teamId] || {};
-      $("#teamLockBadge").textContent = t.locked ? "Locked" : "Open for Editing";
-      $("#teamLockBadge").className = "badge " + (t.locked?"warnc":"ok");
-    }
-    function renderTeamStudents(){
-      const tb = $("#tblTeamStudents tbody"); tb.innerHTML="";
-      const rows = Object.values(State.students).filter(s=>s.teamId===State.teamId)
-        .sort((a,b)=>String(a.chestNo).localeCompare(String(b.chestNo)));
-      for(const s of rows){
-        const count = Object.values(State.participations).filter(p=> (p.studentIds||[]).includes(s.id)).length;
-        const tr=document.createElement("tr");
-        tr.innerHTML = `
-          <td class="mono">${safe(s.chestNo)}</td>
-          <td>${safe(s.name)}</td>
-          <td>${safe(s.category)}</td>
-          <td>${count}</td>
-          <td class="right">
-            <button class="danger miniBtn" data-rmstu="${s.id}">Remove</button>
-          </td>
-        `;
-        tb.appendChild(tr);
-      }
-      $$("#tblTeamStudents [data-rmstu]").forEach(btn=>{
-        btn.onclick = async ()=>{
-          const t = State.teams[State.teamId]; if(t?.locked) return toast("Team is locked", "warnc");
-          if(!confirm("Remove this student?")) return;
-          try { await API.removeStudent(btn.dataset.rmstu); toast("Removed","ok"); } catch(e){ toast(e.message,"err"); }
-        };
-      });
-    }
-    function fillStudentSelect(){
-      const s = $("#selRegStudent"); s.innerHTML = "<option value=''>Select student...</option>";
-      const rows = Object.values(State.students).filter(s=>s.teamId===State.teamId)
-        .sort((a,b)=>safe(a.name).localeCompare(safe(b.name)));
-      for(const st of rows){
-        const o=document.createElement("option"); o.value = st.id; o.textContent = `${st.name} — ${st.category} — Chest ${st.chestNo}`;
-        s.appendChild(o);
-      }
-    }
-    function showAvailableCompetitionsFor(studentId){
-      const box = $("#regCompList"); box.innerHTML="";
-      const st = State.students[studentId]; if(!st) { $("#regStuInfo").textContent=""; $("#groupBox").classList.add("hidden"); return; }
-      $("#regStuInfo").textContent = `Selected: ${st.name} • ${st.category} • Chest ${st.chestNo}`;
-      const comps = Object.values(State.competitions).filter(c => c.category === st.category || c.category === "Popular Zone")
-        .sort((a,b)=>a.name.localeCompare(b.name));
-      for(const c of comps){
-        const teamCount = Object.values(State.participations).filter(p=>p.competitionId===c.id && p.teamId===State.teamId).length;
-        const btnText = c.type==="group" ? "Create Group Entry" : "Register";
-        const card=document.createElement("div"); card.className="card";
-        card.innerHTML = `
-          <div class="flex">
-            <div>
-              <div class="h3">${safe(c.name)}</div>
-              <div class="sub">${safe(c.category)} • ${c.type} • Max/team: ${c.maxPerTeam} • Current: ${teamCount}</div>
-            </div>
-            <span class="space"></span>
-            <button class="miniBtn" data-regcomp="${c.id}">${btnText}</button>
-          </div>
-        `;
-        box.appendChild(card);
-      }
-      // Group helper members
-      const groupBox = $("#groupBox");
-      groupBox.classList.add("hidden");
-      $("#groupMembers").innerHTML = "";
-      $$("#regCompList [data-regcomp]").forEach(btn=>{
-        btn.onclick = ()=>{
-          const comp = State.competitions[btn.dataset.regcomp];
-          if(!comp) return;
-          if(comp.type==="group"){
-            groupBox.classList.remove("hidden");
-            // list eligible members
-            const wrap = $("#groupMembers"); wrap.innerHTML="";
-            const elig = Object.values(State.students).filter(x=> x.teamId===State.teamId && ((comp.category==="Popular Zone") || (x.category===comp.category)));
-            // create checkboxes
-            for(const m of elig){
-              const lab=document.createElement("label");
-              lab.className="flex";
-              lab.innerHTML = `<input type="checkbox" data-gmem="${m.id}" /> <span>${m.name} — ${m.category} — Chest ${m.chestNo}</span>`;
-              wrap.appendChild(lab);
-            }
-            // add register button
-            let regBtn = $("#groupBox .regGroupBtn");
-            if(!regBtn){
-              regBtn = document.createElement("button");
-              regBtn.textContent = "Register Group";
-              regBtn.className = "regGroupBtn";
-              regBtn.style = "margin-top:8px;";
-              $("#groupBox").appendChild(regBtn);
-            }
-            regBtn.onclick = async ()=>{
-              const t = State.teams[State.teamId]; if(t?.locked) return toast("Team is locked", "warnc");
-              const members = $$("#groupMembers [data-gmem]:checked").map(x=>x.dataset.gmem);
-              if(members.length===0) return toast("Select group members","warnc");
-              try{
-                await API.addParticipation({
-                  competitionId: comp.id,
-                  category: comp.category,
-                  type: "group",
-                  teamId: State.teamId,
-                  studentIds: members,
-                  groupName: $("#groupName").value.trim() || null,
-                  createdAt: Date.now()
-                });
-                toast("Group registered","ok");
-                showAvailableCompetitionsFor(studentId);
-              }catch(e){ toast(e.message,"err"); }
-            }
-          } else {
-            // individual
-            registerIndividual(studentId, btn.dataset.regcomp);
-          }
-        };
-      });
-    }
-    async function registerIndividual(studentId, compId){
-      const t = State.teams[State.teamId]; if(t?.locked) return toast("Team is locked", "warnc");
-      try{
-        await API.addParticipation({
-          competitionId: compId,
-          category: State.competitions[compId].category,
-          type: "individual",
-          teamId: State.teamId,
-          studentIds: [studentId],
-          createdAt: Date.now()
-        });
-        toast("Registered","ok");
-      } catch(e){ toast(e.message,"err"); }
-    }
-    function renderTeamCompetitionEntries(){
-      const box = $("#teamCompEntries"); box.innerHTML="";
-      const myParts = Object.values(State.participations).filter(p=>p.teamId===State.teamId);
-      const byComp = groupBy(myParts, p=>p.competitionId);
-      const comps = Object.values(State.competitions).filter(c=>byComp.has(c.id)).sort((a,b)=>a.name.localeCompare(b.name));
-      if(comps.length===0){ box.innerHTML = `<div class="muted">No entries yet.</div>`; return; }
-      for(const c of comps){
-        const list = byComp.get(c.id);
-        const card = document.createElement("div"); card.className="card";
-        const ul = document.createElement("ul"); ul.className="list";
-        for(const p of list){
-          const names = (p.studentIds||[]).map(sid=>State.students[sid]?.name || "?").join(", ");
-          const att = p.attendance ? `<span class="badge">Present</span>` : `<span class="badge">Not marked</span>`;
-          const code = p.codeLetter ? `<span class="badge mono">Code: ${p.codeLetter}</span>` : "";
-          const li = document.createElement("li");
-          li.innerHTML = `
-            <div class="flex">
-              <div>${names} ${c.type==="group" && p.groupName? `(<span class="mono">${safe(p.groupName)}</span>)`: ""} — ${att} ${code}</div>
-              <span class="space"></span>
-              <button class="ghost miniBtn" data-rmp="${p.id}">Cancel</button>
-            </div>
-          `;
-          ul.appendChild(li);
-        }
-        card.innerHTML = `
-          <div class="flex"><div class="h3">${c.name}</div><span class="space"></span><span class="badge">${c.category} • ${c.type}</span></div>
-        `;
-        card.appendChild(ul);
-        box.appendChild(card);
-      }
-      $$("#teamCompEntries [data-rmp]").forEach(btn=>{
-        btn.onclick = async ()=>{
-          const t = State.teams[State.teamId]; if(t?.locked) return toast("Team is locked", "warnc");
-          if(!confirm("Cancel this entry?")) return;
-          try{ await API.removeParticipation(btn.dataset.rmp); toast("Cancelled","ok"); }catch(e){ toast(e.message,"err"); }
-        };
-      });
-    }
-    function renderTeamParticipationList(){
-      const box = $("#teamParticipationList"); box.innerHTML="";
-      // For each student: list competitions
-      const myStudents = Object.values(State.students).filter(s=>s.teamId===State.teamId)
-        .sort((a,b)=>safe(a.name).localeCompare(safe(b.name)));
-      const parts = Object.values(State.participations).filter(p=>p.teamId===State.teamId);
-      const partsByStudent = new Map();
-      for(const p of parts){
-        for(const sid of (p.studentIds||[])){
-          if(!partsByStudent.has(sid)) partsByStudent.set(sid, []);
-          partsByStudent.get(sid).push(p);
-        }
-      }
-      const table = document.createElement("table"); table.className="table";
-      table.innerHTML = `<thead><tr><th>Name</th><th>Chest</th><th>Category</th><th>Competitions</th></tr></thead>`;
-      const tb=document.createElement("tbody");
-      for(const s of myStudents){
-        const list = partsByStudent.get(s.id)||[];
-        const comps = list.map(p=> State.competitions[p.competitionId]?.name).filter(Boolean).sort();
-        const tr=document.createElement("tr");
-        tr.innerHTML = `<td>${safe(s.name)}</td><td class="mono">${safe(s.chestNo)}</td><td>${safe(s.category)}</td><td>${safe(comps.join(", "))}</td>`;
-        tb.appendChild(tr);
-      }
-      table.appendChild(tb); box.appendChild(table);
-    }
-    function printTeamList(){
-      const node = $("#teamParticipationList").cloneNode(true);
-      const wrap = $("#printArea"); wrap.innerHTML="";
-      const head = document.createElement("div");
-      head.innerHTML = `<h2>${State.teamId} — Participation List</h2>`;
-      wrap.appendChild(head); wrap.appendChild(node);
-      wrap.classList.remove("hidden");
-      const win = window.open("", "printWin");
-      win.document.write(`<html><head><title>${State.teamId} Participation List</title></head><body>${wrap.innerHTML}</body></html>`);
-      win.document.close(); win.focus(); win.print(); win.close();
-      wrap.classList.add("hidden");
-    }
+    color: var(--light); 
 
-    // -------- EVENT UI --------
-    function renderTeamsTable(){
-      const tb = $("#tblTeams tbody"); tb.innerHTML="";
-      for(const t of TEAMS){
-        const d = State.teams[t] || { locked:false, bonus:0, penalty:0 };
-        const tr=document.createElement("tr");
-        tr.innerHTML = `
-          <td>${t}</td>
-          <td>${d.locked? '<span class="badge warnc">Locked</span>' : '<span class="badge ok">Open</span>'}</td>
-          <td><input class="mono mini" style="max-width:100px" data-bonus="${t}" type="number" value="${Number(d.bonus||0)}" /></td>
-          <td><input class="mono mini" style="max-width:100px" data-penalty="${t}" type="number" value="${Number(d.penalty||0)}" /></td>
-          <td class="right">
-            <button class="warn miniBtn" data-lock="${t}">${d.locked? 'Unlock':'Lock'}</button>
-          </td>
-        `;
-        tb.appendChild(tr);
-      }
-      $$("#tblTeams [data-lock]").forEach(btn=>{
-        btn.onclick = async ()=>{
-          try{ await API.updateTeam(btn.dataset.lock, { locked: !(State.teams[btn.dataset.lock]?.locked) }); toast("Updated","ok"); }catch(e){ toast(e.message,"err"); }
-        };
-      });
-      $$("#tblTeams [data-bonus]").forEach(inp=>{
-        inp.onchange = async ()=>{
-          try{ await API.updateTeam(inp.dataset.bonus, { bonus: Number(inp.value||0) }); toast("Bonus updated","ok"); }catch(e){ toast(e.message,"err"); }
-        };
-      });
-      $$("#tblTeams [data-penalty]").forEach(inp=>{
-        inp.onchange = async ()=>{
-          try{ await API.updateTeam(inp.dataset.penalty, { penalty: Number(inp.value||0) }); toast("Penalty updated","ok"); }catch(e){ toast(e.message,"err"); }
-        };
-      });
-    }
-    function renderCompetitions(){
-      const tb = $("#tblComps tbody"); tb.innerHTML="";
-      const rows = Object.values(State.competitions).sort((a,b)=>a.name.localeCompare(b.name));
-      for(const c of rows){
-        const tr=document.createElement("tr");
-        tr.innerHTML = `
-          <td>${safe(c.name)}</td>
-          <td>${safe(c.category)}</td>
-          <td>${safe(c.type)}</td>
-          <td>${safe(c.maxPerTeam)}</td>
-          <td class="right"><button class="danger miniBtn" data-rmc="${c.id}">Remove</button></td>
-        `;
-        tb.appendChild(tr);
-      }
-      $$("#tblComps [data-rmc]").forEach(btn=>{
-        btn.onclick = async ()=>{
-          if(!confirm("Remove competition and its entries/results?")) return;
-          try{ await API.removeCompetition(btn.dataset.rmc); toast("Removed","ok"); }catch(e){ toast(e.message,"err"); }
-        };
-      });
-      fillAttendanceCompSelects();
-    }
-    function renderAttendance(){
-      const cid = $("#attSelComp").value;
-      const box = $("#attList"); box.innerHTML="";
-      if(!cid){ box.innerHTML = `<div class="muted">Select a competition.</div>`; return; }
-      const comp = State.competitions[cid];
-      const parts = Object.values(State.participations).filter(p=>p.competitionId===cid);
-      if(parts.length===0){ box.innerHTML=`<div class="muted">No registrations yet.</div>`; return; }
-      const byTeam = groupBy(parts, p=>p.teamId);
-      for(const team of TEAMS){
-        const list = byTeam.get(team)||[];
-        const card=document.createElement("div"); card.className="card";
-        card.innerHTML = `<div class="h3">${team}</div>`;
-        const ul=document.createElement("ul"); ul.className="list";
-        for(const p of list){
-          const names = (p.studentIds||[]).map(sid=> State.students[sid]?.name).filter(Boolean).join(", ");
-          const li=document.createElement("li");
-          li.innerHTML = `
-            <div class="grid grid-4">
-              <div>${names} ${p.groupName? `(<span class="mono">${safe(p.groupName)}</span>)`:""}</div>
-              <div><label class="mini">Attendance</label>
-                <select data-att="${p.id}">
-                  <option value="false" ${!p.attendance?'selected':''}>Absent/Not marked</option>
-                  <option value="true" ${p.attendance?'selected':''}>Present</option>
-                </select>
-              </div>
-              <div><label class="mini">Code Letter</label>
-                <input data-code="${p.id}" value="${safe(p.codeLetter||"")}" placeholder="e.g., A12" />
-              </div>
-              <div class="right" style="align-self:center;">
-                <button class="secondary miniBtn" data-save="${p.id}">Save</button>
-              </div>
-            </div>
-          `;
-          ul.appendChild(li);
-        }
-        card.appendChild(ul); box.appendChild(card);
-      }
-      $$("#attList [data-save]").forEach(btn=>{
-        btn.onclick = async ()=>{
-          const pid = btn.dataset.save;
-          const att = $("#attList [data-att='"+pid+"']").value==="true";
-          const code = $("#attList [data-code='"+pid+"']").value.trim();
-          try{ await API.updateParticipation(pid, { attendance: att, codeLetter: code }); toast("Saved","ok"); } catch(e){ toast(e.message,"err"); }
-        };
-      });
-    }
-    function renderJudge(){
-      const cid = $("#judgeSelComp").value;
-      const listBox = $("#judgeList"); listBox.innerHTML="";
-      const winnersBox = $("#winnersEditor"); winnersBox.innerHTML="";
-      if(!cid) { listBox.innerHTML=`<div class="muted">Select a competition.</div>`; return; }
-      const comp = State.competitions[cid];
-      const parts = Object.values(State.participations).filter(p=>p.competitionId===cid && p.attendance);
-      if(parts.length===0){ listBox.innerHTML=`<div class="muted">No present participants.</div>`; }
-      else {
-        const table=document.createElement("table"); table.className="table";
-        table.innerHTML = `<thead><tr><th>Team</th><th>Participants</th><th>Code</th></tr></thead>`;
-        const tb=document.createElement("tbody");
-        for(const p of parts){
-          const names=(p.studentIds||[]).map(sid=> State.students[sid]?.name).filter(Boolean).join(", ");
-          const tr=document.createElement("tr");
-          tr.innerHTML = `<td>${p.teamId}</td><td>${names}${p.groupName? ` — <span class="mono">${safe(p.groupName)}</span>`:""}</td><td class="mono">${safe(p.codeLetter||"-")}</td>`;
-          tb.appendChild(tr);
-        }
-        table.appendChild(tb); listBox.appendChild(table);
-      }
-      // winners editor
-      const res = State.results[cid]?.winners || [];
-      const places = [1,2,3];
-      for(const place of places){
-        const row = document.createElement("div"); row.className="card";
-        const sel = document.createElement("select"); sel.dataset.winSel=place;
-        const noneOpt = document.createElement("option"); noneOpt.value=""; noneOpt.textContent="-- Select participant --"; sel.appendChild(noneOpt);
-        for(const p of parts){
-          const names=(p.studentIds||[]).map(sid=> State.students[sid]?.name).filter(Boolean).join(", ");
-          const o=document.createElement("option"); o.value=p.id; o.textContent = `${names} (${p.teamId}) — Code: ${p.codeLetter||"-"}`;
-          sel.appendChild(o);
-        }
-        // points input
-        const pts = document.createElement("input"); pts.type="number"; pts.min="0"; pts.placeholder="Points";
-        pts.dataset.winPts=place;
-        // prefill from existing results
-        const found = res.find(x=>Number(x.place)===place);
-        if(found){ sel.value=found.participationId||""; pts.value = Number(found.points||0); }
-        row.innerHTML = `<div class="h3">${ordinal(place)} Place</div>`;
-        row.appendChild(sel);
-        const ptsWrap = document.createElement("div"); ptsWrap.style="margin-top:6px;"; ptsWrap.appendChild(pts);
-        row.appendChild(ptsWrap);
-        winnersBox.appendChild(row);
-      }
-    }
-    async function saveResults(){
-      const cid = $("#judgeSelComp").value; if(!cid) return toast("Select competition","warnc");
-      const winners = [];
-      for(const place of [1,2,3]){
-        const sel = $(`[data-winSel='${place}']`); const pid = sel?.value||"";
-        const pts = Number($(`[data-winPts='${place}']`)?.value||0);
-        if(pid && pts>=0) winners.push({ place, participationId: pid, points: pts, updatedAt: Date.now() });
-      }
-      try{
-        await API.saveResults(cid, winners);
-        $("#judgeMsg").textContent = "Saved.";
-        setTimeout(()=>$("#judgeMsg").textContent="", 1500);
-        toast("Results saved","ok");
-      } catch(e){ toast(e.message,"err"); }
-    }
-    function renderScoreboards(){
-      const totals = calcTeamTotals();
-      const tb = $("#tblScoreOverall tbody"); tb.innerHTML="";
-      Object.entries(totals).sort((a,b)=>b[1]-a[1]).forEach(([team,pts])=>{
-        const tr=document.createElement("tr"); tr.innerHTML = `<td>${team}</td><td class="right">${pts}</td>`; tb.appendChild(tr);
-      });
-      // category champions
-      const champ = $("#catChampions"); champ.innerHTML="";
-      for(const cat of CATEGORIES){
-        if(cat==="Popular Zone"){
-          const note = document.createElement("div"); note.className="note";
-          note.textContent = "Popular Zone is open to all categories; points are counted in overall but not shown as a separate champion by default.";
-          champ.appendChild(note); continue;
-        }
-        const ptsByTeam = {};
-        for(const t of TEAMS){ ptsByTeam[t]=0; }
-        // Sum only for competitions in this category
-        for(const [cid,res] of Object.entries(State.results)){
-          const comp=State.competitions[cid]; if(!comp || comp.category !== cat) continue;
-          for(const w of res.winners||[]){
-            const p = State.participations[w.participationId]; if(!p) continue;
-            ptsByTeam[p.teamId] += Number(w.points||0);
-          }
-        }
-        const list = Object.entries(ptsByTeam).sort((a,b)=>b[1]-a[1]);
-        const card=document.createElement("div"); card.className="card";
-        card.innerHTML = `<div class="h3">${cat}</div>`;
-        const t=document.createElement("table"); t.className="table";
-        const tb2=document.createElement("tbody");
-        for(const [team,pts] of list){
-          const tr=document.createElement("tr"); tr.innerHTML = `<td>${team}</td><td class="right">${pts}</td>`; tb2.appendChild(tr);
-        }
-        t.appendChild(tb2); card.appendChild(t); champ.appendChild(card);
-      }
-      // Winners by category and competition order
-      const winnersBox = $("#winnersByCat"); winnersBox.innerHTML="";
-      for(const cat of CATEGORIES.filter(c=>c!=="Popular Zone")){
-        const wrap=document.createElement("div"); wrap.className="card";
-        wrap.innerHTML = `<div class="h3">${cat}</div>`;
-        const ul=document.createElement("ul"); ul.className="list";
-        // For competitions in category, list winners in order: 1st, 2nd, 3rd
-        const comps = Object.values(State.competitions).filter(c=>c.category===cat).sort((a,b)=>a.name.localeCompare(b.name));
-        for(const c of comps){
-          const res = State.results[c.id]?.winners||[];
-          const items = res.slice().sort((a,b)=>a.place-b.place).map(w=>{
-            const p = State.participations[w.participationId]; if(!p) return null;
-            const names=(p.studentIds||[]).map(sid=>State.students[sid]?.name).filter(Boolean).join(", ");
-            return `${names} — ${c.name} — ${ordinal(w.place)} — ${w.points} point${Number(w.points||0)===1?'':'s'}`;
-          }).filter(Boolean);
-          for(const line of items){
-            const li=document.createElement("li"); li.textContent = line; ul.appendChild(li);
-          }
-        }
-        wrap.appendChild(ul); winnersBox.appendChild(wrap);
-      }
-    }
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji"; 
 
-    // -------- POSTER --------
-    let posterImage = null;
-    function posterDraw(){
-      const canvas = $("#posterCanvas"), ctx = canvas.getContext("2d");
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      if(posterImage){
-        // Fit to canvas
-        const ratio = Math.min(canvas.width/posterImage.width, canvas.height/posterImage.height);
-        const w = posterImage.width*ratio, h = posterImage.height*ratio;
-        const x = (canvas.width - w)/2, y=(canvas.height - h)/2;
-        ctx.drawImage(posterImage, x, y, w, h);
-      } else {
-        ctx.fillStyle = "#000"; ctx.fillRect(0,0,canvas.width,canvas.height);
-      }
-      const line1 = $("#postLine1").value; const line2 = $("#postLine2").value; const line3 = $("#postLine3").value;
-      const font = $("#postFont").value || "bold 48px Inter";
-      const color = $("#postColor").value || "#fff";
-      const shadow = $("#postShadow").value || "rgba(0,0,0,0.6)";
-      const y1 = Number($("#y1").value||200), y2=Number($("#y2").value||260), y3=Number($("#y3").value||320);
-      ctx.font = font; ctx.textAlign="center"; ctx.textBaseline="middle";
-      ctx.fillStyle = color;
-      ctx.shadowColor = shadow; ctx.shadowBlur = 6; ctx.shadowOffsetX = 2; ctx.shadowOffsetY = 3;
-      const cx = canvas.width/2;
-      if(line1) ctx.fillText(line1, cx, y1);
-      if(line2) ctx.fillText(line2, cx, y2);
-      if(line3) ctx.fillText(line3, cx, y3);
-      // reset shadow
-      ctx.shadowBlur=0; ctx.shadowOffsetX=0; ctx.shadowOffsetY=0;
-    }
+  } 
 
-    // ========= SEARCH =========
-    function attachSearch(inputEl, scope){
-      inputEl.oninput = ()=>{
-        const q = inputEl.value.trim().toLowerCase();
-        if(scope==="team"){
-          // filter students table
-          const rows = $$("#tblTeamStudents tbody tr");
-          rows.forEach(r=>{
-            const txt = r.textContent.toLowerCase(); r.style.display = txt.includes(q)? "":"none";
-          });
-          // filter my comps entries
-          $$("#teamCompEntries .card").forEach(card=>{
-            card.style.display = card.textContent.toLowerCase().includes(q)? "":"none";
-          });
-        } else {
-          // event: filter comps and students and participation lists where visible
-          $$("#tblComps tbody tr, #tblTeams tbody tr, #attList .card, #winnersByCat .card, #tblScoreOverall tbody tr").forEach(el=>{
-            el.style.display = el.textContent.toLowerCase().includes(q) ? "" : "none";
-          });
-        }
-      };
-    }
+  header { 
 
-    // ========= INIT UI =========
-    function bindLogin(){
-      $("#btnLogin").onclick = async ()=>{
-        const roleSel = $("#loginRole").value;
-        const email = $("#loginEmail").value.trim();
-        const pass = $("#loginPass").value.trim();
-        $("#loginMsg").textContent = "";
-        try {
-          const prof = await API.signIn(email, pass);
-          if(roleSel==="team" && prof.role!=="team"){ throw new Error("Not a team account"); }
-          if(roleSel==="event" && prof.role!=="event"){ throw new Error("Not an event crew account"); }
-          afterLogin(prof);
-        } catch(e){
-          $("#loginMsg").textContent = e.message;
-          toast(e.message, "err");
-        }
-      };
-      $("#btnDemo").onclick = async ()=>{
-        $("#loginEmail").value = "qairuwan@felizia";
-        $("#loginPass").value = "team123";
-        $("#loginRole").value = "team";
-        $("#btnLogin").click();
-      };
-    }
-    function tabs(containerSel, tabAttr, onChange){
-      const tabs = $$(`${containerSel} .tab`);
-      tabs.forEach(t=>{
-        t.onclick = ()=>{
-          tabs.forEach(x=>x.classList.remove("active")); t.classList.add("active");
-          const id = t.dataset[tabAttr];
-          $$(`${containerSel.replace("Tab","")} [id^="${containerSel.replace("#", "").replace("Tab","")}"]`).forEach(x=>x.classList.add("hidden"));
-          const view = document.getElementById((containerSel.replace("#",""))+"-"+id);
-          if(view) view.classList.remove("hidden");
-          if(onChange) onChange(id);
-        };
-      });
-    }
-    function afterLogin(prof){
-      $("#viewLogin").classList.add("hidden");
-      API.subscribeAll(()=>{
-        if(State.role==="team"){ setTeamHeader(); renderTeamStudents(); fillStudentSelect(); renderTeamCompetitionEntries(); renderTeamParticipationList(); }
-        if(State.role==="event"){ recalcKPIs(); renderTeamsTable(); renderCompetitions(); fillAttendanceCompSelects(); renderScoreboards(); }
-      });
-      if(State.role==="team"){
-        $("#viewTeam").classList.remove("hidden");
-        tabs("#teamTab","teamTab");
-      } else {
-        $("#viewEvent").classList.remove("hidden");
-        tabs("#eventTab","eventTab",(id)=>{
-          if(id==="attendance") renderAttendance();
-          if(id==="judge") renderJudge();
-          if(id==="scoreboard") renderScoreboards();
-        });
-      }
-    }
+    position: sticky; top: 0; z-index: 10; 
 
-    // ========= BIND CONTROLS =========
-    function bindControls(){
-      // team add student
-      $("#btnAddStudent").onclick = async ()=>{
-        const team = State.teams[State.teamId]; if(team?.locked) return toast("Team is locked","warnc");
-        const chest = $("#tAddChest").value.trim();
-        const name = $("#tAddName").value.trim();
-        const cat = $("#tAddCat").value;
-        if(!chest || !name || !cat) return toast("Fill all fields","warnc");
-        try{
-          await API.addStudent({ chestNo: chest, name, category: cat, teamId: State.teamId, createdAt: Date.now() });
-          $("#tAddChest").value=""; $("#tAddName").value=""; $("#tAddCat").selectedIndex=0;
-          toast("Student added","ok");
-        } catch(e){ toast(e.message,"err"); }
-      };
-      $("#selRegStudent").onchange = ()=> showAvailableCompetitionsFor($("#selRegStudent").value);
-      $("#btnPrintTeamList").onclick = ()=> printTeamList();
-      $("#btnLogoutTeam").onclick = async ()=>{ await API.signOut(); location.reload(); };
+    padding: 14px 16px; border-bottom: 1px solid var(--border); 
 
-      // event: teams
-      $("#btnSeedTeams").onclick = async ()=>{ try{ await API.seedTeams(); toast("Teams initialized","ok"); }catch(e){ toast(e.message,"err"); } };
-      $("#btnCreateTeamAccount").onclick = async ()=>{
-        const teamId = $("#accTeam").value; const email = $("#accEmail").value.trim(); const pass = $("#accPass").value.trim();
-        if(!teamId || !email || !pass) return toast("Fill all fields","warnc");
-        try{ await API.createAccount({ email, pass, role:"team", teamId }); $("#accMsg").textContent="Created"; toast("Account created","ok"); }catch(e){ $("#accMsg").textContent=e.message; toast(e.message,"err"); }
-      };
-      $("#btnCreateEventAccount").onclick = async ()=>{
-        const email = $("#accEventEmail").value.trim(); const pass = $("#accEventPass").value.trim();
-        if(!email || !pass) return toast("Fill all fields","warnc");
-        try{ await API.createAccount({ email, pass, role:"event", teamId:null }); $("#accEventMsg").textContent="Created"; toast("Event account created","ok"); }catch(e){ $("#accEventMsg").textContent=e.message; toast(e.message,"err"); }
-      };
+    background: rgba(255,255,255,0.8); 
 
-      // event: competitions
-      $("#btnAddComp").onclick = async ()=>{
-        const name = $("#cName").value.trim(); const category = $("#cCat").value; const type = $("#cType").value; const maxPerTeam = Number($("#cMaxTeam").value||0);
-        if(!name || !category || !type || maxPerTeam<=0) return toast("Fill all fields correctly","warnc");
-        try{ await API.addCompetition({ name, category, type, maxPerTeam, createdAt: Date.now() }); $("#cName").value=""; $("#cMaxTeam").value="3"; toast("Competition added","ok"); }catch(e){ toast(e.message,"err"); }
-      };
+    backdrop-filter: blur(8px); 
 
-      // attendance
-      $("#attSelComp").onchange = renderAttendance;
+  } 
 
-      // judge panel
-      $("#judgeSelComp").onchange = renderJudge;
-      $("#btnSaveResults").onclick = saveResults;
+  #app { max-width: 1200px; margin: 0 auto; padding: 18px; } 
 
-      // poster
-      $("#postImg").onchange = (e)=>{
-        const file = e.target.files?.[0]; if(!file) return;
-        const img = new Image(); img.onload = ()=>{ posterImage = img; posterDraw(); }; img.src = URL.createObjectURL(file);
-      };
-      $("#btnRenderPoster").onclick = ()=> posterDraw();
-      $("#btnDownloadPoster").onclick = ()=>{
-        const a=document.createElement("a"); a.download="poster.png"; a.href = $("#posterCanvas").toDataURL("image/png"); a.click();
-      };
-      $("#btnAutofillPoster").onclick = ()=>{
-        const cid = $("#postComp").value; const place = Number($("#postPlace").value||1);
-        const res = State.results[cid]?.winners||[]; const winner = res.find(x=>Number(x.place)===place);
-        if(!winner) return toast("No winner found for that place","warnc");
-        const p = State.participations[winner.participationId]; const comp = State.competitions[cid];
-        const names=(p.studentIds||[]).map(sid=>State.students[sid]?.name).filter(Boolean).join(", ");
-        $("#postLine1").value = names || "";
-        $("#postLine2").value = comp?.category || "";
-        $("#postLine3").value = `${comp?.name || ""} — ${ordinal(place)}`;
-        posterDraw();
-      };
+  .brand { display: flex; align-items: center; gap: 12px; } 
 
-      // search
-      attachSearch($("#teamSearch"), "team");
-      attachSearch($("#eventSearch"), "event");
+  .logo { 
 
-      // logout
-      $("#btnLogoutEvent").onclick = async ()=>{ await API.signOut(); location.reload(); };
-    }
+    width: 40px; height: 40px; border-radius: 10px; 
 
-    // ========= BOOT =========
-    async function boot(){
-      fillCategorySelects();
-      fillTeamAccountSelect();
-      bindLogin();
-      bindControls();
-      await API.init();
-    }
-    boot();
-  </script>
+    display: grid; place-items: center; font-weight: 800; color: #fff; 
 
-  <!-- Firestore Security Rules (copy this into Firebase console) -->
-  <!--
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    function isSignedIn() { return request.auth != null; }
-    function userProfile() {
-      return isSignedIn() ? get(/databases/$(database)/documents/profiles/$(request.auth.uid)).data : null;
-    }
-    function isEventCrew() { return isSignedIn() && userProfile().role == 'event'; }
-    function isTeam() { return isSignedIn() && userProfile().role == 'team'; }
-    function myTeamId() { return userProfile().teamId; }
+    background: linear-gradient(135deg, var(--accent), var(--accent-2)); 
 
-    match /profiles/{uid} {
-      allow read: if isSignedIn() && (uid == request.auth.uid || isEventCrew());
-      allow write: if isEventCrew();
-    }
-    match /teams/{teamId} {
-      allow read: if isSignedIn();
-      allow write: if isEventCrew();
-    }
-    match /students/{id} {
-      allow read: if isEventCrew() || (isTeam() && resource.data.teamId == myTeamId());
-      allow create: if isEventCrew() || (isTeam() && request.resource.data.teamId == myTeamId() && get(/databases/$(database)/documents/teams/$(myTeamId())).data.locked == false);
-      allow update, delete: if isEventCrew() || (isTeam() && resource.data.teamId == myTeamId() && get(/databases/$(database)/documents/teams/$(myTeamId())).data.locked == false);
-    }
-    match /competitions/{id} {
-      allow read: if isSignedIn();
-      allow write: if isEventCrew();
-    }
-    match /participations/{id} {
-      allow read: if isEventCrew() || (isTeam() && resource.data.teamId == myTeamId());
-      allow create: if isEventCrew() || (isTeam() && request.resource.data.teamId == myTeamId() && get(/databases/$(database)/documents/teams/$(myTeamId())).data.locked == false);
-      allow update, delete: if isEventCrew() || (isTeam() && resource.data.teamId == myTeamId() && get(/databases/$(database)/documents/teams/$(myTeamId())).data.locked == false);
-    }
-    match /results/{compId} {
-      allow read: if isSignedIn();
-      allow write: if isEventCrew();
-    }
-  }
-}
-  -->
-</body>
-</html>
+    border: 1px solid var(--border); 
+
+    overflow: hidden; 
+
+  } 
+
+  .brand h1 { margin: 0; font-size: 18px; font-family: Georgia, "Times New Roman", serif; letter-spacing: .2px; } 
+
+  .sub { font-size: 12px; color: var(--muted); } 
+
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; } 
+
+  .spacer { flex: 1; } 
+
+ 
+
+  .card { 
+
+    background: var(--card); 
+
+    border: 1px solid var(--border); 
+
+    border-radius: 16px; 
+
+    padding: 16px; 
+
+    box-shadow: 0 10px 20px var(--shadow); 
+
+  } 
+
+  .card h2 { 
+
+    margin: 0 0 6px 0; font-size: 18px; font-family: Georgia, "Times New Roman", serif; font-weight: 700; 
+
+  } 
+
+  .card h2::after { 
+
+    content: ""; display: block; height: 2px; margin-top: 8px; 
+
+    background: linear-gradient(to right, transparent, var(--accent-2), transparent); 
+
+    border-radius: 2px; 
+
+  } 
+
+  .section-title { font-size: 16px; margin: 8px 0; font-family: Georgia, "Times New Roman", serif; } 
+
+ 
+
+  .muted { color: var(--muted); font-size: 13px; } 
+
+  .grid { display: grid; gap: 16px; } 
+
+  .grid.cols-2 { grid-template-columns: repeat(2, 1fr); } 
+
+  .grid.cols-3 { grid-template-columns: repeat(3, 1fr); } 
+
+  @media (max-width: 1000px) { .grid.cols-2, .grid.cols-3 { grid-template-columns: 1fr; } } 
+
+ 
+
+  .btn { 
+
+    display: inline-flex; align-items: center; gap: 8px; 
+
+    padding: 8px 12px; border-radius: 10px; cursor: pointer; 
+
+    background: #fff; color: var(--light); 
+
+    border: 1px solid var(--border); text-decoration: none; font-weight: 600; 
+
+  } 
+
+  .btn:hover { box-shadow: 0 4px 12px var(--shadow); } 
+
+  .btn.primary { background: linear-gradient(180deg, var(--accent), #0e5934); color: #ffffff; border: 1px solid #0d4d2e; } 
+
+  .btn.warn { background: #fff6e6; color: #8a5a00; border-color: #e7c888; } 
+
+  .btn.danger { background: #fff1f1; color: #8a1414; border-color: #f1c0c0; } 
+
+  .btn.small { padding: 6px 10px; font-size: 13px; border-radius: 8px; } 
+
+ 
+
+  .tag { padding: 2px 8px; border-radius: 999px; font-size: 12px; border: 1px solid var(--border); background: #fff; color: var(--light); } 
+
+  .tag.green { background: #f1fbf5; color: #0f5d36; border-color: #bfe2cf; } 
+
+  .tag.blue { background: #eef6ff; color: #0a3b74; border-color: #c9def9; } 
+
+  .tag.red { background: #fff1f1; color: #8a1414; border-color: #f1c0c0; } 
+
+ 
+
+  .nav { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 12px; } 
+
+  .nav .tab { padding: 8px 10px; background: #fff; border: 1px solid var(--border); border-radius: 10px; color: var(--light); cursor: pointer; } 
+
+  .nav .tab.active { background: linear-gradient(180deg, #ffffff, #fbfaf4); border-color: var(--accent); box-shadow: 0 4px 12px var(--shadow); } 
+
+ 
+
+  .hr { height: 1px; background: var(--border); margin: 12px 0; } 
+
+  .input, select, textarea { width: 100%; padding: 10px 12px; background: #fff; color: var(--light); border: 1px solid var(--border); border-radius: 10px; } 
+
+ 
+
+  .table-wrap { width: 100%; overflow: auto; border: 1px solid var(--border); border-radius: 12px; } 
+
+  table { width: 100%; border-collapse: collapse; min-width: 720px; } 
+
+  th, td { padding: 10px; border-bottom: 1px solid var(--border); text-align: left; font-size: 14px; } 
+
+  th { background: #fffaf0; position: sticky; top: 0; z-index: 1; } 
+
+ 
+
+  .notice { padding: 10px 12px; border: 1px dashed var(--border); border-radius: 12px; background: #fffaf0; color: var(--muted); font-size: 13px; } 
+
+ 
+
+  /* Editor fields on image */ 
+
+  .poster-canvas-wrap { position: relative; background: #000; border: 1px solid var(--border); border-radius: 12px; padding: 10px; display: grid; place-items: center; } 
+
+  .poster-stage { position: relative; } 
+
+  .poster-field { position: absolute; border: 1px dashed rgba(184,137,23,0.45); border-radius: 4px; background: rgba(184,137,23,0.07); cursor: move; } 
+
+  .poster-field.selected { box-shadow: 0 0 0 1px var(--accent-2) inset; } 
+
+ 
+
+  /* Global Search */ 
+
+  .gs-wrap { position: relative; min-width: 260px; max-width: 440px; width: 38%; } 
+
+  .gs-input { padding-left: 34px !important; } 
+
+  .gs-icon { 
+
+    position: absolute; left: 10px; top: 50%; transform: translateY(-50%); 
+
+    font-size: 16px; color: var(--muted); 
+
+  } 
+
+  .gs-results { 
+
+    position: absolute; top: calc(100% + 6px); left: 0; right: 0; 
+
+    background: #ffffff; border: 1px solid var(--border); border-radius: 12px; 
+
+    box-shadow: 0 12px 30px var(--shadow); max-height: 420px; overflow: auto; z-index: 20; 
+
+  } 
+
+  .gs-section { padding: 8px 10px; font-size: 12px; color: var(--muted); background: #fffaf0; position: sticky; top: 0; } 
+
+  .gs-item { 
+
+    padding: 10px 12px; cursor: pointer; display: grid; grid-template-columns: 28px 1fr; gap: 10px; 
+
+    border-bottom: 1px solid var(--border); 
+
+  } 
+
+  .gs-item:hover, .gs-item.active { background: #fbfaf4; } 
+
+  .gs-type { width: 28px; color: var(--muted); text-align: center; } 
+
+  .gs-title { font-weight: 700; } 
+
+  .gs-sub { font-size: 12px; color: var(--muted); } 
+
+  @media (max-width: 800px) { .gs-wrap { width: 100%; max-width: none; } } 
+
+ 
+
+  /* Highlight a competition card when jumped-to from search (team portal) */ 
+
+  .card.search-highlight { box-shadow: 0 0 0 2px var(--accent-2) inset; } 
+
+</style> 
+
+</head> 
+
+<body> 
+
+<header> 
+
+  <div class="brand"> 
+
+    <div class="logo" id="brand-logo">FZ</div> 
+
+    <div> 
+
+      <h1>Felizia Inter Campus Fest</h1> 
+
+      <div class="sub">Muhyissunna Students' Association • Event Crew + Team Portal</div> 
+
+    </div> 
+
+ 
+
+    <div id="global-search-wrap" class="gs-wrap"> 
+
+      <span class="gs-icon">🔎</span> 
+
+      <input id="global-search-input" class="input gs-input" type="search" 
+
+             placeholder="Search students or competitions ( / )" 
+
+             oninput="App.onGlobalSearchInput(this.value)" 
+
+             onfocus="App.onGlobalSearchFocus()" 
+
+             onkeydown="App.onGlobalSearchKey(event)"> 
+
+      <div id="global-search-results" class="gs-results" style="display:none"></div> 
+
+    </div> 
+
+ 
+
+    <div class="spacer"></div> 
+
+    <div id="header-session" class="row"></div> 
+
+  </div> 
+
+</header> 
+
+<div id="app"></div> 
+
+ 
+
+<script> 
+
+"use strict"; 
+
+ 
+
+/* ------------------------------ 
+
+   Data Store 
+
+--------------------------------*/ 
+
+const Store = { 
+
+  key: "feliziaFestData.v3", 
+
+  defaults: () => ({ 
+
+    meta: { createdAt: Date.now(), version: 3 }, 
+
+    eventInfo: { eventTitle: "Felizia Inter Campus Fest", orgName: "Muhyissunna Students' Association" }, 
+
+    brand: { logoDataUrl: null, faviconDataUrl: null, accent: "#106a3b", accent2: "#b88917" }, 
+
+    eventUser: { username: "admin", password: "felizia" }, 
+
+    portalLocked: false, 
+
+    categories: ["Lower", "Primary", "Minor", "Major", "High Zone", "Popular"], 
+
+    teams: [ 
+
+      { id: "qairuwan", name: "Qairuwan", password: "team123" }, 
+
+      { id: "rabath", name: "Rabath", password: "team123" }, 
+
+      { id: "fustat", name: "Fustat", password: "team123" }, 
+
+      { id: "qazween", name: "Qazween", password: "team123" } 
+
+    ], 
+
+    competitions: [],            // {id,name,category,isGroup,teamEntryLimit,maxGroupSize?,date?,time?,locked?} 
+
+    students: [],                // {id,teamId,chestNo,name,category} 
+
+    entries: [],                 // {id,teamId,competitionId,entryType,memberStudentIds[],createdAt} 
+
+    attendance: [],              // {id,competitionId,entryId,present,code?,markedAt} 
+
+    results: [],                 // {id,competitionId,entryId,rankLabel,pointsAwarded,judgeNotes?,timestamp} 
+
+    adjustments: [], 
+
+    posters: { templates: [] },  // Poster templates 
+
+    chest: { templates: [] }     // Chest card templates 
+
+  }), 
+
+  load() { 
+
+    try { 
+
+      const raw = localStorage.getItem(this.key); 
+
+      if (!raw) { 
+
+        const base = this.defaults(); 
+
+        localStorage.setItem(this.key, JSON.stringify(base)); 
+
+        return base; 
+
+      } 
+
+      const data = JSON.parse(raw); 
+
+      if (!data.posters) data.posters = { templates: [] }; 
+
+      if (!data.chest) data.chest = { templates: [] }; 
+
+      if (!data.brand) data.brand = { logoDataUrl: null, faviconDataUrl: null, accent: "#106a3b", accent2: "#b88917" }; 
+
+      if (!data.eventInfo) data.eventInfo = { eventTitle: "Felizia Inter Campus Fest", orgName: "Muhyissunna Students' Association" }; 
+
+      // Ensure "High Zone" exists and keep "Popular" last for existing saves 
+
+      if (Array.isArray(data.categories)) { 
+
+        const cats = data.categories.slice(); 
+
+        if (!cats.includes("High Zone")) { 
+
+          const hasPopular = cats.includes("Popular"); 
+
+          const withoutPopular = cats.filter(c => c !== "Popular"); 
+
+          data.categories = hasPopular ? [...withoutPopular, "High Zone", "Popular"] : [...cats, "High Zone"]; 
+
+        } 
+
+      } else { 
+
+        data.categories = ["Lower", "Primary", "Minor", "Major", "High Zone", "Popular"]; 
+
+      } 
+
+      data.meta.version = 3; 
+
+      return data; 
+
+    } catch (e) { 
+
+      console.error("Load failed", e); 
+
+      const base = this.defaults(); 
+
+      localStorage.setItem(this.key, JSON.stringify(base)); 
+
+      return base; 
+
+    } 
+
+  }, 
+
+  save(data) { localStorage.setItem(this.key, JSON.stringify(data)); }, 
+
+  clear() { localStorage.removeItem(this.key); } 
+
+}; 
+
+ 
+
+/* ------------------------------ 
+
+   App 
+
+--------------------------------*/ 
+
+const App = { 
+
+  state: { 
+
+    role: null, teamId: null, user: null, 
+
+    eventTab: "setup", 
+
+    teamTab: "dashboard", 
+
+    posterTab: "generate", 
+
+    posterSelectedTemplateId: null, 
+
+    posterEditorTemplateId: null, 
+
+    posterEditorSelectedFieldId: null, 
+
+    ebcTeamFilter: "", 
+
+    chestTab: "generate", 
+
+    chestEditorTemplateId: null, 
+
+    chestEditorSelectedFieldId: null, 
+
+ 
+
+    // Search state 
+
+    searchOpen: false, 
+
+    searchQuery: "", 
+
+    _gsTimer: null, 
+
+    _gsResults: [], 
+
+    _gsActiveIndex: -1, 
+
+    _highlightCompId: null, 
+
+ 
+
+    // Champions options 
+
+    champIncludeGroup: false, 
+
+    champIncludePopularToStudentCat: false, 
+
+    champTopN: 1 
+
+  }, 
+
+  data: Store.load(), 
+
+ 
+
+  // Utils 
+
+  save() { Store.save(this.data); this.renderHeaderSession(); this.applyBrand(); }, 
+
+  reset() { this.data = Store.defaults(); this.save(); this.routeHome(); }, 
+
+  uid(p="id") { return p + "-" + Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4); }, 
+
+  fmtDate(d) { if (!d) return ""; try { return new Date(d).toLocaleDateString(); } catch { return d; } }, 
+
+  todayStr() { const d = new Date(); return d.toISOString().slice(0,10); }, 
+
+  esc(s) { return String(s ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;'}[m])); }, 
+
+  sanitizeFileName(s){ return String(s).replace(/[<>:"/\\|?*\x00-\x1F]/g,"_").slice(0,120); }, 
+
+  fileToDataUrl(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(file); }); }, 
+
+  loadImage(src){ return new Promise((res,rej)=>{ const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=src; }); }, 
+
+  wrapText(ctx, text, maxWidth){ 
+
+    if (!maxWidth) return String(text||"").split("\n"); 
+
+    const paras = String(text||"").split("\n"); 
+
+    const out = []; 
+
+    for (const p of paras) { 
+
+      const words = p.split(" "); 
+
+      let line = ""; 
+
+      for (const w of words) { 
+
+        const test = line ? line + " " + w : w; 
+
+        if (ctx.measureText(test).width > maxWidth && line) { 
+
+          out.push(line); line = w; 
+
+        } else { 
+
+          line = test; 
+
+        } 
+
+      } 
+
+      out.push(line); 
+
+    } 
+
+    return out; 
+
+  }, 
+
+  replaceTokens(str, tokens, uppercase=false){ 
+
+    let out = String(str||"").replace(/\{([a-zA-Z0-9_]+)\}/g, (m, k) => tokens[k] ?? ""); 
+
+    return uppercase ? out.toUpperCase() : out; 
+
+  }, 
+
+  async drawWrappedText(ctx, text, cfg){ 
+
+    ctx.save(); 
+
+    ctx.fillStyle = cfg.color || "#000"; 
+
+    ctx.font = `${cfg.fontStyle||""} ${cfg.fontWeight||""} ${cfg.fontSize||24}px ${cfg.fontFamily||"Arial"}`.trim(); 
+
+    ctx.textBaseline = "top"; 
+
+    const lines = this.wrapText(ctx, text, cfg.maxWidth || 400); 
+
+    let x = cfg.x, y = cfg.y; 
+
+    for (const ln of lines) { 
+
+      let drawX = x; 
+
+      if (cfg.align === "center") { ctx.textAlign = "center"; drawX = x + (cfg.maxWidth||400)/2; } 
+
+      else if (cfg.align === "right") { ctx.textAlign = "right"; drawX = x + (cfg.maxWidth||400); } 
+
+      else { ctx.textAlign = "left"; } 
+
+      if (cfg.strokeWidth && cfg.strokeWidth > 0) { ctx.lineWidth = cfg.strokeWidth; ctx.strokeStyle = cfg.strokeColor || "#000"; ctx.strokeText(ln, drawX, y); } 
+
+      if (cfg.shadowBlur) { ctx.shadowBlur = cfg.shadowBlur; ctx.shadowColor = cfg.shadowColor || "#000"; } 
+
+      ctx.fillText(ln, drawX, y); 
+
+      y += Math.round((cfg.fontSize || 24) * (cfg.lineHeight || 1.25)); 
+
+    } 
+
+    ctx.restore(); 
+
+  }, 
+
+ 
+
+  // Entities 
+
+  getTeam(id){ return this.data.teams.find(t=>t.id===id); } 
+
+  ,getCompetition(id){ return this.data.competitions.find(c=>c.id===id); } 
+
+  ,getEntry(id){ return this.data.entries.find(e=>e.id===id); } 
+
+  ,getStudent(id){ return this.data.students.find(s=>s.id===id); } 
+
+  ,teamName(id){ const t=this.getTeam(id); return t? t.name : id; } 
+
+ 
+
+  ,studentsByTeam(teamId){ return this.data.students.filter(s=>s.teamId===teamId); } 
+
+  ,entriesByCompetition(compId){ return this.data.entries.filter(e=>e.competitionId===compId); } 
+
+  ,entriesByTeam(teamId){ return this.data.entries.filter(e=>e.teamId===teamId); } 
+
+  ,entriesByStudent(stuId){ return this.data.entries.filter(e=> e.memberStudentIds.includes(stuId)); } 
+
+ 
+
+  ,attendanceByComp(compId){ return this.data.attendance.filter(a=>a.competitionId===compId); } 
+
+  ,attendanceRecMapByComp(compId){ const m={}; for(const a of this.data.attendance) if(a.competitionId===compId) m[a.entryId]=a; return m; } 
+
+ 
+
+  ,entryLabel(entry){ 
+
+    const ms = entry.memberStudentIds.map(id=>this.getStudent(id)).filter(Boolean); 
+
+    const label = ms.map(m=> `${m.name} (#${m.chestNo})`).join(", "); 
+
+    return entry.entryType==="group" ? `Group: ${label}` : label; 
+
+  }, 
+
+ 
+
+  // Scoring 
+
+  computeScores(){ 
+
+    const cats = this.data.categories, teams = this.data.teams; 
+
+    const teamCatScores = {}, competitorPoints = {}; 
+
+    teams.forEach(t => { teamCatScores[t.id] = {}; cats.forEach(c => teamCatScores[t.id][c] = 0); }); 
+
+    for (const r of this.data.results) { 
+
+      const e = this.getEntry(r.entryId); if (!e) continue; 
+
+      const c = this.getCompetition(r.competitionId); if (!c) continue; 
+
+      teamCatScores[e.teamId][c.category] += Number(r.pointsAwarded||0); 
+
+      for (const sid of e.memberStudentIds) competitorPoints[sid] = (competitorPoints[sid]||0) + Number(r.pointsAwarded||0); 
+
+    } 
+
+    const perCategoryTeam = {}; 
+
+    for (const cat of cats) { 
+
+      perCategoryTeam[cat] = teams.map(t => ({ teamId:t.id, teamName:t.name, points: teamCatScores[t.id][cat]||0 })) 
+
+        .sort((a,b)=> b.points - a.points || a.teamName.localeCompare(b.teamName)); 
+
+    } 
+
+    const overallTeam = teams.map(t => { 
+
+      const total = cats.reduce((acc,c)=> acc + (teamCatScores[t.id][c]||0), 0); 
+
+      return { teamId: t.id, teamName: t.name, points: total }; 
+
+    }).sort((a,b)=> b.points - a.points || a.teamName.localeCompare(b.teamName)); 
+
+    return { perCategoryTeam, overallTeam, competitorPoints }; 
+
+  }, 
+
+ 
+
+  // Branding 
+
+  applyBrand(){ 
+
+    const b = this.data.brand || {}; 
+
+    document.documentElement.style.setProperty('--accent', b.accent || '#106a3b'); 
+
+    document.documentElement.style.setProperty('--accent-2', b.accent2 || '#b88917'); 
+
+    const el = document.getElementById('brand-logo'); 
+
+    if (el) { 
+
+      if (b.logoDataUrl) { 
+
+        el.innerHTML = `<img src="${b.logoDataUrl}" alt="logo" style="width:100%;height:100%;object-fit:cover">`; 
+
+        el.style.background = "transparent"; 
+
+      } else { 
+
+        el.textContent = "FZ"; 
+
+        el.style.background = "linear-gradient(135deg, var(--accent), var(--accent-2))"; 
+
+      } 
+
+    } 
+
+    // favicon 
+
+    let link = document.getElementById("app-favicon"); 
+
+    if (!link) { link = document.createElement("link"); link.id = "app-favicon"; link.rel = "icon"; document.head.appendChild(link); } 
+
+    link.href = b.faviconDataUrl || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="%23106a3b"/><text x="32" y="40" text-anchor="middle" font-size="32" fill="%23fffdf7" font-family="Georgia">F</text></svg>'; 
+
+  }, 
+
+ 
+
+  // Session/Header 
+
+  renderHeaderSession(){ 
+
+    const el = document.getElementById("header-session"); 
+
+    if (!el) return; 
+
+    if (this.state.role === "event") { 
+
+      el.innerHTML = `<span class="tag green">Event Crew</span><span class="muted">Signed in as ${this.esc(this.state.user||"admin")}</span><button class="btn small" onclick="App.logout()">Logout</button>`; 
+
+    } else if (this.state.role === "team") { 
+
+      const team = this.getTeam(this.state.teamId); 
+
+      el.innerHTML = `<span class="tag green">Team Portal</span><span class="muted">Team ${this.esc(team?.name||"")}</span><button class="btn small" onclick="App.logout()">Logout</button>`; 
+
+    } else { 
+
+      el.innerHTML = `<span class="muted">Not signed in</span>`; 
+
+    } 
+
+  }, 
+
+  logout(){ this.state = { ...this.state, role: null, teamId: null, user: null, eventTab: "setup", teamTab: "dashboard" }; this.renderHeaderSession(); this.routeHome(); }, 
+
+ 
+
+  // Routing 
+
+  routeHome(){ 
+
+    const app = document.getElementById("app"); 
+
+    app.innerHTML = ` 
+
+      <div class="grid cols-2"> 
+
+        <div class="card"> 
+
+          <h2>Event Crew Portal</h2> 
+
+          <div class="muted">Manage competitions, attendance (with code letters), results, posters, chest cards, and scoreboards.</div> 
+
+          <div class="hr"></div> 
+
+          <form onsubmit="App.eventLoginSubmit(event)"> 
+
+            <div class="grid"> 
+
+              <div><label>Username</label><input class="input" id="event-username" value="admin" required></div> 
+
+              <div><label>Password</label><input class="input" id="event-password" type="password" required></div> 
+
+            </div> 
+
+            <div class="row" style="margin-top:10px;"><button class="btn primary" type="submit">Login as Event Crew</button><span class="muted">Default: admin / felizia</span></div> 
+
+          </form> 
+
+        </div> 
+
+        <div class="card"> 
+
+          <h2>Team Portal</h2> 
+
+          <div class="muted">Register students and enroll them into competitions. View-only when locked.</div> 
+
+          <div class="hr"></div> 
+
+          <form onsubmit="App.teamLoginSubmit(event)"> 
+
+            <div class="grid"> 
+
+              <div> 
+
+                <label>Team</label> 
+
+                <select id="team-select" class="input">${this.data.teams.map(t=>`<option value="${t.id}">${this.esc(t.name)}</option>`).join("")}</select> 
+
+              </div> 
+
+              <div><label>Password</label><input class="input" id="team-password" type="password" required></div> 
+
+            </div> 
+
+            <div class="row" style="margin-top:10px;"><button class="btn primary" type="submit">Login to Team Portal</button><span class="muted">Default: team123</span></div> 
+
+          </form> 
+
+        </div> 
+
+      </div> 
+
+      <div class="card"> 
+
+        <h2>How it works</h2> 
+
+        <ul class="muted"> 
+
+          <li>Competitions per category (Lower, Primary, Minor, Major, High Zone, Popular).</li> 
+
+          <li>Teams add students (Chest No, Name, Category) and enroll them. Entries are private to teams.</li> 
+
+          <li>Attendance tick + Code Letter. Codes show in Judge Panel and Posters.</li> 
+
+          <li>Judge Panel: enter winners/points; auto poster generator with your templates.</li> 
+
+          <li>Chest Cards: upload category templates; generate per-student PNGs or A4 sheets.</li> 
+
+          <li>Category-wise lists for Entries and Students (Event Crew & Teams).</li> 
+
+        </ul> 
+
+      </div> 
+
+    `; 
+
+    this.applyBrand(); 
+
+  }, 
+
+  eventLoginSubmit(ev){ 
+
+    ev.preventDefault(); 
+
+    const u = document.getElementById("event-username").value.trim(); 
+
+    const p = document.getElementById("event-password").value.trim(); 
+
+    const creds = this.data.eventUser; 
+
+    if (u === creds.username && p === creds.password) { this.state.role = "event"; this.state.user = u; this.renderHeaderSession(); this.renderEventPortal(); } 
+
+    else alert("Invalid credentials."); 
+
+  }, 
+
+  teamLoginSubmit(ev){ 
+
+    ev.preventDefault(); 
+
+    const id = document.getElementById("team-select").value; 
+
+    const p = document.getElementById("team-password").value.trim(); 
+
+    const t = this.getTeam(id); 
+
+    if (!t) return alert("Team not found."); 
+
+    if (p === t.password) { this.state.role = "team"; this.state.teamId = id; this.state.user = t.name; this.renderHeaderSession(); this.renderTeamPortal(); } 
+
+    else alert("Invalid team password."); 
+
+  }, 
+
+ 
+
+  /* ------------------------------ 
+
+     Event Crew Portal 
+
+  --------------------------------*/ 
+
+  renderEventPortal(){ 
+
+    const app = document.getElementById("app"); 
+
+    const tabs = [ 
+
+      { id: "setup", label: "Setup" }, 
+
+      { id: "competitions", label: "Competitions" }, 
+
+      { id: "attendance_results", label: "Attendance & Results" }, 
+
+      { id: "entries_by_category", label: "Entries by Category" }, 
+
+      { id: "students_by_category", label: "Students by Category" }, 
+
+      { id: "scoreboards", label: "Scoreboards" }, 
+
+      { id: "posters", label: "Posters" }, 
+
+      { id: "chest_cards", label: "Chest Cards" }, 
+
+      { id: "data", label: "Data" } 
+
+    ]; 
+
+    app.innerHTML = ` 
+
+      <div class="card"> 
+
+        <div class="nav"> 
+
+          ${tabs.map(t=>`<button class="tab ${this.state.eventTab===t.id?'active':''}" onclick="App.eventSwitchTab('${t.id}')">${t.label}</button>`).join("")} 
+
+        </div> 
+
+        <div id="event-tab"></div> 
+
+      </div> 
+
+    `; 
+
+    this.renderEventTab(); 
+
+  }, 
+
+  eventSwitchTab(id){ this.state.eventTab = id; this.renderEventPortal(); }, 
+
+  renderEventTab(){ 
+
+    const wrap = document.getElementById("event-tab"); if (!wrap) return; 
+
+    if (this.state.eventTab === "setup") return this.eventTabSetup(wrap); 
+
+    if (this.state.eventTab === "competitions") return this.eventTabCompetitions(wrap); 
+
+    if (this.state.eventTab === "attendance_results") return this.eventTabAttendanceResults(wrap); 
+
+    if (this.state.eventTab === "entries_by_category") return this.eventTabEntriesByCategory(wrap); 
+
+    if (this.state.eventTab === "students_by_category") return this.eventTabStudentsByCategory(wrap); 
+
+    if (this.state.eventTab === "scoreboards") return this.eventTabScoreboards(wrap); 
+
+    if (this.state.eventTab === "posters") return this.eventTabPosters(wrap); 
+
+    if (this.state.eventTab === "chest_cards") return this.eventTabChestCards(wrap); 
+
+    if (this.state.eventTab === "data") return this.eventTabData(wrap); 
+
+  }, 
+
+ 
+
+  eventTabSetup(wrap){ 
+
+    wrap.innerHTML = ` 
+
+      <div class="grid cols-2"> 
+
+        <div class="card"> 
+
+          <h2>Team Portal Lock</h2> 
+
+          <div class="muted">Lock to stop teams from editing rosters or enrollments. Viewing stays allowed.</div> 
+
+          <div class="hr"></div> 
+
+          <div class="row"> 
+
+            <span class="tag ${this.data.portalLocked?'red':'green'}">${this.data.portalLocked?'Locked 🔒':'Unlocked 🔓'}</span> 
+
+            <button class="btn ${this.data.portalLocked?'':'warn'}" onclick="App.togglePortalLock()">${this.data.portalLocked?'Unlock Portals':'Lock Portals'}</button> 
+
+          </div> 
+
+        </div> 
+
+        <div class="card"> 
+
+          <h2>Team Credentials</h2> 
+
+          <div class="hr"></div> 
+
+          <div class="grid"> 
+
+            ${this.data.teams.map(t=>` 
+
+              <div class="row" style="gap:12px;"> 
+
+                <div class="spacer"> 
+
+                  <div><strong>${this.esc(t.name)}</strong></div> 
+
+                  <div class="muted">ID: ${t.id}</div> 
+
+                </div> 
+
+                <input class="input" type="password" id="pw-${t.id}" placeholder="new password"> 
+
+                <button class="btn small" onclick="App.setTeamPassword('${t.id}')">Set</button> 
+
+              </div> 
+
+            `).join("")} 
+
+          </div> 
+
+        </div> 
+
+      </div> 
+
+ 
+
+      <div class="card"> 
+
+        <h2>Create Competition</h2> 
+
+        <div class="muted">Category, type, team entry limit, and optional schedule.</div> 
+
+        <div class="hr"></div> 
+
+        <form onsubmit="App.createCompetition(event)"> 
+
+          <div class="grid cols-3"> 
+
+            <div><label>Name</label><input class="input" id="comp-name" required placeholder="e.g., Malayalam Elocution"></div> 
+
+            <div><label>Category</label><select class="input" id="comp-category">${this.data.categories.map(c=>`<option>${this.esc(c)}</option>`).join("")}</select></div> 
+
+            <div><label>Type</label><select class="input" id="comp-type"><option value="individual">Individual</option><option value="group">Group</option></select></div> 
+
+          </div> 
+
+          <div class="grid cols-3" style="margin-top:10px;"> 
+
+            <div><label>Team Entry Limit</label><input class="input" id="comp-limit" type="number" min="1" step="1" value="1" required></div> 
+
+            <div><label>Max Group Size (optional)</label><input class="input" id="comp-maxgroup" type="number" min="1" step="1"></div> 
+
+            <div><label>Date</label><input class="input" id="comp-date" type="date"></div> 
+
+          </div> 
+
+          <div class="grid cols-3" style="margin-top:10px;"> 
+
+            <div><label>Time</label><input class="input" id="comp-time" type="time"></div> 
+
+            <div class="row" style="align-items:flex-end;"><button class="btn primary" type="submit">Add Competition</button></div> 
+
+          </div> 
+
+        </form> 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+  togglePortalLock(){ this.data.portalLocked = !this.data.portalLocked; this.save(); this.renderEventPortal(); }, 
+
+  setTeamPassword(teamId){ 
+
+    const inp = document.getElementById("pw-"+teamId); 
+
+    const v = (inp?.value||"").trim(); if (!v) return alert("Enter a new password."); 
+
+    const t = this.getTeam(teamId); if (!t) return; 
+
+    t.password = v; this.save(); 
+
+    alert(`Updated password for ${t.name}.`); inp.value = ""; 
+
+  }, 
+
+  createCompetition(ev){ 
+
+    ev.preventDefault(); 
+
+    const name = document.getElementById("comp-name").value.trim(); 
+
+    const category = document.getElementById("comp-category").value; 
+
+    const type = document.getElementById("comp-type").value; 
+
+    const limit = parseInt(document.getElementById("comp-limit").value||"0",10); 
+
+    const maxGroup = document.getElementById("comp-maxgroup").value; 
+
+    const date = document.getElementById("comp-date").value||null; 
+
+    const time = document.getElementById("comp-time").value||null; 
+
+    if (!name) return alert("Name required."); 
+
+    if (!this.data.categories.includes(category)) return alert("Invalid category."); 
+
+    if (!(limit > 0)) return alert("Limit must be >=1."); 
+
+    this.data.competitions.push({ id:this.uid("comp"), name, category, isGroup:(type==="group"), teamEntryLimit:limit, maxGroupSize: maxGroup?parseInt(maxGroup,10):null, date, time, locked:false }); 
+
+    this.save(); alert("Competition added."); this.renderEventPortal(); 
+
+  }, 
+
+ 
+
+  eventTabCompetitions(wrap){ 
+
+    const comps = this.data.competitions.slice().sort((a,b)=> (a.category||"").localeCompare(b.category||"") || (a.date||"").localeCompare(b.date||"") || a.name.localeCompare(b.name)); 
+
+    wrap.innerHTML = ` 
+
+      <div class="row" style="margin-bottom:8px;"><h2 class="section-title">Competitions (${comps.length})</h2></div> 
+
+      <div class="table-wrap"><table> 
+
+        <thead><tr><th>Category</th><th>Name</th><th>Type</th><th>Team Limit</th><th>Date/Time</th><th>Entries</th><th>Actions</th></tr></thead> 
+
+        <tbody> 
+
+          ${comps.map(c=>{ 
+
+            const count = this.entriesByCompetition(c.id).length; 
+
+            const dt = [c.date?this.fmtDate(c.date):"", c.time||""].filter(Boolean).join(" "); 
+
+            return `<tr> 
+
+              <td>${this.esc(c.category)}</td> 
+
+              <td><strong>${this.esc(c.name)}</strong></td> 
+
+              <td>${c.isGroup?'<span class="tag blue">Group</span>':'<span class="tag green">Individual</span>'}</td> 
+
+              <td>${c.teamEntryLimit}</td> 
+
+              <td>${this.esc(dt||"-")}</td> 
+
+              <td>${count}</td> 
+
+              <td class="row"> 
+
+                <button class="btn small" onclick="App.viewCompetition('${c.id}')">View</button> 
+
+                <button class="btn small" onclick="App.editCompetition('${c.id}')">Edit</button> 
+
+                <button class="btn small warn" onclick="App.toggleCompetitionLock('${c.id}')">${c.locked?'Unlock':'Lock'}</button> 
+
+                <button class="btn small danger" onclick="App.deleteCompetition('${c.id}')">Delete</button> 
+
+              </td> 
+
+            </tr>`; 
+
+          }).join("") || '<tr><td colspan="7" class="muted">No competitions yet.</td></tr>'} 
+
+        </tbody> 
+
+      </table></div> 
+
+    `; 
+
+  }, 
+
+  viewCompetition(compId){ 
+
+    const c = this.getCompetition(compId); if (!c) return; 
+
+    const entries = this.entriesByCompetition(compId); 
+
+    const byTeam = {}; 
+
+    for (const e of entries) { byTeam[e.teamId] = byTeam[e.teamId] || []; byTeam[e.teamId].push(e); } 
+
+    const teams = this.data.teams.slice().sort((a,b)=>a.name.localeCompare(b.name)); 
+
+    const blocks = teams.map(t=>{ 
+
+      const list = (byTeam[t.id]||[]); 
+
+      if (!list.length) return ""; 
+
+      return `<div class="card"> 
+
+        <div class="row"><strong>${this.esc(t.name)}</strong><span class="tag">${list.length} entries</span></div> 
+
+        <ul class="muted" style="font-size:13px">${list.map(e=>`<li>${this.esc(this.entryLabel(e))}</li>`).join("")}</ul> 
+
+      </div>`; 
+
+    }).join(""); 
+
+    const app = document.getElementById("app"); 
+
+    app.innerHTML = ` 
+
+      <div class="row" style="margin-bottom:8px;"> 
+
+        <button class="btn" onclick="App.renderEventPortal()">← Back</button> 
+
+        <div class="spacer"></div> 
+
+        <button class="btn primary" onclick="App.openAttendance('${c.id}')">Attendance</button> 
+
+        <button class="btn primary" onclick="App.openJudgePanel('${c.id}')">Judge Panel</button> 
+
+      </div> 
+
+      <div class="card"> 
+
+        <h2>${this.esc(c.name)}</h2> 
+
+        <div class="muted">${this.esc(c.category)} • ${c.isGroup?"Group":"Individual"} • Team limit: ${c.teamEntryLimit} ${c.maxGroupSize?("• Max group size: "+c.maxGroupSize):""} ${c.date?("• "+this.fmtDate(c.date)):""} ${c.time?(" "+c.time):""} ${c.locked? '• <span class="tag red">Locked</span>':""}</div> 
+
+        <div class="hr"></div> 
+
+        <h3 class="section-title">Entries by Team</h3> 
+
+        ${blocks || '<div class="notice">No entries yet.</div>'} 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+  editCompetition(compId){ 
+
+    const c = this.getCompetition(compId); if (!c) return; 
+
+    const app = document.getElementById("app"); 
+
+    app.innerHTML = ` 
+
+      <div class="row" style="margin-bottom:8px;"><button class="btn" onclick="App.renderEventPortal()">← Back</button></div> 
+
+      <div class="card"> 
+
+        <h2>Edit Competition</h2> 
+
+        <form onsubmit="App.updateCompetition(event,'${c.id}')"> 
+
+          <div class="grid cols-3"> 
+
+            <div><label>Name</label><input class="input" id="u-name" value="${this.esc(c.name)}" required></div> 
+
+            <div><label>Category</label><select class="input" id="u-cat">${this.data.categories.map(x=>`<option ${x===c.category?'selected':''}>${this.esc(x)}</option>`).join("")}</select></div> 
+
+            <div><label>Type</label><select class="input" id="u-type"><option value="individual" ${!c.isGroup?'selected':''}>Individual</option><option value="group" ${c.isGroup?'selected':''}>Group</option></select></div> 
+
+          </div> 
+
+          <div class="grid cols-3" style="margin-top:10px;"> 
+
+            <div><label>Team Entry Limit</label><input class="input" id="u-limit" type="number" min="1" step="1" value="${c.teamEntryLimit}"></div> 
+
+            <div><label>Max Group Size</label><input class="input" id="u-maxgroup" type="number" min="1" step="1" value="${c.maxGroupSize||""}"></div> 
+
+            <div><label>Date</label><input class="input" id="u-date" type="date" value="${c.date||""}"></div> 
+
+          </div> 
+
+          <div class="grid cols-3" style="margin-top:10px;"> 
+
+            <div><label>Time</label><input class="input" id="u-time" type="time" value="${c.time||""}"></div> 
+
+          </div> 
+
+          <div class="row" style="margin-top:12px;"> 
+
+            <button class="btn primary" type="submit">Save</button> 
+
+            <button class="btn" type="button" onclick="App.renderEventPortal()">Cancel</button> 
+
+          </div> 
+
+        </form> 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+  updateCompetition(ev, id){ 
+
+    ev.preventDefault(); 
+
+    const c = this.getCompetition(id); if (!c) return; 
+
+    const name = document.getElementById("u-name").value.trim(); 
+
+    const cat = document.getElementById("u-cat").value; 
+
+    const isGroup = document.getElementById("u-type").value === "group"; 
+
+    const limit = parseInt(document.getElementById("u-limit").value||"0",10); 
+
+    const maxGroup = document.getElementById("u-maxgroup").value; 
+
+    const date = document.getElementById("u-date").value||null; 
+
+    const time = document.getElementById("u-time").value||null; 
+
+    if (!name) return alert("Name required."); 
+
+    if (!this.data.categories.includes(cat)) return alert("Invalid category."); 
+
+    if (!(limit > 0)) return alert("Limit must be >=1."); 
+
+    c.name=name; c.category=cat; c.isGroup=isGroup; c.teamEntryLimit=limit; c.maxGroupSize=maxGroup?parseInt(maxGroup,10):null; c.date=date; c.time=time; 
+
+    this.save(); alert("Updated."); this.renderEventPortal(); 
+
+  }, 
+
+  toggleCompetitionLock(id){ const c=this.getCompetition(id); if (!c) return; c.locked = !c.locked; this.save(); this.renderEventPortal(); }, 
+
+  deleteCompetition(id){ 
+
+    const c = this.getCompetition(id); if (!c) return; 
+
+    if (!confirm(`Delete "${c.name}" and all its entries/results?`)) return; 
+
+    this.data.entries = this.data.entries.filter(e=>e.competitionId!==id); 
+
+    this.data.attendance = this.data.attendance.filter(a=>a.competitionId!==id); 
+
+    this.data.results = this.data.results.filter(r=>r.competitionId!==id); 
+
+    this.data.competitions = this.data.competitions.filter(x=>x.id!==id); 
+
+    this.save(); this.renderEventPortal(); 
+
+  }, 
+
+ 
+
+  eventTabAttendanceResults(wrap){ 
+
+    const comps = this.data.competitions.slice().sort((a,b)=> (a.category||"").localeCompare(b.category||"") || (a.date||"").localeCompare(b.date||"") || a.name.localeCompare(b.name)); 
+
+    wrap.innerHTML = ` 
+
+      <div class="grid"> 
+
+        ${comps.map(c=>{ 
+
+          const entries = this.entriesByCompetition(c.id).length; 
+
+          const results = this.data.results.filter(r=>r.competitionId===c.id).length; 
+
+          const dt = [c.date?this.fmtDate(c.date):"", c.time||""].filter(Boolean).join(" "); 
+
+          return `<div class="card"> 
+
+            <div class="row"> 
+
+              <div> 
+
+                <div><strong>${this.esc(c.name)}</strong></div> 
+
+                <div class="muted">${this.esc(c.category)} • ${c.isGroup?'Group':'Individual'} • Limit: ${c.teamEntryLimit} • ${this.esc(dt||"")}</div> 
+
+              </div> 
+
+              <div class="spacer"></div> 
+
+              <span class="tag">${entries} entries</span> 
+
+              <span class="tag blue">${results} results</span> 
+
+            </div> 
+
+            <div class="row" style="margin-top:8px;"> 
+
+              <button class="btn" onclick="App.openAttendance('${c.id}')">Attendance</button> 
+
+              <button class="btn" onclick="App.openJudgePanel('${c.id}')">Judge Panel</button> 
+
+            </div> 
+
+          </div>`; 
+
+        }).join("") || '<div class="notice">No competitions yet.</div>'} 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+ 
+
+  // Attendance with Code Letter 
+
+  openAttendance(compId){ 
+
+    const comp = this.getCompetition(compId); 
+
+    const entries = this.entriesByCompetition(compId).slice().sort((a,b)=> this.teamName(a.teamId).localeCompare(this.teamName(b.teamId)) || this.entryLabel(a).localeCompare(this.entryLabel(b))); 
+
+    const recMap = this.attendanceRecMapByComp(compId); 
+
+    const app = document.getElementById("app"); 
+
+    app.innerHTML = ` 
+
+      <div class="row" style="margin-bottom:8px;"> 
+
+        <button class="btn" onclick="App.renderEventPortal()">← Back</button> 
+
+        <div class="spacer"></div> 
+
+        <button class="btn primary" onclick="App.openJudgePanel('${compId}')">Go to Judge Panel</button> 
+
+      </div> 
+
+      <div class="card"> 
+
+        <h2>Attendance • ${this.esc(comp.name)}</h2> 
+
+        <div class="muted">${this.esc(comp.category)} • ${comp.isGroup?'Group':'Individual'}</div> 
+
+        <div class="hr"></div> 
+
+        <div class="table-wrap"> 
+
+          <table> 
+
+            <thead><tr><th>Team</th><th>Entry</th><th style="text-align:center;">Present</th><th style="width:140px;">Code</th></tr></thead> 
+
+            <tbody> 
+
+              ${entries.map(e=>{ 
+
+                const r = recMap[e.id] || {}; 
+
+                return `<tr> 
+
+                  <td>${this.esc(this.teamName(e.teamId))}</td> 
+
+                  <td>${this.esc(this.entryLabel(e))}</td> 
+
+                  <td style="text-align:center;"><input type="checkbox" ${r.present===true?'checked':''} onchange="App.setAttendanceCheckbox('${compId}','${e.id}', this.checked)"></td> 
+
+                  <td><input class="input" style="max-width:120px;text-transform:uppercase" value="${this.esc(r.code||"")}" placeholder="A" oninput="App.setAttendanceCode('${compId}','${e.id}', this.value)"></td> 
+
+                </tr>`; 
+
+              }).join("") || '<tr><td colspan="4" class="muted">No entries.</td></tr>'} 
+
+            </tbody> 
+
+          </table> 
+
+        </div> 
+
+        <div class="row" style="margin-top:8px;"> 
+
+          <button class="btn" onclick="App.markAllAttendance('${compId}', true)">Mark All Present</button> 
+
+          <button class="btn" onclick="App.autoAssignCodes('${compId}')">Auto-Assign Codes (A..Z)</button> 
+
+          <button class="btn danger" onclick="App.clearAllCodes('${compId}')">Clear All Codes</button> 
+
+        </div> 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+  setAttendanceCheckbox(compId, entryId, checked){ 
+
+    const idx = this.data.attendance.findIndex(a=>a.competitionId===compId && a.entryId===entryId); 
+
+    if (checked) { 
+
+      if (idx>=0) { this.data.attendance[idx].present = true; this.data.attendance[idx].markedAt = Date.now(); } 
+
+      else this.data.attendance.push({ id:this.uid("att"), competitionId:compId, entryId, present:true, markedAt:Date.now() }); 
+
+    } else { 
+
+      if (idx>=0) this.data.attendance.splice(idx,1); 
+
+    } 
+
+    this.save(); 
+
+  }, 
+
+  setAttendanceCode(compId, entryId, raw){ 
+
+    const code = String(raw||"").toUpperCase().replace(/[^A-Z0-9\- ]/g,"").slice(0,8); 
+
+    let rec = this.data.attendance.find(a=>a.competitionId===compId && a.entryId===entryId); 
+
+    if (!rec) { 
+
+      if (!code) return; 
+
+      rec = { id:this.uid("att"), competitionId:compId, entryId, present:true, code, markedAt:Date.now() }; 
+
+      this.data.attendance.push(rec); 
+
+    } else { 
+
+      rec.code = code; 
+
+      if (code && rec.present!==true) rec.present = true; 
+
+      rec.markedAt = Date.now(); 
+
+    } 
+
+    this.save(); 
+
+  }, 
+
+  markAllAttendance(compId, present){ 
+
+    for (const e of this.entriesByCompetition(compId)) { 
+
+      let r = this.data.attendance.find(a=>a.competitionId===compId && a.entryId===e.id); 
+
+      if (r) { r.present = present; r.markedAt=Date.now(); } 
+
+      else this.data.attendance.push({ id:this.uid("att"), competitionId:compId, entryId:e.id, present, markedAt:Date.now() }); 
+
+    } 
+
+    this.save(); this.openAttendance(compId); 
+
+  }, 
+
+  codeFromIndex(i){ let n=i, s=""; while(true){ s=String.fromCharCode(65+(n%26))+s; n=Math.floor(n/26)-1; if(n<0) break; } return s; }, 
+
+  autoAssignCodes(compId){ 
+
+    const recMap = this.attendanceRecMapByComp(compId); 
+
+    const present = this.entriesByCompetition(compId).filter(e=> recMap[e.id]?.present===true) 
+
+      .sort((a,b)=> this.teamName(a.teamId).localeCompare(this.teamName(b.teamId)) || this.entryLabel(a).localeCompare(this.entryLabel(b))); 
+
+    present.forEach((e,idx)=>{ 
+
+      const code=this.codeFromIndex(idx); 
+
+      let r=recMap[e.id]; 
+
+      if (!r) { r={ id:this.uid("att"), competitionId:compId, entryId:e.id, present:true, code, markedAt:Date.now() }; this.data.attendance.push(r); } 
+
+      else { r.present=true; r.code=code; r.markedAt=Date.now(); } 
+
+    }); 
+
+    this.save(); this.openAttendance(compId); 
+
+  }, 
+
+  clearAllCodes(compId){ 
+
+    if (!confirm("Clear all codes for this competition?")) return; 
+
+    for (const a of this.data.attendance) if (a.competitionId===compId) a.code=""; 
+
+    this.save(); this.openAttendance(compId); 
+
+  }, 
+
+ 
+
+  // Judge Panel (with poster template slot) 
+
+  openJudgePanel(compId){ 
+
+    const comp = this.getCompetition(compId); 
+
+    theEntries: { 
+
+      const entries = this.entriesByCompetition(compId); 
+
+      const results = this.data.results.filter(r=>r.competitionId===compId); 
+
+      const recMap = this.attendanceRecMapByComp(compId); 
+
+      const options = entries.map(e=>{ 
+
+        const label = this.entryLabel(e); 
+
+        const r = recMap[e.id]; 
+
+        const codeTxt = r?.code ? ` [${this.esc(r.code)}]` : ""; 
+
+        const flag = r?.present===true ? "✅" : "•"; 
+
+        return `<option value="${e.id}">${flag}${codeTxt} ${this.esc(this.teamName(e.teamId))}: ${this.esc(label)}</option>`; 
+
+      }).join(""); 
+
+      const app = document.getElementById("app"); 
+
+      app.innerHTML = ` 
+
+        <div class="row" style="margin-bottom:8px;"> 
+
+          <button class="btn" onclick="App.renderEventPortal()">← Back</button> 
+
+          <div class="spacer"></div> 
+
+          <label class="btn"> 
+
+            Upload Poster Template(s) 
+
+            <input type="file" accept="image/*,.psd" multiple style="display:none" onchange="App.quickUploadTemplates(event)"> 
+
+          </label> 
+
+          <button class="btn primary" onclick="App.openPosterGenerator('${compId}')">Generate Poster</button> 
+
+        </div> 
+
+        <div class="card"> 
+
+          <h2>Judge Panel • ${this.esc(comp.name)}</h2> 
+
+          <div class="muted">${this.esc(comp.category)} • ${comp.isGroup?'Group':'Individual'}</div> 
+
+          <div class="hr"></div> 
+
+          <form onsubmit="App.addResult(event,'${compId}')"> 
+
+            <div class="grid cols-3"> 
+
+              <div><label>Winner Entry</label><select id="res-entry" class="input" required><option value="">Select entry</option>${options}</select></div> 
+
+              <div><label>Position Label</label><input class="input" id="res-rank" required placeholder="e.g., 1st, 2nd, 3rd"></div> 
+
+              <div><label>Points Awarded</label><input class="input" id="res-points" type="number" min="0" step="1" required placeholder="e.g., 7"></div> 
+
+            </div> 
+
+            <div class="grid" style="margin-top:10px;"><div><label>Judge Notes (optional)</label><input class="input" id="res-notes" placeholder="remarks, judges..."></div></div> 
+
+            <div class="row" style="margin-top:10px;"><button class="btn primary" type="submit">Add Winner & Points</button></div> 
+
+          </form> 
+
+          <div class="hr"></div> 
+
+          <h3 class="section-title">Winners</h3> 
+
+          <div class="table-wrap"><table> 
+
+            <thead><tr><th>Entry</th><th>Team</th><th>Position</th><th>Points</th><th>Notes</th><th>Actions</th></tr></thead> 
+
+            <tbody> 
+
+              ${results.map(r=>{ 
+
+                const e=this.getEntry(r.entryId); const label=e?this.entryLabel(e):"(deleted)"; const team=e?this.teamName(e.teamId):"-"; 
+
+                return `<tr> 
+
+                  <td>${this.esc(label)}</td><td>${this.esc(team)}</td><td>${this.esc(r.rankLabel)}</td><td>${r.pointsAwarded}</td><td>${this.esc(r.judgeNotes||"")}</td> 
+
+                  <td><button class="btn small" onclick="App.editResult('${r.id}')">Edit</button><button class="btn small danger" onclick="App.deleteResult('${r.id}','${compId}')">Delete</button></td> 
+
+                </tr>`; 
+
+              }).join("") || '<tr><td colspan="6" class="muted">No winners yet.</td></tr>'} 
+
+            </tbody> 
+
+          </table></div> 
+
+        </div> 
+
+      `; 
+
+    } 
+
+  }, 
+
+  addResult(ev, compId){ 
+
+    ev.preventDefault(); 
+
+    const entryId = document.getElementById("res-entry").value; 
+
+    const rank = document.getElementById("res-rank").value.trim(); 
+
+    const points = parseInt(document.getElementById("res-points").value||"0",10); 
+
+    const notes = document.getElementById("res-notes").value.trim(); 
+
+    if (!entryId) return alert("Select entry."); 
+
+    if (!rank) return alert("Position label required."); 
+
+    if (isNaN(points)) return alert("Enter valid points."); 
+
+    this.data.results.push({ id:this.uid("res"), competitionId:compId, entryId, rankLabel:rank, pointsAwarded:points, judgeNotes:notes||null, timestamp:Date.now() }); 
+
+    this.save(); this.openJudgePanel(compId); 
+
+  }, 
+
+  editResult(resId){ 
+
+    const r = this.data.results.find(x=>x.id===resId); if (!r) return; 
+
+    const nr = prompt("Update position label:", r.rankLabel); if (nr===null) return; 
+
+    const np = prompt("Update points awarded:", String(r.pointsAwarded)); if (np===null) return; 
+
+    const npi = parseInt(np,10); if (isNaN(npi)) return alert("Invalid points."); 
+
+    const nn = prompt("Update notes (optional):", r.judgeNotes||""); 
+
+    r.rankLabel = nr.trim()||r.rankLabel; r.pointsAwarded = npi; r.judgeNotes=(nn||"").trim()||null; r.timestamp=Date.now(); 
+
+    this.save(); this.openJudgePanel(r.competitionId); 
+
+  }, 
+
+  deleteResult(resId, compId){ 
+
+    if (!confirm("Delete this result?")) return; 
+
+    this.data.results = this.data.results.filter(x=>x.id!==resId); this.save(); this.openJudgePanel(compId); 
+
+  }, 
+
+ 
+
+  // Category-wise views 
+
+  entriesByCategory(cat, teamId=null){ 
+
+    const comps = this.data.competitions.filter(c=>c.category===cat); 
+
+    const list = []; 
+
+    for (const c of comps) { 
+
+      const recMap = this.attendanceRecMapByComp(c.id); 
+
+      const entries = this.entriesByCompetition(c.id).filter(e=>!teamId || e.teamId===teamId); 
+
+      for (const e of entries) { 
+
+        const r = recMap[e.id]; 
+
+        list.push({ compName:c.name, teamName:this.teamName(e.teamId), entryLabel:this.entryLabel(e), present:r?.present===true, code:r?.code||"" }); 
+
+      } 
+
+    } 
+
+    return list.sort((a,b)=> a.compName.localeCompare(b.compName) || a.teamName.localeCompare(b.teamName) || a.entryLabel.localeCompare(b.entryLabel)); 
+
+  }, 
+
+  eventTabEntriesByCategory(wrap){ 
+
+    const teamId = this.state.ebcTeamFilter || ""; 
+
+    const teamOptions = this.data.teams.map(t=>`<option value="${t.id}" ${teamId===t.id?'selected':''}>${this.esc(t.name)}</option>`).join(""); 
+
+    const blocks = this.data.categories.map(cat=>{ 
+
+      const rows = this.entriesByCategory(cat, teamId||null); 
+
+      const body = rows.length? rows.map(r=>`<tr><td>${this.esc(r.compName)}</td><td>${this.esc(r.teamName)}</td><td>${this.esc(r.entryLabel)}</td><td>${r.present?"✅":""}</td><td>${this.esc(r.code)}</td></tr>`).join("") 
+
+                             : '<tr><td colspan="5" class="muted">No entries.</td></tr>'; 
+
+      return `<div class="card"><h2>${this.esc(cat)}</h2><div class="table-wrap"><table><thead><tr><th>Competition</th><th>Team</th><th>Entry</th><th>Present</th><th>Code</th></tr></thead><tbody>${body}</tbody></table></div></div>`; 
+
+    }).join(""); 
+
+    wrap.innerHTML = ` 
+
+      <div class="row" style="margin-bottom:10px;"> 
+
+        <div class="spacer"></div> 
+
+        <div style="min-width:240px;"><label>Filter by Team</label><select id="ebc-team" class="input" onchange="App.setEbcTeamFilter(this.value)"><option value="">All teams</option>${teamOptions}</select></div> 
+
+      </div> 
+
+      <div class="grid">${blocks}</div> 
+
+    `; 
+
+  }, 
+
+  setEbcTeamFilter(v){ this.state.ebcTeamFilter = v||""; this.renderEventPortal(); }, 
+
+ 
+
+  eventTabStudentsByCategory(wrap){ 
+
+    const blocks = this.data.categories.filter(c=>c!=="Popular").map(cat=>{ 
+
+      const studs = this.data.students.filter(s=>s.category===cat).sort((a,b)=> String(a.chestNo||"").localeCompare(String(b.chestNo||""))); 
+
+      const body = studs.length? studs.map(s=>`<tr><td>#${this.esc(s.chestNo)}</td><td>${this.esc(s.name)}</td><td>${this.esc(this.teamName(s.teamId))}</td></tr>`).join("") 
+
+                               : '<tr><td colspan="3" class="muted">No students.</td></tr>'; 
+
+      return `<div class="card"><h2>${this.esc(cat)}</h2><div class="table-wrap"><table><thead><tr><th>Chest No</th><th>Name</th><th>Team</th></tr></thead><tbody>${body}</tbody></table></div></div>`; 
+
+    }).join(""); 
+
+    wrap.innerHTML = `<div class="grid">${blocks}</div>`; 
+
+  }, 
+
+ 
+
+  eventTabScoreboards(wrap){ 
+
+    const { perCategoryTeam, overallTeam } = this.computeScores(); 
+
+    const cats = this.data.categories; 
+
+ 
+
+    // Individual champions by category (config) 
+
+    const champs = this.computeIndividualChampions({ 
+
+      includeGroup: this.state.champIncludeGroup, 
+
+      includePopularToStudentCat: this.state.champIncludePopularToStudentCat 
+
+    }); 
+
+    const topN = this.state.champTopN; 
+
+ 
+
+    wrap.innerHTML = ` 
+
+      <div class="grid"> 
+
+        <div class="card"> 
+
+          <h2>Overall Team Scoreboard</h2> 
+
+          <div class="table-wrap"><table> 
+
+            <thead><tr><th>#</th><th>Team</th><th>Points</th></tr></thead> 
+
+            <tbody>${overallTeam.map((t,i)=>`<tr><td>${i+1}</td><td>${this.esc(t.teamName)}</td><td><strong>${t.points}</strong></td></tr>`).join("") || '<tr><td colspan="3" class="muted">No points yet.</td></tr>'}</tbody> 
+
+          </table></div> 
+
+        </div> 
+
+ 
+
+        ${cats.map(cat=>` 
+
+          <div class="card"> 
+
+            <h2>${this.esc(cat)} — Team Scoreboard</h2> 
+
+            <div class="table-wrap"><table><thead><tr><th>#</th><th>Team</th><th>Points</th></tr></thead> 
+
+              <tbody>${(perCategoryTeam[cat]||[]).map((t,i)=>`<tr><td>${i+1}</td><td>${this.esc(t.teamName)}</td><td><strong>${t.points}</strong></td></tr>`).join("") || '<tr><td colspan="3" class="muted">No points yet.</td></tr>'}</tbody> 
+
+            </table></div> 
+
+          </div> 
+
+        `).join("")} 
+
+ 
+
+        <div class="card"> 
+
+          <h2>Individual Champions by Category</h2> 
+
+          <div class="row" style="gap:10px; margin-bottom:8px;"> 
+
+            <label>Top N</label> 
+
+            <input class="input" style="max-width:80px" type="number" min="1" step="1" value="${topN}" onchange="App.setChampOption('topN', this.value)"> 
+
+            <label>Include Group Events</label> 
+
+            <select class="input" style="max-width:120px" onchange="App.setChampOption('includeGroup', this.value==='yes')"> 
+
+              <option value="no" ${!this.state.champIncludeGroup?'selected':''}>No</option> 
+
+              <option value="yes" ${this.state.champIncludeGroup?'selected':''}>Yes</option> 
+
+            </select> 
+
+            <label>Count "Popular" in Student’s Category</label> 
+
+            <select class="input" style="max-width:120px" onchange="App.setChampOption('includePopularToStudentCat', this.value==='yes')"> 
+
+              <option value="no" ${!this.state.champIncludePopularToStudentCat?'selected':''}>No</option> 
+
+              <option value="yes" ${this.state.champIncludePopularToStudentCat?'selected':''}>Yes</option> 
+
+            </select> 
+
+          </div> 
+
+ 
+
+          <div class="grid"> 
+
+            ${this.data.categories.filter(c=>c!=="Popular").map(cat=>{ 
+
+              const list = (champs[cat]||[]).slice(0, topN); 
+
+              const body = list.length ? list.map((p,i)=>` 
+
+                <tr> 
+
+                  <td>${i+1}</td> 
+
+                  <td>${this.esc(p.name)} <span class="muted">#${this.esc(p.chestNo)}</span></td> 
+
+                  <td>${this.esc(p.teamName)}</td> 
+
+                  <td><strong>${p.points}</strong></td> 
+
+                </tr>`).join("") 
+
+              : `<tr><td colspan="4" class="muted">No points yet.</td></tr>`; 
+
+              return ` 
+
+                <div class="card"> 
+
+                  <h3 class="section-title">${this.esc(cat)}</h3> 
+
+                  <div class="table-wrap"> 
+
+                    <table> 
+
+                      <thead><tr><th>#</th><th>Student</th><th>Team</th><th>Points</th></tr></thead> 
+
+                      <tbody>${body}</tbody> 
+
+                    </table> 
+
+                  </div> 
+
+                </div> 
+
+              `; 
+
+            }).join("")} 
+
+          </div> 
+
+        </div> 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+ 
+
+  /* ------------------------------ 
+
+     Posters (Result Poster Generator) 
+
+  --------------------------------*/ 
+
+  eventTabPosters(wrap){ 
+
+    wrap.innerHTML = ` 
+
+      <div class="row"> 
+
+        <h2>Poster Generator</h2> 
+
+        <div class="spacer"></div> 
+
+        <button class="btn ${this.state.posterTab==='generate'?'primary':''}" onclick="App.switchPosterTab('generate')">Generate</button> 
+
+        <button class="btn ${this.state.posterTab==='templates'?'primary':''}" onclick="App.switchPosterTab('templates')">Templates</button> 
+
+      </div> 
+
+      <div id="poster-tab"></div> 
+
+    `; 
+
+    if (this.state.posterTab === "generate") this.posterGenerateView(); 
+
+    else this.posterTemplatesView(); 
+
+  }, 
+
+  switchPosterTab(tab){ this.state.posterTab = tab; this.eventTabPosters(document.getElementById("event-tab")); }, 
+
+ 
+
+  posterTemplatesView(){ 
+
+    const wrap = document.getElementById("poster-tab"); 
+
+    const tpls = this.data.posters.templates; 
+
+    wrap.innerHTML = ` 
+
+      <div class="grid"> 
+
+        <div class="card"> 
+
+          <h3>Upload Templates</h3> 
+
+          <div class="row" style="gap:10px;"> 
+
+            <label class="btn">Upload Templates<input type="file" accept="image/*,.psd" multiple style="display:none" onchange="App.quickUploadTemplates(event)"></label> 
+
+            <span class="muted">PSD slot provided — export PSD as PNG/JPG for rendering.</span> 
+
+          </div> 
+
+        </div> 
+
+        <div class="card"> 
+
+          <h3>Existing Templates (${tpls.length})</h3> 
+
+          <div class="table-wrap"><table> 
+
+            <thead><tr><th>Name</th><th>Size</th><th>Fields</th><th>Actions</th></tr></thead> 
+
+            <tbody> 
+
+              ${tpls.map(t=>`<tr> 
+
+                <td>${this.esc(t.name)}</td><td>${t.width}×${t.height}</td><td>${(t.fields||[]).length}</td> 
+
+                <td class="row"><button class="btn small" onclick="App.openPosterTemplateEditor('${t.id}')">Edit</button><button class="btn small danger" onclick="App.deletePosterTemplate('${t.id}')">Delete</button></td> 
+
+              </tr>`).join("") || '<tr><td colspan="4" class="muted">No templates yet.</td></tr>'} 
+
+            </tbody> 
+
+          </table></div> 
+
+        </div> 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+  async quickUploadTemplates(ev){ 
+
+    const files = Array.from(ev.target.files||[]); if (!files.length) return; 
+
+    let created=0, psdCount=0; 
+
+    for (const file of files) { 
+
+      const isPSD = /\.psd$/i.test(file.name) || file.type==='image/vnd.adobe.photoshop'; 
+
+      if (isPSD) { psdCount++; continue; } 
+
+      if (!file.type.startsWith("image/")) continue; 
+
+      const dataUrl = await this.fileToDataUrl(file); 
+
+      const img = await this.loadImage(dataUrl); 
+
+      const tpl = { 
+
+        id: this.uid("tpl"), 
+
+        name: file.name.replace(/\.[^.]+$/,""), 
+
+        bgDataUrl: dataUrl, 
+
+        width: img.naturalWidth, 
+
+        height: img.naturalHeight, 
+
+        fields: [ 
+
+          {id:this.uid("fld"), label:"Title", x:Math.round(img.naturalWidth*0.05), y:Math.round(img.naturalHeight*0.08), maxWidth:Math.round(img.naturalWidth*0.9), fontSize:Math.max(42, Math.round(img.naturalWidth*0.06)), fontFamily:"Inter, Arial, sans-serif", color:"#000000", align:"center", uppercase:false, content:"{comp}"}, 
+
+          {id:this.uid("fld"), label:"Meta", x:Math.round(img.naturalWidth*0.05), y:Math.round(img.naturalHeight*0.15), maxWidth:Math.round(img.naturalWidth*0.9), fontSize:Math.max(24, Math.round(img.naturalWidth*0.03)), fontFamily:"Inter, Arial, sans-serif", color:"#000000", align:"center", uppercase:false, content:"{category}  {date}  {time}"}, 
+
+          {id:this.uid("fld"), label:"Winners", x:Math.round(img.naturalWidth*0.08), y:Math.round(img.naturalHeight*0.24), maxWidth:Math.round(img.naturalWidth*0.84), fontSize:Math.max(26, Math.round(img.naturalWidth*0.035)), fontFamily:"Inter, Arial, sans-serif", color:"#000000", align:"left", uppercase:false, content:"1) {names1} — {team1} ({points1} pts) {code1}\n2) {names2} — {team2} ({points2} pts) {code2}\n3) {names3} — {team3} ({points3} pts) {code3}"} 
+
+        ] 
+
+      }; 
+
+      this.data.posters.templates.push(tpl); 
+
+      created++; 
+
+    } 
+
+    this.save(); 
+
+    if (psdCount) alert(`${psdCount} PSD file(s) detected. Please export as PNG/JPG for rendering.`); 
+
+    if (created) alert(`Uploaded ${created} poster template(s). You can fine-tune positions in Edit.`); 
+
+    if (ev && ev.target) ev.target.value = ""; 
+
+    this.posterTemplatesView(); 
+
+  }, 
+
+  openPosterTemplateEditor(tplId){ 
+
+    this.state.posterEditorTemplateId = tplId; 
+
+    this.state.posterEditorSelectedFieldId = null; 
+
+    const tpl = (this.data.posters.templates||[]).find(t=>t.id===tplId); if (!tpl) return; 
+
+    const wrap = document.getElementById("event-tab"); 
+
+    wrap.innerHTML = ` 
+
+      <div class="row" style="margin-bottom:8px;"><button class="btn" onclick="App.eventTabPosters(document.getElementById('event-tab'))">← Back</button></div> 
+
+      <div class="grid cols-2"> 
+
+        <div class="card"> 
+
+          <h2>Template Editor • ${this.esc(tpl.name)}</h2> 
+
+          <div class="muted">Drag boxes. Tokens: {comp},{category},{date},{time},{rank1},{names1},{team1},{points1},{code1}…</div> 
+
+          <div class="hr"></div> 
+
+          <div class="poster-canvas-wrap"> 
+
+            <div class="poster-stage" id="poster-stage" style="width:${tpl.width}px;height:${tpl.height}px;"> 
+
+              <img src="${tpl.bgDataUrl}" style="width:${tpl.width}px;height:${tpl.height}px;border-radius:8px"> 
+
+              ${(tpl.fields||[]).map(f=>` 
+
+                <div class="poster-field ${this.state.posterEditorSelectedFieldId===f.id?'selected':''}" style="left:${f.x}px;top:${f.y}px;width:${f.maxWidth}px;height:${Math.max(24,f.fontSize*1.6)}px" data-id="${f.id}" onmousedown="App.startDragPosterField(event,'${f.id}')" onclick="App.selectPosterField('${f.id}')"></div> 
+
+              `).join("")} 
+
+            </div> 
+
+          </div> 
+
+        </div> 
+
+        <div class="card"> 
+
+          <h3>Fields</h3> 
+
+          <div class="row" style="margin-bottom:8px;"><button class="btn small" onclick="App.addPosterField()">+ Add Text Field</button><div class="spacer"></div><button class="btn warn small" onclick="App.renamePosterTemplate()">Rename</button></div> 
+
+          <div id="poster-fields-list"> 
+
+            ${(tpl.fields||[]).map(f=> this.posterFieldEditorBlock(f)).join("") || '<div class="notice">No fields yet.</div>'} 
+
+          </div> 
+
+        </div> 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+  posterFieldEditorBlock(f){ 
+
+    const tokens = ["{comp}","{category}","{date}","{time}","{rank1}","{names1}","{team1}","{points1}","{code1}","{rank2}","{names2}","{team2}","{points2}","{code2}","{rank3}","{names3}","{team3}","{points3}","{code3}"]; 
+
+    return ` 
+
+      <div class="card" style="background:#fff;border:1px dashed var(--border);margin-bottom:10px;"> 
+
+        <div class="row"> 
+
+          <strong>${this.esc(f.label||"Text Field")}</strong> 
+
+          <div class="spacer"></div> 
+
+          <button class="btn small" onclick="App.selectPosterField('${f.id}')">Select</button> 
+
+          <button class="btn small danger" onclick="App.removePosterField('${f.id}')">Remove</button> 
+
+        </div> 
+
+        <div class="grid cols-3" style="margin-top:8px;"> 
+
+          <div><label>Label</label><input class="input" value="${this.esc(f.label||"")}" onchange="App.updatePosterField('${f.id}','label', this.value)"></div> 
+
+          <div><label>X</label><input class="input" type="number" value="${f.x}" onchange="App.updatePosterField('${f.id}','x', parseInt(this.value||'0',10))"></div> 
+
+          <div><label>Y</label><input class="input" type="number" value="${f.y}" onchange="App.updatePosterField('${f.id}','y', parseInt(this.value||'0',10))"></div> 
+
+        </div> 
+
+        <div class="grid cols-3" style="margin-top:8px;"> 
+
+          <div><label>Max Width</label><input class="input" type="number" value="${f.maxWidth}" onchange="App.updatePosterField('${f.id}','maxWidth', parseInt(this.value||'0',10))"></div> 
+
+          <div><label>Font Size</label><input class="input" type="number" value="${f.fontSize}" onchange="App.updatePosterField('${f.id}','fontSize', parseInt(this.value||'16',10))"></div> 
+
+          <div><label>Align</label><select class="input" onchange="App.updatePosterField('${f.id}','align', this.value)"><option value="left" ${f.align==='left'?'selected':''}>Left</option><option value="center" ${f.align==='center'?'selected':''}>Center</option><option value="right" ${f.align==='right'?'selected':''}>Right</option></select></div> 
+
+        </div> 
+
+        <div class="grid cols-3" style="margin-top:8px;"> 
+
+          <div><label>Font Family</label><input class="input" value="${this.esc(f.fontFamily||'Inter, Arial, sans-serif')}" onchange="App.updatePosterField('${f.id}','fontFamily', this.value)"></div> 
+
+          <div><label>Color</label><input class="input" type="color" value="${f.color||'#000000'}" onchange="App.updatePosterField('${f.id}','color', this.value)"></div> 
+
+          <div><label>Uppercase</label><select class="input" onchange="App.updatePosterField('${f.id}','uppercase', this.value==='yes')"><option value="no" ${!f.uppercase?'selected':''}>No</option><option value="yes" ${f.uppercase?'selected':''}>Yes</option></select></div> 
+
+        </div> 
+
+        <div style="margin-top:8px;"> 
+
+          <label>Content (tokens allowed)</label> 
+
+          <textarea class="input" rows="3" onchange="App.updatePosterField('${f.id}','content', this.value)">${this.esc(f.content||"")}</textarea> 
+
+          <div class="row small" style="gap:6px;flex-wrap:wrap;margin-top:6px;"> 
+
+            ${tokens.map(t=>`<button class="btn small" type="button" onclick="this.previousElementSibling.value += ' ${t}'; this.previousElementSibling.dispatchEvent(new Event('change'))">${t}</button>`).join("")} 
+
+          </div> 
+
+        </div> 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+  selectPosterField(id){ this.state.posterEditorSelectedFieldId = id; this.openPosterTemplateEditor(this.state.posterEditorTemplateId); }, 
+
+  addPosterField(){ 
+
+    const tpl = (this.data.posters.templates||[]).find(t=>t.id===this.state.posterEditorTemplateId); if (!tpl) return; 
+
+    const f = { id:this.uid("fld"), label:"Text", x:Math.round(tpl.width*0.08), y:Math.round(tpl.height*0.08), maxWidth:Math.round(tpl.width*0.84), fontSize:Math.round(tpl.width*0.05), fontFamily:"Inter, Arial, sans-serif", color:"#000000", align:"left", uppercase:false, content:"Text" }; 
+
+    tpl.fields.push(f); this.save(); this.state.posterEditorSelectedFieldId = f.id; this.openPosterTemplateEditor(tpl.id); 
+
+  }, 
+
+  removePosterField(fid){ 
+
+    const tpl = (this.data.posters.templates||[]).find(t=>t.id===this.state.posterEditorTemplateId); if (!tpl) return; 
+
+    tpl.fields = (tpl.fields||[]).filter(f=>f.id!==fid); 
+
+    if (this.state.posterEditorSelectedFieldId===fid) this.state.posterEditorSelectedFieldId=null; 
+
+    this.save(); this.openPosterTemplateEditor(tpl.id); 
+
+  }, 
+
+  updatePosterField(fid,key,val){ 
+
+    const tpl = (this.data.posters.templates||[]).find(t=>t.id===this.state.posterEditorTemplateId); if (!tpl) return; 
+
+    const f = (tpl.fields||[]).find(x=>x.id===fid); if (!f) return; 
+
+    if (["x","y","maxWidth","fontSize"].includes(key)) { const n=Number(val); if (!Number.isNaN(n)) f[key]=n; } 
+
+    else if (key==="uppercase") f.uppercase = !!val; 
+
+    else f[key]=val; 
+
+    this.save(); 
+
+  }, 
+
+  renamePosterTemplate(){ 
+
+    const tpl = (this.data.posters.templates||[]).find(t=>t.id===this.state.posterEditorTemplateId); if (!tpl) return; 
+
+    const v = prompt("Rename template:", tpl.name); if (v===null) return; 
+
+    tpl.name = (v||"").trim() || tpl.name; 
+
+    this.save(); this.openPosterTemplateEditor(tpl.id); 
+
+  }, 
+
+  startDragPosterField(e,fid){ 
+
+    e.preventDefault(); 
+
+    const tpl = (this.data.posters.templates||[]).find(t=>t.id===this.state.posterEditorTemplateId); 
+
+    const f = tpl?.fields.find(x=>x.id===fid); if (!tpl || !f) return; 
+
+    this.state._posterDrag = { tplId:tpl.id, fieldId:fid, startX:e.clientX, startY:e.clientY, startFX:f.x, startFY:f.y }; 
+
+    document.addEventListener("mousemove", this.onPosterDragMove); 
+
+    document.addEventListener("mouseup", this.onPosterDragEnd); 
+
+  }, 
+
+  onPosterDragMove:(e)=>{ 
+
+    const st = App.state._posterDrag; if (!st) return; 
+
+    const tpl = (App.data.posters.templates||[]).find(t=>t.id===st.tplId); 
+
+    const f = tpl?.fields.find(x=>x.id===st.fieldId); if (!tpl||!f) return; 
+
+    f.x = Math.max(0, Math.min(tpl.width-10, Math.round(st.startFX+(e.clientX-st.startX)))); 
+
+    f.y = Math.max(0, Math.min(tpl.height-10, Math.round(st.startFY+(e.clientY-st.startY)))); 
+
+    App.save(); 
+
+    const el = document.querySelector(`#poster-stage .poster-field[data-id="${f.id}"]`); if (el) { el.style.left=f.x+"px"; el.style.top=f.y+"px"; } 
+
+  }, 
+
+  onPosterDragEnd:()=>{ document.removeEventListener("mousemove", App.onPosterDragMove); document.removeEventListener("mouseup", App.onPosterDragEnd); App.state._posterDrag=null; }, 
+
+ 
+
+  posterGenerateView(){ 
+
+    const wrap = document.getElementById("poster-tab"); 
+
+    const tpls = this.data.posters.templates; 
+
+    const comps = this.data.competitions.slice().sort((a,b)=> (a.date||"").localeCompare(b.date||"") || a.name.localeCompare(b.name)); 
+
+    const defTplId = this.state.posterSelectedTemplateId || (tpls[0]?.id || ""); 
+
+    this.state.posterSelectedTemplateId = defTplId; 
+
+    wrap.innerHTML = ` 
+
+      <div class="grid cols-2"> 
+
+        <div class="card"> 
+
+          <h3>Generate a Poster</h3> 
+
+          <div class="grid cols-3"> 
+
+            <div><label>Template</label><select id="gen-tpl" class="input" onchange="App.state.posterSelectedTemplateId=this.value">${tpls.map(t=>`<option value="${t.id}" ${t.id===defTplId?'selected':''}>${this.esc(t.name)}</option>`).join("") || '<option value="">No templates</option>'}</select></div> 
+
+            <div><label>Competition</label><select id="gen-comp" class="input">${comps.map(c=>`<option value="${c.id}">${this.esc(c.name)} — ${this.esc(c.category)}</option>`).join("") || '<option value="">No competitions</option>'}</select></div> 
+
+            <div><label>Top N Winners</label><input id="gen-topn" class="input" type="number" min="1" step="1" value="3"></div> 
+
+          </div> 
+
+          <div class="row" style="margin-top:10px;"><button class="btn primary" onclick="App.generatePoster()">Preview</button></div> 
+
+        </div> 
+
+        <div class="card"> 
+
+          <h3>Upload Templates</h3> 
+
+          <div class="row" style="gap:10px;"> 
+
+            <label class="btn">Upload Templates<input type="file" accept="image/*,.psd" multiple style="display:none" onchange="App.quickUploadTemplates(event)"></label> 
+
+            <span class="muted">PSD slot provided; export to PNG/JPG for rendering.</span> 
+
+          </div> 
+
+        </div> 
+
+      </div> 
+
+      <div id="poster-preview-area"></div> 
+
+    `; 
+
+  }, 
+
+  buildPosterTokens(compId, topN){ 
+
+    const comp = compId ? this.getCompetition(compId) : null; 
+
+    const res = compId ? this.data.results.filter(r=>r.competitionId===compId) : []; 
+
+    const sorted = res.slice().sort((a,b)=> { 
+
+      const na = parseInt(String(a.rankLabel).match(/\d+/)?.[0]||"999",10); 
+
+      const nb = parseInt(String(b.rankLabel).match(/\d+/)?.[0]||"999",10); 
+
+      return na - nb; 
+
+    }); 
+
+    const recMap = this.attendanceRecMapByComp(compId); 
+
+    const tokens = { comp: comp?.name||"", category: comp?.category||"", date: comp?.date?this.fmtDate(comp.date):"", time: comp?.time||"" }; 
+
+    for (let i=1;i<=10;i++){ 
+
+      const r = sorted[i-1]; 
+
+      if (!r || i>topN) { tokens[`rank${i}`]=tokens[`names${i}`]=tokens[`team${i}`]=tokens[`points${i}`]=tokens[`code${i}`]=""; continue; } 
+
+      const e = this.getEntry(r.entryId); 
+
+      const ms = (e?.memberStudentIds||[]).map(id=>this.getStudent(id)).filter(Boolean); 
+
+      const rec = e ? recMap[e.id] : null; 
+
+      tokens[`rank${i}`] = r.rankLabel || ""; 
+
+      tokens[`names${i}`] = ms.map(m=>m.name).join(", "); 
+
+      tokens[`team${i}`] = e ? this.teamName(e.teamId) : ""; 
+
+      tokens[`points${i}`] = String(r.pointsAwarded || ""); 
+
+      tokens[`code${i}`] = rec?.code || ""; 
+
+    } 
+
+    return tokens; 
+
+  }, 
+
+  async renderPosterToCanvas(tpl, tokens){ 
+
+    const canvas = document.createElement("canvas"); canvas.width=tpl.width; canvas.height=tpl.height; 
+
+    const ctx = canvas.getContext("2d"); 
+
+    const bg = await this.loadImage(tpl.bgDataUrl); ctx.drawImage(bg,0,0,tpl.width, tpl.height); 
+
+    for (const f of (tpl.fields||[])) { 
+
+      const text = this.replaceTokens(f.content||"", tokens, f.uppercase); 
+
+      await this.drawWrappedText(ctx, text, { x:f.x, y:f.y, maxWidth:f.maxWidth||Math.round(tpl.width*0.9), fontSize:f.fontSize||28, fontFamily:f.fontFamily||"Arial", color:f.color||"#000000", align:f.align||"left" }); 
+
+    } 
+
+    return canvas; 
+
+  }, 
+
+  async generatePoster(){ 
+
+    const tplId = document.getElementById("gen-tpl")?.value; 
+
+    const compId = document.getElementById("gen-comp")?.value; 
+
+    const topN = parseInt(document.getElementById("gen-topn")?.value||"3",10); 
+
+    if (!tplId) return alert("Select a template."); 
+
+    if (!compId) return alert("Select a competition."); 
+
+    const tpl = (this.data.posters.templates||[]).find(t=>t.id===tplId); if (!tpl) return alert("Template not found."); 
+
+    const tokens = this.buildPosterTokens(compId, topN); 
+
+    const canvas = await this.renderPosterToCanvas(tpl, tokens); 
+
+    const area = document.getElementById("poster-preview-area"); 
+
+    area.innerHTML = ` 
+
+      <div class="card"> 
+
+        <h3>Preview</h3> 
+
+        <div class="row" style="margin-bottom:10px;"> 
+
+          <button class="btn" onclick="App.downloadCanvas('${this.sanitizeFileName((this.getCompetition(compId)?.name||'')+' - '+tpl.name)}.png')">Download PNG</button> 
+
+        </div> 
+
+        <div style="overflow:auto;border:1px solid var(--border);border-radius:12px;background:#000;display:grid;place-items:center;padding:10px;">${canvas.outerHTML}</div> 
+
+      </div> 
+
+    `; 
+
+    this._lastCanvas = canvas; 
+
+  }, 
+
+  downloadCanvas(filename, mime="image/png"){ const c=this._lastCanvas; if (!c) return alert("Nothing to download."); const a=document.createElement("a"); a.download=filename; a.href=c.toDataURL(mime,0.95); document.body.appendChild(a); a.click(); document.body.removeChild(a); }, 
+
+  openPosterGenerator(compId){ this.state.eventTab="posters"; this.renderEventPortal(); const sel=document.getElementById("gen-comp"); if (sel) sel.value=compId; }, 
+
+  deletePosterTemplate(tplId){ this.data.posters.templates=(this.data.posters.templates||[]).filter(t=>t.id!==tplId); this.save(); this.posterTemplatesView(); }, 
+
+ 
+
+  /* ------------------------------ 
+
+     Chest Cards (Name + Chest + Category) 
+
+  --------------------------------*/ 
+
+  eventTabChestCards(wrap){ 
+
+    wrap.innerHTML = ` 
+
+      <div class="row"> 
+
+        <h2>Chest Cards</h2> 
+
+        <div class="spacer"></div> 
+
+        <button class="btn ${this.state.chestTab==='generate'?'primary':''}" onclick="App.switchChestTab('generate')">Generate</button> 
+
+        <button class="btn ${this.state.chestTab==='templates'?'primary':''}" onclick="App.switchChestTab('templates')">Templates</button> 
+
+      </div> 
+
+      <div id="chest-tab"></div> 
+
+    `; 
+
+    if (this.state.chestTab === "generate") this.chestGenerateView(); 
+
+    else this.chestTemplatesView(); 
+
+  }, 
+
+  switchChestTab(tab){ this.state.chestTab=tab; this.eventTabChestCards(document.getElementById("event-tab")); }, 
+
+ 
+
+  chestTemplatesView(){ 
+
+    const wrap = document.getElementById("chest-tab"); 
+
+    const tpls = this.data.chest.templates||[]; 
+
+    wrap.innerHTML = ` 
+
+      <div class="grid"> 
+
+        <div class="card"> 
+
+          <h3>Upload Templates (by Category)</h3> 
+
+          <form onsubmit="App.quickUploadChestTemplates(event)"> 
+
+            <div class="grid cols-3"> 
+
+              <div><label>Category</label><select id="chest-tpl-cat" class="input">${this.data.categories.filter(c=>c!=="Popular").map(c=>`<option>${this.esc(c)}</option>`).join("")}</select></div> 
+
+              <div><label>Images</label><input id="chest-tpl-files" class="input" type="file" accept="image/*,.psd" multiple required></div> 
+
+              <div class="muted" style="align-self:end">PSD slot provided — export as PNG/JPG for rendering.</div> 
+
+            </div> 
+
+            <div class="row" style="margin-top:10px;"><button class="btn primary" type="submit">Upload</button></div> 
+
+          </form> 
+
+        </div> 
+
+        <div class="card"> 
+
+          <h3>Existing Templates (${tpls.length})</h3> 
+
+          <div class="table-wrap"><table> 
+
+            <thead><tr><th>Name</th><th>Category</th><th>Size</th><th>Fields</th><th>Actions</th></tr></thead> 
+
+            <tbody> 
+
+              ${tpls.map(t=>`<tr><td>${this.esc(t.name)}</td><td>${this.esc(t.category||"-")}</td><td>${t.width}×${t.height}</td><td>${(t.fields||[]).length}</td><td class="row"><button class="btn small" onclick="App.openChestTemplateEditor('${t.id}')">Edit</button><button class="btn small danger" onclick="App.deleteChestTemplate('${t.id}')">Delete</button></td></tr>`).join("") || '<tr><td colspan="5" class="muted">No templates yet.</td></tr>'} 
+
+            </tbody> 
+
+          </table></div> 
+
+        </div> 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+  async quickUploadChestTemplates(ev){ 
+
+    ev.preventDefault(); 
+
+    const cat = document.getElementById("chest-tpl-cat").value; 
+
+    const files = Array.from(document.getElementById("chest-tpl-files").files||[]); if (!files.length) return alert("Select files."); 
+
+    let created=0, psdCount=0; 
+
+    for (const file of files) { 
+
+      const isPSD = /\.psd$/i.test(file.name) || file.type==='image/vnd.adobe.photoshop'; 
+
+      if (isPSD) { psdCount++; continue; } 
+
+      if (!file.type.startsWith("image/")) continue; 
+
+      const dataUrl = await this.fileToDataUrl(file); 
+
+      const img = await this.loadImage(dataUrl); 
+
+      const tpl = { 
+
+        id: this.uid("ctpl"), 
+
+        name: file.name.replace(/\.[^.]+$/,""), 
+
+        category: cat, 
+
+        bgDataUrl: dataUrl, 
+
+        width: img.naturalWidth, 
+
+        height: img.naturalHeight, 
+
+        fields: [ 
+
+          { id:this.uid("cf"), label:"CHEST", x:Math.round(img.naturalWidth*0.08), y:Math.round(img.naturalHeight*0.12), maxWidth:Math.round(img.naturalWidth*0.84), fontSize:Math.round(img.naturalWidth*0.18), fontFamily:"Inter, Arial, sans-serif", color:"#000000", align:"center", uppercase:false, content:"{chest}" }, 
+
+          { id:this.uid("cf"), label:"NAME",  x:Math.round(img.naturalWidth*0.08), y:Math.round(img.naturalHeight*0.38), maxWidth:Math.round(img.naturalWidth*0.84), fontSize:Math.round(img.naturalWidth*0.08), fontFamily:"Inter, Arial, sans-serif", color:"#000000", align:"center", uppercase:false, content:"{name}" }, 
+
+          { id:this.uid("cf"), label:"CATEGORY", x:Math.round(img.naturalWidth*0.08), y:Math.round(img.naturalHeight*0.50), maxWidth:Math.round(img.naturalWidth*0.84), fontSize:Math.round(img.naturalWidth*0.06), fontFamily:"Inter, Arial, sans-serif", color:"#000000", align:"center", uppercase:false, content:"{category}" } 
+
+        ] 
+
+      }; 
+
+      this.data.chest.templates.push(tpl); created++; 
+
+    } 
+
+    this.save(); 
+
+    if (psdCount) alert(`${psdCount} PSD file(s) detected. Please export as PNG/JPG for rendering.`); 
+
+    alert(`Uploaded ${created} chest template(s). Edit to fine-tune positions.`); 
+
+    document.getElementById("chest-tpl-files").value = ""; 
+
+    this.chestTemplatesView(); 
+
+  }, 
+
+  deleteChestTemplate(id){ this.data.chest.templates=(this.data.chest.templates||[]).filter(t=>t.id!==id); this.save(); this.chestTemplatesView(); }, 
+
+  openChestTemplateEditor(tplId){ 
+
+    this.state.chestEditorTemplateId = tplId; 
+
+    this.state.chestEditorSelectedFieldId = null; 
+
+    const tpl = (this.data.chest.templates||[]).find(t=>t.id===tplId); if (!tpl) return; 
+
+    const wrap = document.getElementById("event-tab"); 
+
+    wrap.innerHTML = ` 
+
+      <div class="row" style="margin-bottom:8px;"><button class="btn" onclick="App.eventTabChestCards(document.getElementById('event-tab'))">← Back</button></div> 
+
+      <div class="grid cols-2"> 
+
+        <div class="card"> 
+
+          <h2>Template Editor • ${this.esc(tpl.name)} (${this.esc(tpl.category)})</h2> 
+
+          <div class="muted">Drag boxes. Tokens: {chest}, {name}, {category}.</div> 
+
+          <div class="hr"></div> 
+
+          <div class="poster-canvas-wrap"> 
+
+            <div class="poster-stage" id="chest-stage" style="width:${tpl.width}px;height:${tpl.height}px;"> 
+
+              <img src="${tpl.bgDataUrl}" style="width:${tpl.width}px;height:${tpl.height}px;border-radius:8px"> 
+
+              ${(tpl.fields||[]).map(f=>` 
+
+                <div class="poster-field ${this.state.chestEditorSelectedFieldId===f.id?'selected':''}" style="left:${f.x}px;top:${f.y}px;width:${f.maxWidth}px;height:${Math.max(24,f.fontSize*1.6)}px" data-id="${f.id}" onmousedown="App.startDragChestField(event,'${f.id}')" onclick="App.selectChestField('${f.id}')"></div> 
+
+              `).join("")} 
+
+            </div> 
+
+          </div> 
+
+        </div> 
+
+        <div class="card"> 
+
+          <h3>Fields</h3> 
+
+          <div class="row" style="margin-bottom:8px;"> 
+
+            <button class="btn small" onclick="App.addChestField()">+ Add Text Field</button> 
+
+            <div class="spacer"></div> 
+
+            <label>Category</label> 
+
+            <select class="input" style="min-width:160px" onchange="App.setChestTemplateCategory(this.value)">${this.data.categories.filter(c=>c!=="Popular").map(c=>`<option ${c===tpl.category?'selected':''}>${this.esc(c)}</option>`).join("")}</select> 
+
+          </div> 
+
+          <div id="chest-fields-list"> 
+
+            ${(tpl.fields||[]).map(f=> this.chestFieldEditorBlock(f)).join("") || '<div class="notice">No fields yet.</div>'} 
+
+          </div> 
+
+        </div> 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+  chestFieldEditorBlock(f){ 
+
+    return ` 
+
+      <div class="card" style="background:#fff;border:1px dashed var(--border);margin-bottom:10px;"> 
+
+        <div class="row"> 
+
+          <strong>${this.esc(f.label||"Text Field")}</strong> 
+
+          <div class="spacer"></div> 
+
+          <button class="btn small" onclick="App.selectChestField('${f.id}')">Select</button> 
+
+          <button class="btn small danger" onclick="App.removeChestField('${f.id}')">Remove</button> 
+
+        </div> 
+
+        <div class="grid cols-3" style="margin-top:8px;"> 
+
+          <div><label>Label</label><input class="input" value="${this.esc(f.label||"")}" onchange="App.updateChestField('${f.id}','label', this.value)"></div> 
+
+          <div><label>X</label><input class="input" type="number" value="${f.x}" onchange="App.updateChestField('${f.id}','x', parseInt(this.value||'0',10))"></div> 
+
+          <div><label>Y</label><input class="input" type="number" value="${f.y}" onchange="App.updateChestField('${f.id}','y', parseInt(this.value||'0',10))"></div> 
+
+        </div> 
+
+        <div class="grid cols-3" style="margin-top:8px;"> 
+
+          <div><label>Max Width</label><input class="input" type="number" value="${f.maxWidth}" onchange="App.updateChestField('${f.id}','maxWidth', parseInt(this.value||'0',10))"></div> 
+
+          <div><label>Font Size</label><input class="input" type="number" value="${f.fontSize}" onchange="App.updateChestField('${f.id}','fontSize', parseInt(this.value||'16',10))"></div> 
+
+          <div><label>Align</label><select class="input" onchange="App.updateChestField('${f.id}','align', this.value)"><option value="left" ${f.align==='left'?'selected':''}>Left</option><option value="center" ${f.align==='center'?'selected':''}>Center</option><option value="right" ${f.align==='right'?'selected':''}>Right</option></select></div> 
+
+        </div> 
+
+        <div class="grid cols-3" style="margin-top:8px;"> 
+
+          <div><label>Font Family</label><input class="input" value="${this.esc(f.fontFamily||'Inter, Arial, sans-serif')}" onchange="App.updateChestField('${f.id}','fontFamily', this.value)"></div> 
+
+          <div><label>Color</label><input class="input" type="color" value="${f.color||'#000000'}" onchange="App.updateChestField('${f.id}','color', this.value)"></div> 
+
+          <div><label>Uppercase</label><select class="input" onchange="App.updateChestField('${f.id}','uppercase', this.value==='yes')"><option value="no" ${!f.uppercase?'selected':''}>No</option><option value="yes" ${f.uppercase?'selected':''}>Yes</option></select></div> 
+
+        </div> 
+
+        <div style="margin-top:8px;"> 
+
+          <label>Content (tokens)</label> 
+
+          <textarea class="input" rows="2" onchange="App.updateChestField('${f.id}','content', this.value)">${this.esc(f.content||"")}</textarea> 
+
+          <div class="row small" style="gap:6px;flex-wrap:wrap;margin-top:6px;"> 
+
+            ${["{chest}","{name}","{category}"].map(t=>`<button class="btn small" type="button" onclick="this.previousElementSibling.value += ' ${t}'; this.previousElementSibling.dispatchEvent(new Event('change'))">${t}</button>`).join("")} 
+
+          </div> 
+
+        </div> 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+  selectChestField(id){ this.state.chestEditorSelectedFieldId=id; this.openChestTemplateEditor(this.state.chestEditorTemplateId); }, 
+
+  addChestField(){ 
+
+    const tpl = (this.data.chest.templates||[]).find(t=>t.id===this.state.chestEditorTemplateId); if (!tpl) return; 
+
+    const f = { id:this.uid("cf"), label:"Text", x:Math.round(tpl.width*0.08), y:Math.round(tpl.height*0.08), maxWidth:Math.round(tpl.width*0.84), fontSize:Math.round(tpl.width*0.06), fontFamily:"Inter, Arial, sans-serif", color:"#000000", align:"left", uppercase:false, content:"Text" }; 
+
+    tpl.fields.push(f); this.save(); this.state.chestEditorSelectedFieldId=f.id; this.openChestTemplateEditor(tpl.id); 
+
+  }, 
+
+  removeChestField(fid){ 
+
+    const tpl = (this.data.chest.templates||[]).find(t=>t.id===this.state.chestEditorTemplateId); if (!tpl) return; 
+
+    tpl.fields = (tpl.fields||[]).filter(f=>f.id!==fid); 
+
+    if (this.state.chestEditorSelectedFieldId===fid) this.state.chestEditorSelectedFieldId=null; 
+
+    this.save(); this.openChestTemplateEditor(tpl.id); 
+
+  }, 
+
+  updateChestField(fid,key,val){ 
+
+    const tpl = (this.data.chest.templates||[]).find(t=>t.id===this.state.chestEditorTemplateId); if (!tpl) return; 
+
+    const f = (tpl.fields||[]).find(x=>x.id===fid); if (!f) return; 
+
+    if (["x","y","maxWidth","fontSize"].includes(key)) { const n=Number(val); if (!Number.isNaN(n)) f[key]=n; } 
+
+    else if (key==="uppercase") f.uppercase = !!val; 
+
+    else f[key]=val; 
+
+    this.save(); 
+
+  }, 
+
+  startDragChestField(e,fid){ 
+
+    e.preventDefault(); 
+
+    const tpl = (this.data.chest.templates||[]).find(t=>t.id===this.state.chestEditorTemplateId); 
+
+    const f = tpl?.fields.find(x=>x.id===fid); if (!tpl || !f) return; 
+
+    this.state._chestDrag = { tplId:tpl.id, fieldId:fid, startX:e.clientX, startY:e.clientY, startFX:f.x, startFY:f.y }; 
+
+    document.addEventListener("mousemove", this.onChestDragMove); 
+
+    document.addEventListener("mouseup", this.onChestDragEnd); 
+
+  }, 
+
+  onChestDragMove:(e)=>{ 
+
+    const st = App.state._chestDrag; if (!st) return; 
+
+    const tpl = (App.data.chest.templates||[]).find(t=>t.id===st.tplId); 
+
+    const f = tpl?.fields.find(x=>x.id===st.fieldId); if (!tpl||!f) return; 
+
+    f.x = Math.max(0, Math.min(tpl.width-10, Math.round(st.startFX+(e.clientX-st.startX)))); 
+
+    f.y = Math.max(0, Math.min(tpl.height-10, Math.round(st.startFY+(e.clientY-st.startY)))); 
+
+    App.save(); 
+
+    const el = document.querySelector(`#chest-stage .poster-field[data-id="${f.id}"]`); if (el) { el.style.left=f.x+"px"; el.style.top=f.y+"px"; } 
+
+  }, 
+
+  onChestDragEnd:()=>{ document.removeEventListener("mousemove", App.onChestDragMove); document.removeEventListener("mouseup", App.onChestDragEnd); App.state._chestDrag=null; }, 
+
+  setChestTemplateCategory(val){ const tpl=(this.data.chest.templates||[]).find(t=>t.id===this.state.chestEditorTemplateId); if(!tpl) return; tpl.category=val; this.save(); this.openChestTemplateEditor(tpl.id); }, 
+
+ 
+
+  chestGenerateView(){ 
+
+    const wrap = document.getElementById("chest-tab"); 
+
+    const cats = this.data.categories.filter(c=>c!=="Popular"); 
+
+    const teams = this.data.teams; 
+
+    wrap.innerHTML = ` 
+
+      <div class="grid cols-2"> 
+
+        <div class="card"> 
+
+          <h3>Generate Cards</h3> 
+
+          <div class="grid cols-3"> 
+
+            <div><label>Category</label><select id="chest-gen-cat" class="input" onchange="App.refreshChestTplSelect()">${cats.map(c=>`<option>${this.esc(c)}</option>`).join("")}</select></div> 
+
+            <div><label>Team (optional)</label><select id="chest-gen-team" class="input"><option value="">All Teams</option>${teams.map(t=>`<option value="${t.id}">${this.esc(t.name)}</option>`).join("")}</select></div> 
+
+            <div><label>Template</label><select id="chest-gen-tpl" class="input">${this.renderChestTplOptions(cats[0]||"")}</select></div> 
+
+          </div> 
+
+          <div class="grid cols-3" style="margin-top:10px;"> 
+
+            <div><label>Include Name</label><select id="chest-inc-name" class="input"><option value="yes">Yes</option><option value="no">No</option></select></div> 
+
+            <div><label>Sort</label><select id="chest-sort" class="input"><option value="chest">Chest No</option><option value="name">Name</option></select></div> 
+
+          </div> 
+
+          <div class="row" style="margin-top:10px;"> 
+
+            <button class="btn primary" onclick="App.previewChestOne()">Preview First</button> 
+
+            <button class="btn" onclick="App.batchChestSingles()">Download All (PNG per student)</button> 
+
+          </div> 
+
+        </div> 
+
+        <div class="card"> 
+
+          <h3>A4 Sheets (Print)</h3> 
+
+          <div class="grid cols-3"> 
+
+            <div><label>Columns</label><input id="sheet-cols" class="input" type="number" min="1" step="1" value="2"></div> 
+
+            <div><label>Rows</label><input id="sheet-rows" class="input" type="number" min="1" step="1" value="4"></div> 
+
+            <div><label>Margin (px)</label><input id="sheet-margin" class="input" type="number" min="0" step="5" value="60"></div> 
+
+          </div> 
+
+          <div class="grid cols-3" style="margin-top:10px;"> 
+
+            <div><label>Gap (px)</label><input id="sheet-gap" class="input" type="number" min="0" step="5" value="24"></div> 
+
+            <div><label>Orientation</label><select id="sheet-orient" class="input"><option value="portrait">Portrait (A4)</option><option value="landscape">Landscape (A4)</option></select></div> 
+
+            <div><label>Crop Marks</label><select id="sheet-crops" class="input"><option value="yes">Yes</option><option value="no">No</option></select></div> 
+
+          </div> 
+
+          <div class="row" style="margin-top:10px;"><button class="btn primary" onclick="App.generateChestSheets()">Generate A4 Sheet(s)</button></div> 
+
+        </div> 
+
+      </div> 
+
+      <div id="chest-preview-area"></div> 
+
+    `; 
+
+  }, 
+
+  renderChestTplOptions(cat){ 
+
+    const tpls = (this.data.chest.templates||[]).filter(t=>t.category===cat); 
+
+    return tpls.length? tpls.map(t=>`<option value="${t.id}">${this.esc(t.name)}</option>`).join("") : '<option value="">No template</option>'; 
+
+  }, 
+
+  refreshChestTplSelect(){ const cat=document.getElementById("chest-gen-cat")?.value; const sel=document.getElementById("chest-gen-tpl"); if (sel) sel.innerHTML=this.renderChestTplOptions(cat); }, 
+
+  getChestStudents(cat, teamId, sortBy){ 
+
+    let list = this.data.students.filter(s=>s.category===cat && (!teamId || s.teamId===teamId)); 
+
+    if (sortBy==="name") list = list.sort((a,b)=>(a.name||"").localeCompare(b.name||"")); 
+
+    else list = list.sort((a,b)=> String(a.chestNo||"").localeCompare(String(b.chestNo||""))); 
+
+    return list; 
+
+  }, 
+
+  buildChestTokens(stu, opts){ return { chest:String(stu.chestNo||""), name: opts.includeName? String(stu.name||""):"", category:String(stu.category||"") }; }, 
+
+  async renderChestToCanvas(tpl, tokens){ 
+
+    const canvas = document.createElement("canvas"); canvas.width=tpl.width; canvas.height=tpl.height; 
+
+    const ctx = canvas.getContext("2d"); const bg = await this.loadImage(tpl.bgDataUrl); ctx.drawImage(bg,0,0, tpl.width, tpl.height); 
+
+    for (const f of (tpl.fields||[])) { 
+
+      const text = this.replaceTokens(f.content||"", tokens, f.uppercase); 
+
+      await this.drawWrappedText(ctx, text, { x:f.x, y:f.y, maxWidth:f.maxWidth||Math.round(tpl.width*0.9), fontSize:f.fontSize||28, fontFamily:f.fontFamily||"Arial", color:f.color||"#000000", align:f.align||"left" }); 
+
+    } 
+
+    return canvas; 
+
+  }, 
+
+  async previewChestOne(){ 
+
+    const cat = document.getElementById("chest-gen-cat").value; 
+
+    const teamId = document.getElementById("chest-gen-team").value||""; 
+
+    const tplId = document.getElementById("chest-gen-tpl").value; if (!tplId) return alert("No template selected."); 
+
+    const tpl = (this.data.chest.templates||[]).find(t=>t.id===tplId); 
+
+    const sortBy = document.getElementById("chest-sort").value; 
+
+    const includeName = document.getElementById("chest-inc-name").value==="yes"; 
+
+    const studs = this.getChestStudents(cat, teamId||null, sortBy); if (!studs.length) return alert("No students found."); 
+
+    const tokens = this.buildChestTokens(studs[0], { includeName }); 
+
+    const canvas = await this.renderChestToCanvas(tpl, tokens); 
+
+    const area = document.getElementById("chest-preview-area"); 
+
+    area.innerHTML = ` 
+
+      <div class="card"> 
+
+        <h3>Preview — ${this.esc(studs[0].name)} (#${this.esc(studs[0].chestNo)})</h3> 
+
+        <div style="overflow:auto;border:1px solid var(--border);border-radius:12px;background:#000;display:grid;place-items:center;padding:10px;">${canvas.outerHTML}</div> 
+
+        <div class="row" style="margin-top:8px;"><button class="btn" onclick="App.downloadCanvas('${this.sanitizeFileName('Chest_'+studs[0].chestNo)}.png')">Download PNG</button></div> 
+
+      </div> 
+
+    `; 
+
+    this._lastCanvas = canvas; 
+
+  }, 
+
+  async batchChestSingles(){ 
+
+    const cat = document.getElementById("chest-gen-cat").value; 
+
+    const teamId = document.getElementById("chest-gen-team").value||""; 
+
+    const tplId = document.getElementById("chest-gen-tpl").value; if (!tplId) return alert("No template selected."); 
+
+    const tpl = (this.data.chest.templates||[]).find(t=>t.id===tplId); 
+
+    const sortBy = document.getElementById("chest-sort").value; 
+
+    const includeName = document.getElementById("chest-inc-name").value==="yes"; 
+
+    const studs = this.getChestStudents(cat, teamId||null, sortBy); if (!studs.length) return alert("No students found."); 
+
+    let dirHandle=null; if (window.showDirectoryPicker && confirm("Save into a folder? (Recommended)")) { try { dirHandle = await window.showDirectoryPicker(); } catch {} } 
+
+    let count=0; 
+
+    for (const s of studs) { 
+
+      const tokens = this.buildChestTokens(s, { includeName }); 
+
+      const canvas = await this.renderChestToCanvas(tpl, tokens); 
+
+      const blob = await new Promise(res=>canvas.toBlob(res,"image/png",0.95)); 
+
+      const name = this.sanitizeFileName(`Chest_${s.chestNo}_${tpl.name}.png`); 
+
+      if (dirHandle) { 
+
+        try { const fh = await dirHandle.getFileHandle(name,{create:true}); const w=await fh.createWritable(); await w.write(blob); await w.close(); } catch {} 
+
+      } else { 
+
+        const url = URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=name; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); 
+
+      } 
+
+      count++; 
+
+    } 
+
+    alert(`Generated ${count} card(s).`); 
+
+  }, 
+
+  async generateChestSheets(){ 
+
+    const cat = document.getElementById("chest-gen-cat").value; 
+
+    const teamId = document.getElementById("chest-gen-team").value||""; 
+
+    const tplId = document.getElementById("chest-gen-tpl").value; if (!tplId) return alert("No template selected."); 
+
+    const tpl = (this.data.chest.templates||[]).find(t=>t.id===tplId); 
+
+    const sortBy = document.getElementById("chest-sort").value; 
+
+    const includeName = document.getElementById("chest-inc-name").value==="yes"; 
+
+    const studs = this.getChestStudents(cat, teamId||null, sortBy); if (!studs.length) return alert("No students found."); 
+
+    const cols = parseInt(document.getElementById("sheet-cols").value||"2",10); 
+
+    const rows = parseInt(document.getElementById("sheet-rows").value||"4",10); 
+
+    const margin = parseInt(document.getElementById("sheet-margin").value||"60",10); 
+
+    const gap = parseInt(document.getElementById("sheet-gap").value||"24",10); 
+
+    const orient = document.getElementById("sheet-orient").value; 
+
+    const crop = document.getElementById("sheet-crops").value==="yes"; 
+
+    const sheetW = orient==="portrait"?2480:3508, sheetH = orient==="portrait"?3508:2480; 
+
+ 
+
+    // render cards 
+
+    const cards = []; 
+
+    for (const s of studs) { const tokens=this.buildChestTokens(s,{includeName}); const c=await this.renderChestToCanvas(tpl, tokens); cards.push(c); } 
+
+ 
+
+    const perSheet = cols*rows, sheets = Math.ceil(cards.length/perSheet); 
+
+    const area = document.getElementById("chest-preview-area"); area.innerHTML = ""; 
+
+    for (let si=0; si<sheets; si++) { 
+
+      const canvas = document.createElement("canvas"); canvas.width=sheetW; canvas.height=sheetH; 
+
+      const ctx = canvas.getContext("2d"); ctx.fillStyle="#ffffff"; ctx.fillRect(0,0,canvas.width,canvas.height); 
+
+      const gridW = sheetW - margin*2, gridH = sheetH - margin*2; 
+
+      const cellW = Math.floor((gridW - gap*(cols-1))/cols), cellH = Math.floor((gridH - gap*(rows-1))/rows); 
+
+      for (let r=0; r<rows; r++) { 
+
+        for (let c=0; c<cols; c++) { 
+
+          const idx = si*perSheet + (r*cols + c); if (idx>=cards.length) break; 
+
+          const card = cards[idx]; 
+
+          const scale = Math.min(cellW/card.width, cellH/card.height); 
+
+          const dw = Math.round(card.width*scale), dh = Math.round(card.height*scale); 
+
+          const x = margin + c*(cellW+gap) + Math.round((cellW - dw)/2); 
+
+          const y = margin + r*(cellH+gap) + Math.round((cellH - dh)/2); 
+
+          ctx.drawImage(card, x, y, dw, dh); 
+
+ 
+
+          if (crop) { 
+
+            ctx.strokeStyle="#000"; ctx.lineWidth=2; const cm=20; 
+
+            const cx = margin + c*(cellW+gap), cy = margin + r*(cellH+gap); 
+
+            ctx.beginPath(); ctx.moveTo(cx, cy+cm); ctx.lineTo(cx, cy); ctx.lineTo(cx+cm, cy); ctx.stroke(); 
+
+            ctx.beginPath(); ctx.moveTo(cx+cellW, cy+cm); ctx.lineTo(cx+cellW, cy); ctx.lineTo(cx+cellW-cm, cy); ctx.stroke(); 
+
+            ctx.beginPath(); ctx.moveTo(cx, cy+cellH-cm); ctx.lineTo(cx, cy+cellH); ctx.lineTo(cx+cm, cy+cellH); ctx.stroke(); 
+
+            ctx.beginPath(); ctx.moveTo(cx+cellW, cy+cellH-cm); ctx.lineTo(cx+cellW, cy+cellH); ctx.lineTo(cx+cellW-cm, cy+cellH); ctx.stroke(); 
+
+          } 
+
+        } 
+
+      } 
+
+      const cardEl = document.createElement("div"); 
+
+      cardEl.className = "card"; 
+
+      cardEl.innerHTML = ` 
+
+        <h3>Sheet ${si+1} / ${sheets}</h3> 
+
+        <div style="overflow:auto;border:1px solid var(--border);border-radius:12px;background:#fafafa;display:grid;place-items:center;padding:10px;">${canvas.outerHTML}</div> 
+
+        <div class="row" style="margin-top:8px;"> 
+
+          <button class="btn" onclick="(function(c){const a=document.createElement('a');a.download='Chest_Sheet_${si+1}.png';a.href=c.toDataURL('image/png');document.body.appendChild(a);a.click();document.body.removeChild(a);})(this.closest('.card').querySelector('canvas'))">Download Sheet PNG</button> 
+
+        </div> 
+
+      `; 
+
+      area.appendChild(cardEl); 
+
+    } 
+
+  }, 
+
+ 
+
+  // Data & Branding 
+
+  eventTabData(wrap){ 
+
+    wrap.innerHTML = ` 
+
+      <div class="grid cols-2"> 
+
+        <div class="card"> 
+
+          <h2>Export / Import</h2> 
+
+          <div class="row"> 
+
+            <button class="btn" onclick="App.exportData()">Export JSON</button> 
+
+            <label class="btn">Import JSON<input type="file" accept="application/json" style="display:none" onchange="App.importData(event)"></label> 
+
+          </div> 
+
+          <div class="hr"></div> 
+
+          <h2>Reset</h2> 
+
+          <div class="row"><button class="btn danger" onclick="App.confirmReset()">Reset to Defaults</button></div> 
+
+        </div> 
+
+        <div class="card"> 
+
+          <h2>Branding & Logo</h2> 
+
+          <form onsubmit="App.updateBranding(event)"> 
+
+            <div class="grid cols-3"> 
+
+              <div><label>Header Logo</label><input id="brand-logo-file" class="input" type="file" accept="image/*"></div> 
+
+              <div><label>Favicon</label><input id="brand-favicon-file" class="input" type="file" accept="image/*"></div> 
+
+              <div> 
+
+                <label>Accent Colors</label> 
+
+                <div class="row"><input id="brand-accent" class="input" type="color" value="${this.esc(this.data.brand.accent)}"><input id="brand-accent2" class="input" type="color" value="${this.esc(this.data.brand.accent2)}"></div> 
+
+              </div> 
+
+            </div> 
+
+            <div class="row" style="margin-top:10px;"><button class="btn primary" type="submit">Save Branding</button></div> 
+
+          </form> 
+
+          <div class="hr"></div> 
+
+          <h2>Event Info</h2> 
+
+          <form onsubmit="App.updateEventInfo(event)"> 
+
+            <div class="grid cols-2"> 
+
+              <div><label>Event Title</label><input id="ev-title" class="input" value="${this.esc(this.data.eventInfo.eventTitle)}" required></div> 
+
+              <div><label>Organizer Name</label><input id="ev-org" class="input" value="${this.esc(this.data.eventInfo.orgName)}" required></div> 
+
+            </div> 
+
+            <div class="row" style="margin-top:10px;"><button class="btn primary" type="submit">Save</button></div> 
+
+          </form> 
+
+          <div class="hr"></div> 
+
+          <h2>Event Crew Credentials</h2> 
+
+          <form onsubmit="App.updateEventCreds(event)"> 
+
+            <div class="grid cols-2"> 
+
+              <div><label>Username</label><input id="ev-user" class="input" value="${this.esc(this.data.eventUser.username)}" required></div> 
+
+              <div><label>Password</label><input id="ev-pass" class="input" type="password" placeholder="new password" required></div> 
+
+            </div> 
+
+            <div class="row" style="margin-top:10px;"><button class="btn primary" type="submit">Update Login</button></div> 
+
+          </form> 
+
+        </div> 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+  async updateBranding(ev){ 
+
+    ev.preventDefault(); 
+
+    const lf=document.getElementById("brand-logo-file").files[0]; 
+
+    const ff=document.getElementById("brand-favicon-file").files[0]; 
+
+    if (lf) this.data.brand.logoDataUrl = await this.fileToDataUrl(lf); 
+
+    if (ff) this.data.brand.faviconDataUrl = await this.fileToDataUrl(ff); 
+
+    this.data.brand.accent  = document.getElementById("brand-accent").value || this.data.brand.accent; 
+
+    this.data.brand.accent2 = document.getElementById("brand-accent2").value || this.data.brand.accent2; 
+
+    this.save(); alert("Branding updated."); 
+
+  }, 
+
+  updateEventInfo(ev){ ev.preventDefault(); this.data.eventInfo.eventTitle=document.getElementById("ev-title").value.trim(); this.data.eventInfo.orgName=document.getElementById("ev-org").value.trim(); this.save(); alert("Event info saved."); }, 
+
+  updateEventCreds(ev){ ev.preventDefault(); const u=document.getElementById("ev-user").value.trim(); const p=document.getElementById("ev-pass").value.trim(); if (!u||!p) return alert("Enter username and password."); this.data.eventUser.username=u; this.data.eventUser.password=p; this.save(); alert("Credentials updated."); }, 
+
+ 
+
+  exportData(){ const blob=new Blob([JSON.stringify(this.data,null,2)],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download="felizia_fest_data.json"; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }, 
+
+  importData(ev){ const f=ev.target.files[0]; if (!f) return; const r=new FileReader(); r.onload=()=>{ try{ const obj=JSON.parse(r.result); if (!obj||!obj.teams||!obj.categories) throw new Error("Invalid file"); this.data=obj; if(!this.data.posters) this.data.posters={templates:[]}; if(!this.data.chest) this.data.chest={templates:[]}; if(!this.data.brand) this.data.brand={logoDataUrl:null,faviconDataUrl:null,accent:"#106a3b",accent2:"#b88917"}; this.save(); alert("Data imported."); this.renderEventPortal(); }catch(e){ alert("Import failed: "+e.message); } }; r.readAsText(f); }, 
+
+  confirmReset(){ if (!confirm("Reset everything to defaults?")) return; this.reset(); }, 
+
+ 
+
+  /* ------------------------------ 
+
+     Team Portal 
+
+  --------------------------------*/ 
+
+  renderTeamPortal(){ 
+
+    const app = document.getElementById("app"), team=this.getTeam(this.state.teamId); 
+
+    const tabs = [ 
+
+      {id:"dashboard", label:"Dashboard"}, 
+
+      {id:"students", label:"Students"}, 
+
+      {id:"enroll", label:"Enroll"}, 
+
+      {id:"competitions", label:"Competitions"}, 
+
+      {id:"participation", label:"Participation List"}, 
+
+      {id:"by_category", label:"By Category"} 
+
+    ]; 
+
+    app.innerHTML = ` 
+
+      <div class="card"> 
+
+        <div class="row"> 
+
+          <div><h2>${this.esc(team.name)} — Team Portal</h2><div class="muted">${this.data.portalLocked?"Portal is locked (view only)":"Portal is open"}</div></div> 
+
+          <div class="spacer"></div><span class="tag ${this.data.portalLocked?'red':'green'}">${this.data.portalLocked?'Locked 🔒':'Unlocked 🔓'}</span> 
+
+        </div> 
+
+        <div class="nav">${tabs.map(t=>`<button class="tab ${this.state.teamTab===t.id?'active':''}" onclick="App.teamSwitchTab('${t.id}')">${t.label}</button>`).join("")}</div> 
+
+        <div id="team-tab"></div> 
+
+      </div> 
+
+    `; 
+
+    this.renderTeamTab(); 
+
+  }, 
+
+  teamSwitchTab(id){ this.state.teamTab = id; this.renderTeamPortal(); }, 
+
+  renderTeamTab(){ 
+
+    const wrap = document.getElementById("team-tab"); 
+
+    if (this.state.teamTab === "dashboard") return this.teamTabDashboard(wrap); 
+
+    if (this.state.teamTab === "students") return this.teamTabStudents(wrap); 
+
+    if (this.state.teamTab === "enroll") return this.teamTabEnroll(wrap); 
+
+    if (this.state.teamTab === "competitions") return this.teamTabCompetitions(wrap); 
+
+    if (this.state.teamTab === "participation") return this.teamTabParticipation(wrap); 
+
+    if (this.state.teamTab === "by_category") return this.teamTabByCategory(wrap); 
+
+  }, 
+
+  teamTabDashboard(wrap){ 
+
+    const teamId = this.state.teamId; 
+
+    const studs = this.studentsByTeam(teamId); 
+
+    const entries = this.entriesByTeam(teamId); 
+
+    const today = this.todayStr(); 
+
+    const todays = this.data.competitions.filter(c=>c.date===today); 
+
+    wrap.innerHTML = ` 
+
+      <div class="grid cols-3"> 
+
+        <div class="card"><div class="muted">Students</div><div style="font-size:24px;font-weight:800;">${studs.length}</div></div> 
+
+        <div class="card"><div class="muted">Entries</div><div style="font-size:24px;font-weight:800;">${entries.length}</div></div> 
+
+        <div class="card"><div class="muted">Competitions Today</div><div style="font-size:24px;font-weight:800;">${todays.length}</div></div> 
+
+      </div> 
+
+      <div class="card"><h2>Today’s Competitions</h2><div class="hr"></div> 
+
+        ${todays.length? todays.map(c=>{ 
+
+          const my = this.entriesByCompetition(c.id).filter(e=>e.teamId===teamId); 
+
+          return `<div class="card"> 
+
+            <div class="row"><strong>${this.esc(c.name)}</strong><div class="spacer"></div><span class="tag">${this.esc(c.category)}</span>${c.time?`<span class="tag">${this.esc(c.time)}</span>`:""}</div> 
+
+            <ul class="muted" style="font-size:13px">${my.length? my.map(e=>`<li>${this.esc(this.entryLabel(e))}</li>`).join("") : '<li class="muted">No participants from your team.</li>'}</ul> 
+
+          </div>`; 
+
+        }).join("") : '<div class="notice">No competitions scheduled today.</div>'} 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+  teamTabStudents(wrap){ 
+
+    const teamId = this.state.teamId; 
+
+    const studs = this.studentsByTeam(teamId).slice().sort((a,b)=> String(a.chestNo||"").localeCompare(String(b.chestNo||""))); 
+
+    wrap.innerHTML = ` 
+
+      <div class="row"><h2>Students (${studs.length})</h2><div class="spacer"></div>${this.data.portalLocked?'':'<button class="btn" onclick="App.teamShowAddStudent()">+ Add Student</button>'}</div> 
+
+      <div id="student-add"></div> 
+
+      <div class="table-wrap" style="margin-top:10px;"><table> 
+
+        <thead><tr><th>Chest No</th><th>Name</th><th>Category</th><th>Competitions</th><th>Actions</th></tr></thead> 
+
+        <tbody> 
+
+          ${studs.map(s=>{ 
+
+            const comps = this.entriesByStudent(s.id).map(e=>this.getCompetition(e.competitionId)?.name).filter(Boolean); 
+
+            return `<tr> 
+
+              <td>#${this.esc(s.chestNo)}</td><td>${this.esc(s.name)}</td><td>${this.esc(s.category)}</td><td>${this.esc(comps.join(", ")||"-")}</td> 
+
+              <td class="row"><button class="btn small" onclick="App.teamAssignCompetitions('${s.id}')">Assign</button>${this.data.portalLocked?'': `<button class="btn small danger" onclick="App.teamDeleteStudent('${s.id}')">Delete</button>`}</td> 
+
+            </tr>`; 
+
+          }).join("") || '<tr><td colspan="5" class="muted">No students yet.</td></tr>'} 
+
+        </tbody> 
+
+      </table></div> 
+
+    `; 
+
+  }, 
+
+  teamShowAddStudent(){ 
+
+    if (this.data.portalLocked) return alert("Portal is locked."); 
+
+    const d = document.getElementById("student-add"); 
+
+    d.innerHTML = ` 
+
+      <div class="card"> 
+
+        <h3>Add Student</h3> 
+
+        <form onsubmit="App.teamAddStudent(event)"> 
+
+          <div class="grid cols-3"> 
+
+            <div><label>Chest Number</label><input class="input" id="stu-chest" required placeholder="e.g., 102"></div> 
+
+            <div><label>Name</label><input class="input" id="stu-name" required placeholder="Student name"></div> 
+
+            <div><label>Category</label><select class="input" id="stu-cat">${this.data.categories.filter(c=>c!=="Popular").map(c=>`<option>${this.esc(c)}</option>`).join("")}</select></div> 
+
+          </div> 
+
+          <div class="row" style="margin-top:10px;"><button class="btn primary" type="submit">Add</button><button class="btn" type="button" onclick="document.getElementById('student-add').innerHTML=''">Cancel</button></div> 
+
+        </form> 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+  teamAddStudent(ev){ 
+
+    ev.preventDefault(); if (this.data.portalLocked) return alert("Portal is locked."); 
+
+    const chest = document.getElementById("stu-chest").value.trim(); 
+
+    const name  = document.getElementById("stu-name").value.trim(); 
+
+    const cat   = document.getElementById("stu-cat").value; 
+
+    if (!chest || !name) return alert("Enter chest number and name."); 
+
+    const exists = this.data.students.some(s=> String(s.chestNo).toLowerCase()===chest.toLowerCase()); if (exists) return alert("Chest number already exists."); 
+
+    this.data.students.push({ id:this.uid("stu"), teamId:this.state.teamId, chestNo:chest, name, category:cat }); this.save(); 
+
+    document.getElementById("student-add").innerHTML = ""; this.teamTabStudents(document.getElementById("team-tab")); 
+
+  }, 
+
+  teamDeleteStudent(stuId){ 
+
+    if (this.data.portalLocked) return alert("Portal is locked."); 
+
+    const s = this.getStudent(stuId); if (!s) return; 
+
+    const hasResult = this.data.results.some(r=>{ const e=this.getEntry(r.entryId); return e && e.memberStudentIds.includes(stuId); }); 
+
+    if (hasResult) return alert("Cannot delete student with results."); 
+
+    const hasEntries = this.entriesByStudent(stuId).length>0; if (hasEntries && !confirm("Remove this student and their entries?")) return; 
+
+    this.data.entries = this.data.entries.map(e=>{ if (e.memberStudentIds.includes(stuId)) e.memberStudentIds=e.memberStudentIds.filter(id=>id!==stuId); return e; }).filter(e=>e.memberStudentIds.length>0); 
+
+    this.data.students = this.data.students.filter(x=>x.id!==stuId); 
+
+    this.save(); this.teamTabStudents(document.getElementById("team-tab")); 
+
+  }, 
+
+ 
+
+  compsAvailableForStudent(s){ return this.data.competitions.filter(c=>c.category===s.category || c.category==="Popular").sort((a,b)=> (a.date||"").localeCompare(b.date||"") || a.name.localeCompare(b.name)); }, 
+
+  teamAssignCompetitions(stuId){ 
+
+    const s = this.getStudent(stuId); if (!s) return; 
+
+    const comps = this.compsAvailableForStudent(s); 
+
+    const my    = this.entriesByStudent(stuId).map(e=>e.competitionId); 
+
+    const app   = document.getElementById("app"); 
+
+    app.innerHTML = ` 
+
+      <div class="row" style="margin-bottom:8px;"><button class="btn" onclick="App.renderTeamPortal()">← Back</button></div> 
+
+      <div class="card"> 
+
+        <h2>Assign Competitions • ${this.esc(s.name)} (#${this.esc(s.chestNo)})</h2> 
+
+        <div class="muted">${this.esc(s.category)} — Competitions in this category or “Popular”.</div> 
+
+        <div class="hr"></div> 
+
+        <div class="grid"> 
+
+          ${comps.length? comps.map(c=>{ 
+
+            const teamEntries = this.entriesByCompetition(c.id).filter(e=>e.teamId===this.state.teamId); 
+
+            const limitReached = teamEntries.length >= c.teamEntryLimit; 
+
+            const alreadyIn = my.includes(c.id); 
+
+            const disabled = (this.data.portalLocked || c.locked); 
+
+            return `<div class="card"> 
+
+              <div class="row"><div><strong>${this.esc(c.name)}</strong><div class="muted">${this.esc(c.category)} • ${c.isGroup?'Group':'Individual'} • Limit/Team: ${c.teamEntryLimit} ${c.date? "• "+this.fmtDate(c.date):""} ${c.time?" "+c.time:""}</div></div><div class="spacer"></div><span class="tag">${teamEntries.length}/${c.teamEntryLimit}</span></div> 
+
+              ${c.isGroup? `<div class="row" style="margin-top:8px;"><button class="btn small" ${disabled?'disabled':''} onclick="App.teamCreateGroup('${c.id}')">Create Group Entry</button></div>` : 
+
+              `<div class="row" style="margin-top:8px;">${alreadyIn? `<button class="btn small danger" ${disabled?'disabled':''} onclick="App.teamToggleIndividual('${stuId}','${c.id}', false)">Remove</button>` : 
+
+              `<button class="btn small" ${(!disabled && !limitReached)?'':'disabled'} onclick="App.teamToggleIndividual('${stuId}','${c.id}', true)">Add</button>`}</div>`} 
+
+              <div class="hr"></div> 
+
+              <div class="muted" style="font-size:13px">Your team entries here:</div> 
+
+              <ul class="muted" style="font-size:13px"> 
+
+                ${this.entriesByCompetition(c.id).filter(e=>e.teamId===this.state.teamId).map(e=>`<li>${this.esc(this.entryLabel(e))} ${!disabled?`<button class="btn small danger" onclick="App.teamRemoveEntry('${e.id}')">Remove</button>`:""}</li>`).join("") || '<li class="muted">None</li>'} 
+
+              </ul> 
+
+            </div>`; 
+
+          }).join("") : '<div class="notice">No competitions published yet.</div>'} 
+
+        </div> 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+  teamToggleIndividual(stuId, compId, add){ 
+
+    if (this.data.portalLocked) return alert("Portal is locked."); 
+
+    const comp = this.getCompetition(compId); if (!comp || comp.isGroup) return; 
+
+    const existingForTeam = this.entriesByCompetition(compId).filter(e=>e.teamId===this.state.teamId); 
+
+    const already = existingForTeam.find(e=> e.entryType==='individual' && e.memberStudentIds[0]===stuId); 
+
+    if (add) { 
+
+      if (already) return; 
+
+      if (existingForTeam.length >= comp.teamEntryLimit) return alert("Team limit reached."); 
+
+      const stu = this.getStudent(stuId); if (!(comp.category===stu.category || comp.category==="Popular")) return alert("Not eligible."); 
+
+      this.data.entries.push({ id:this.uid("ent"), teamId:this.state.teamId, competitionId:compId, entryType:"individual", memberStudentIds:[stuId], createdAt:Date.now() }); 
+
+    } else { 
+
+      if (!already) return; 
+
+      const hasResult = this.data.results.some(r=>r.entryId===already.id); if (hasResult) return alert("Cannot remove: entry has results."); 
+
+      this.data.attendance = this.data.attendance.filter(a=>a.entryId!==already.id); 
+
+      this.data.entries = this.data.entries.filter(e=>e.id!==already.id); 
+
+    } 
+
+    this.save(); this.teamAssignCompetitions(stuId); 
+
+  }, 
+
+  teamCreateGroup(compId){ 
+
+    if (this.data.portalLocked) return alert("Portal is locked."); 
+
+    const comp = this.getCompetition(compId); if (!comp || !comp.isGroup) return; 
+
+    const teamId = this.state.teamId; 
+
+    const eligible = this.studentsByTeam(teamId).filter(s=> comp.category==="Popular" || s.category===comp.category); 
+
+    const app = document.getElementById("app"); 
+
+    app.innerHTML = ` 
+
+      <div class="row" style="margin-bottom:8px;"><button class="btn" onclick="App.renderTeamPortal()">← Back</button></div> 
+
+      <div class="card"> 
+
+        <h2>Create Group Entry • ${this.esc(comp.name)}</h2> 
+
+        <div class="muted">Select members from your team${comp.maxGroupSize? " (Max "+comp.maxGroupSize+")":""}.</div> 
+
+        <div class="hr"></div> 
+
+        <form onsubmit="App.teamSubmitGroup(event,'${compId}')"> 
+
+          <div class="grid">${eligible.map(s=> `<label style="display:flex;align-items:center;gap:8px;"><input type="checkbox" value="${s.id}"> ${this.esc(s.name)} (#${this.esc(s.chestNo)}) — ${this.esc(s.category)}</label>`).join("") || '<div class="muted">No eligible students.</div>'}</div> 
+
+          <div class="row" style="margin-top:10px;"><button class="btn primary" type="submit">Create Group</button><button class="btn" type="button" onclick="App.renderTeamPortal()">Cancel</button></div> 
+
+        </form> 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+  teamSubmitGroup(ev, compId){ 
+
+    ev.preventDefault(); if (this.data.portalLocked) return alert("Portal is locked."); 
+
+    const comp = this.getCompetition(compId); const teamId=this.state.teamId; 
+
+    const selected = Array.from(ev.target.querySelectorAll('input[type="checkbox"]:checked')).map(i=>i.value); 
+
+    if (selected.length===0) return alert("Select at least one member."); 
+
+    if (comp.maxGroupSize && selected.length>comp.maxGroupSize) return alert(`Max group size is ${comp.maxGroupSize}.`); 
+
+    const existingForTeam = this.entriesByCompetition(compId).filter(e=>e.teamId===teamId); 
+
+    if (existingForTeam.length >= comp.teamEntryLimit) return alert("Team limit reached."); 
+
+    this.data.entries.push({ id:this.uid("ent"), teamId, competitionId:compId, entryType:"group", memberStudentIds:selected, createdAt:Date.now() }); 
+
+    this.save(); alert("Group entry created."); this.renderTeamPortal(); 
+
+  }, 
+
+  teamRemoveEntry(entryId){ 
+
+    if (this.data.portalLocked) return alert("Portal is locked."); 
+
+    const e = this.getEntry(entryId); if (!e || e.teamId!==this.state.teamId) return; 
+
+    const hasResult = this.data.results.some(r=>r.entryId===entryId); if (hasResult) return alert("Cannot remove: entry has results."); 
+
+    this.data.attendance = this.data.attendance.filter(a=>a.entryId!==entryId); 
+
+    this.data.entries = this.data.entries.filter(x=>x.id!==entryId); 
+
+    this.save(); this.renderTeamPortal(); 
+
+  }, 
+
+  teamTabCompetitions(wrap){ 
+
+    const teamId = this.state.teamId; 
+
+    const hi = this.state._highlightCompId || null; 
+
+    const comps = this.data.competitions.slice().sort((a,b)=> (a.category||"").localeCompare(b.category||"") || (a.date||"").localeCompare(b.date||"") || a.name.localeCompare(b.name)); 
+
+    wrap.innerHTML = ` 
+
+      <div class="grid"> 
+
+        ${comps.map(c=>{ 
+
+          const my = this.entriesByCompetition(c.id).filter(e=>e.teamId===teamId); 
+
+          const dt = [c.date?this.fmtDate(c.date):"", c.time||""].filter(Boolean).join(" "); 
+
+          const highlightClass = (hi && hi===c.id) ? " search-highlight" : ""; 
+
+          return `<div class="card${highlightClass}"> 
+
+            <div class="row"><div><strong>${this.esc(c.name)}</strong><div class="muted">${this.esc(c.category)} • ${c.isGroup?'Group':'Individual'} • Limit: ${c.teamEntryLimit} • ${this.esc(dt||"")}</div></div><div class="spacer"></div><span class="tag">${my.length} from your team</span></div> 
+
+            <ul class="muted" style="font-size:13px">${my.length? my.map(e=>`<li>${this.esc(this.entryLabel(e))}</li>`).join("") : '<li class="muted">No participants from your team.</li>'}</ul> 
+
+          </div>`; 
+
+        }).join("") || '<div class="notice">No competitions published yet.</div>'} 
+
+      </div> 
+
+    `; 
+
+    // Clear highlight after first render 
+
+    this.state._highlightCompId = null; 
+
+  }, 
+
+  teamTabParticipation(wrap){ 
+
+    const teamId = this.state.teamId; 
+
+    const studs = this.studentsByTeam(teamId).slice().sort((a,b)=> String(a.chestNo||"").localeCompare(String(b.chestNo||""))); 
+
+    wrap.innerHTML = ` 
+
+      <div class="row"><h2>Team Participation List</h2><div class="spacer"></div><button class="btn" onclick="App.exportTeamCSV('${teamId}')">Download CSV</button></div> 
+
+      <div class="table-wrap"><table> 
+
+        <thead><tr><th>Chest No</th><th>Name</th><th>Category</th><th>Competitions</th></tr></thead> 
+
+        <tbody> 
+
+          ${studs.map(s=>{ 
+
+            const comps = this.entriesByStudent(s.id).map(e=>this.getCompetition(e.competitionId)?.name).filter(Boolean); 
+
+            return `<tr><td>#${this.esc(s.chestNo)}</td><td>${this.esc(s.name)}</td><td>${this.esc(s.category)}</td><td>${this.esc(comps.join(", ")||"-")}</td></tr>`; 
+
+          }).join("") || '<tr><td colspan="4" class="muted">No students yet.</td></tr>'} 
+
+        </tbody></table></div> 
+
+    `; 
+
+  }, 
+
+  teamTabByCategory(wrap){ 
+
+    const teamId = this.state.teamId; const cats = this.data.categories; 
+
+    const blocks = cats.map(cat=>{ 
+
+      const rows = this.entriesByCategory(cat, teamId); 
+
+      const body = rows.length? rows.map(r=>`<tr><td>${this.esc(r.compName)}</td><td>${this.esc(r.entryLabel)}</td><td>${r.present?"✅":""}</td><td>${this.esc(r.code)}</td></tr>`).join("") : `<tr><td colspan="4" class="muted">No entries in this category.</td></tr>`; 
+
+      const studs = this.data.students.filter(s=>s.teamId===teamId && s.category===cat).sort((a,b)=> String(a.chestNo||"").localeCompare(String(b.chestNo||""))); 
+
+      const studsBody = studs.length? studs.map(s=>`<tr><td>#${this.esc(s.chestNo)}</td><td>${this.esc(s.name)}</td></tr>`).join("") : '<tr><td colspan="2" class="muted">No students.</td></tr>'; 
+
+      return `<div class="card"><h2>${this.esc(cat)}</h2> 
+
+        <div class="grid cols-2"> 
+
+          <div class="card"><h3 class="section-title">Entries</h3><div class="table-wrap"><table><thead><tr><th>Competition</th><th>Entry</th><th>Present</th><th>Code</th></tr></thead><tbody>${body}</tbody></table></div></div> 
+
+          <div class="card"><h3 class="section-title">Students</h3><div class="table-wrap"><table><thead><tr><th>Chest No</th><th>Name</th></tr></thead><tbody>${studsBody}</tbody></table></div></div> 
+
+        </div> 
+
+      </div>`; 
+
+    }).join(""); 
+
+    wrap.innerHTML = `<div class="grid">${blocks}</div>`; 
+
+  }, 
+
+  exportTeamCSV(teamId){ 
+
+    const team = this.getTeam(teamId); 
+
+    const studs = this.studentsByTeam(teamId); 
+
+    const rows = [["Chest No","Name","Category","Competitions"]]; 
+
+    for (const s of studs) { 
+
+      const comps = this.entriesByStudent(s.id).map(e=>this.getCompetition(e.competitionId)?.name).filter(Boolean).join("; "); 
+
+      rows.push([s.chestNo, s.name, s.category, comps]); 
+
+    } 
+
+    const csv = rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")).join("\n"); 
+
+    const blob = new Blob([csv], { type: "text/csv" }); 
+
+    const url = URL.createObjectURL(blob); 
+
+    const a = document.createElement("a"); a.href = url; a.download = `${team.name}_participation.csv`; 
+
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); 
+
+    URL.revokeObjectURL(url); 
+
+  }, 
+
+ 
+
+  /* ------------------------------ 
+
+     Global Search 
+
+  --------------------------------*/ 
+
+  initGlobalSearch(){ 
+
+    // Keyboard shortcut: '/' to focus search (unless typing in input/textarea) 
+
+    document.addEventListener("keydown", (e)=>{ 
+
+      const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : ""; 
+
+      const typing = tag === "input" || tag === "textarea" || (e.target && e.target.isContentEditable); 
+
+      if (!typing && e.key === "/") { 
+
+        e.preventDefault(); 
+
+        const inp = document.getElementById("global-search-input"); 
+
+        if (inp) { inp.focus(); inp.select(); } 
+
+      } else if (e.key === "Escape") { 
+
+        this.closeGlobalSearch(); 
+
+      } 
+
+    }); 
+
+    // Click outside closes 
+
+    document.addEventListener("click", (e)=>{ 
+
+      const wrap = document.getElementById("global-search-wrap"); 
+
+      if (!wrap) return; 
+
+      if (!wrap.contains(e.target)) this.closeGlobalSearch(); 
+
+    }); 
+
+  }, 
+
+  onGlobalSearchFocus(){ 
+
+    if (this.state.searchQuery.trim().length >= 1) this.renderGlobalSearchResults(); 
+
+  }, 
+
+  onGlobalSearchInput(v){ 
+
+    this.state.searchQuery = v; 
+
+    clearTimeout(this.state._gsTimer); 
+
+    this.state._gsTimer = setTimeout(()=> this.renderGlobalSearchResults(), 150); 
+
+  }, 
+
+  onGlobalSearchKey(e){ 
+
+    const list = this.state._gsResults || []; 
+
+    if (e.key === "ArrowDown") { 
+
+      e.preventDefault(); 
+
+      this.state._gsActiveIndex = Math.min(list.length-1, this.state._gsActiveIndex + 1); 
+
+      this.updateSearchActiveItem(); 
+
+    } else if (e.key === "ArrowUp") { 
+
+      e.preventDefault(); 
+
+      this.state._gsActiveIndex = Math.max(0, this.state._gsActiveIndex - 1); 
+
+      this.updateSearchActiveItem(); 
+
+    } else if (e.key === "Enter") { 
+
+      if (list.length === 0) return; 
+
+      const idx = this.state._gsActiveIndex >=0 ? this.state._gsActiveIndex : 0; 
+
+      const item = list[idx]; 
+
+      if (item) this.selectSearchItem(item.type, item.id); 
+
+    } else if (e.key === "Escape") { 
+
+      this.closeGlobalSearch(); 
+
+    } 
+
+  }, 
+
+  closeGlobalSearch(){ 
+
+    const box = document.getElementById("global-search-results"); 
+
+    if (box) box.style.display = "none"; 
+
+    this.state.searchOpen = false; 
+
+    this.state._gsActiveIndex = -1; 
+
+  }, 
+
+  queryGlobalSearch(q){ 
+
+    const query = (q||"").trim().toLowerCase(); 
+
+    const results = { students: [], competitions: [] }; 
+
+    if (!query) return results; 
+
+ 
+
+    // Students 
+
+    const teamScope = this.state.role === "team" ? this.state.teamId : null; 
+
+    const studs = this.data.students.filter(s => !teamScope || s.teamId === teamScope); 
+
+    for (const s of studs) { 
+
+      const team = this.getTeam(s.teamId); 
+
+      const hay = [ 
+
+        s.name || "", 
+
+        String(s.chestNo || ""), 
+
+        (team?.name || ""), 
+
+        (s.category || "") 
+
+      ].join(" ").toLowerCase(); 
+
+      if (hay.includes(query)) { 
+
+        const comps = this.entriesByStudent(s.id).map(e => this.getCompetition(e.competitionId)?.name).filter(Boolean).join(", "); 
+
+        results.students.push({ 
+
+          id: s.id, 
+
+          title: `${s.name}  #${s.chestNo}`, 
+
+          sub: `${this.teamName(s.teamId)} • ${s.category}${comps ? " • " + comps : ""}` 
+
+        }); 
+
+      } 
+
+    } 
+
+    // Competitions 
+
+    for (const c of this.data.competitions) { 
+
+      const hay = `${c.name} ${c.category}`.toLowerCase(); 
+
+      if (hay.includes(query)) { 
+
+        const cnt = this.entriesByCompetition(c.id).length; 
+
+        results.competitions.push({ 
+
+          id: c.id, 
+
+          title: c.name, 
+
+          sub: `${c.category} • ${c.isGroup ? "Group" : "Individual"} • ${cnt} entries` 
+
+        }); 
+
+      } 
+
+    } 
+
+    // Sort by shorter title then alpha 
+
+    const sortFn = (a,b)=> a.title.length - b.title.length || a.title.localeCompare(b.title); 
+
+    results.students.sort(sortFn); 
+
+    results.competitions.sort(sortFn); 
+
+    return results; 
+
+  }, 
+
+  renderGlobalSearchResults(){ 
+
+    const box = document.getElementById("global-search-results"); 
+
+    if (!box) return; 
+
+    const q = this.state.searchQuery; 
+
+    if (!q || q.trim().length < 1) { box.style.display = "none"; this.state._gsResults = []; return; } 
+
+ 
+
+    const { students, competitions } = this.queryGlobalSearch(q); 
+
+    const flat = []; 
+
+    const mkItem = (type, it, iStart) => { 
+
+      const i = iStart + flat.length; 
+
+      flat.push({ type, id: it.id, title: it.title, sub: it.sub }); 
+
+      return ` 
+
+        <div class="gs-item" data-i="${i}" onclick="App.selectSearchItem('${type}','${it.id}')"> 
+
+          <div class="gs-type">${type === "student" ? "👤" : "🏆"}</div> 
+
+          <div> 
+
+            <div class="gs-title">${this.esc(it.title)}</div> 
+
+            <div class="gs-sub">${this.esc(it.sub||"")}</div> 
+
+          </div> 
+
+        </div>`; 
+
+    }; 
+
+ 
+
+    let html = ""; 
+
+    let startIndex = 0; 
+
+    if (students.length) { 
+
+      html += `<div class="gs-section">Students (${students.length})</div>`; 
+
+      html += students.slice(0, 20).map(s=>mkItem("student", s, startIndex)).join(""); 
+
+      startIndex += Math.min(20, students.length); 
+
+    } 
+
+    if (competitions.length) { 
+
+      html += `<div class="gs-section">Competitions (${competitions.length})</div>`; 
+
+      html += competitions.slice(0, 20).map(c=>mkItem("competition", c, startIndex)).join(""); 
+
+      startIndex += Math.min(20, competitions.length); 
+
+    } 
+
+    if (!html) html = `<div class="gs-item"><div class="gs-type">ℹ️</div><div><div class="gs-title">No results</div><div class="gs-sub">Try a different name or keyword</div></div></div>`; 
+
+ 
+
+    box.innerHTML = html; 
+
+    box.style.display = "block"; 
+
+    this.state.searchOpen = true; 
+
+    this.state._gsResults = flat; 
+
+    this.state._gsActiveIndex = flat.length ? 0 : -1; 
+
+    this.updateSearchActiveItem(); 
+
+  }, 
+
+  updateSearchActiveItem(){ 
+
+    const box = document.getElementById("global-search-results"); 
+
+    if (!box) return; 
+
+    box.querySelectorAll(".gs-item").forEach(el => el.classList.remove("active")); 
+
+    const idx = this.state._gsActiveIndex; 
+
+    if (idx >= 0) { 
+
+      const el = box.querySelector(`.gs-item[data-i="${idx}"]`); 
+
+      if (el) { 
+
+        el.classList.add("active"); 
+
+        const br = el.getBoundingClientRect(); 
+
+        const pr = box.getBoundingClientRect(); 
+
+        if (br.top < pr.top) el.scrollIntoView({ block: "nearest" }); 
+
+        if (br.bottom > pr.bottom) el.scrollIntoView({ block: "nearest" }); 
+
+      } 
+
+    } 
+
+  }, 
+
+  selectSearchItem(type, id){ 
+
+    this.closeGlobalSearch(); 
+
+    const inp = document.getElementById("global-search-input"); 
+
+    if (inp) inp.blur(); 
+
+ 
+
+    if (type === "competition") { 
+
+      this.openCompetitionFromSearch(id); 
+
+    } else if (type === "student") { 
+
+      const s = this.getStudent(id); 
+
+      if (this.state.role === "team") { 
+
+        if (s && s.teamId === this.state.teamId) { 
+
+          this.teamAssignCompetitions(id); 
+
+        } else { 
+
+          this.openStudentProfile(id); 
+
+        } 
+
+      } else { 
+
+        this.openStudentProfile(id); 
+
+      } 
+
+    } 
+
+  }, 
+
+  openCompetitionFromSearch(compId){ 
+
+    if (this.state.role === "event") { 
+
+      this.viewCompetition(compId); 
+
+    } else if (this.state.role === "team") { 
+
+      this.state._highlightCompId = compId; 
+
+      this.teamSwitchTab("competitions"); 
+
+    } else { 
+
+      this.routeHome(); 
+
+    } 
+
+  }, 
+
+  openStudentProfile(stuId){ 
+
+    const s = this.getStudent(stuId); 
+
+    const app = document.getElementById("app"); 
+
+    if (!s) { 
+
+      alert("Student not found."); 
+
+      return; 
+
+    } 
+
+    const team = this.getTeam(s.teamId); 
+
+    const ent = this.entriesByStudent(s.id).map(e => { 
+
+      const c = this.getCompetition(e.competitionId); 
+
+      return c ? `${c.name} — ${c.category}` : null; 
+
+    }).filter(Boolean); 
+
+ 
+
+    app.innerHTML = ` 
+
+      <div class="row" style="margin-bottom:8px;"> 
+
+        <button class="btn" onclick="App.backToCurrentPortal()">← Back</button> 
+
+      </div> 
+
+      <div class="card"> 
+
+        <h2>${this.esc(s.name)} <span class="tag">#${this.esc(s.chestNo)}</span></h2> 
+
+        <div class="muted">${this.esc(team?.name || "")} • ${this.esc(s.category)}</div> 
+
+        <div class="hr"></div> 
+
+        <h3 class="section-title">Entries</h3> 
+
+        ${ent.length ? `<ul class="muted" style="font-size:13px">${ent.map(x=>`<li>${this.esc(x)}</li>`).join("")}</ul>` : `<div class="notice">No entries.</div>`} 
+
+        ${this.state.role==="team" && s.teamId===this.state.teamId ? ` 
+
+          <div class="row" style="margin-top:10px;"> 
+
+            <button class="btn" onclick="App.teamAssignCompetitions('${s.id}')">Assign Competitions</button> 
+
+          </div>` : ``} 
+
+      </div> 
+
+    `; 
+
+  }, 
+
+  backToCurrentPortal(){ 
+
+    if (this.state.role === "event") this.renderEventPortal(); 
+
+    else if (this.state.role === "team") this.renderTeamPortal(); 
+
+    else this.routeHome(); 
+
+  }, 
+
+ 
+
+  /* ------------------------------ 
+
+     Individual Champions Compute 
+
+  --------------------------------*/ 
+
+  computeIndividualChampions(opts={}){ 
+
+    const includeGroup = !!opts.includeGroup; 
+
+    const includePopularToStudentCat = !!opts.includePopularToStudentCat; 
+
+    const cats = this.data.categories.filter(c=>c!=="Popular"); // display set 
+
+ 
+
+    // Aggregate points per student per category 
+
+    const byCat = {}; // { [cat]: { [studentId]: points } } 
+
+    for (const r of this.data.results) { 
+
+      const e = this.getEntry(r.entryId); if (!e) continue; 
+
+      const c = this.getCompetition(r.competitionId); if (!c) continue; 
+
+      if (!includeGroup && (e.entryType === "group" || c.isGroup)) continue; 
+
+ 
+
+      for (const sid of e.memberStudentIds) { 
+
+        const stu = this.getStudent(sid); if (!stu) continue; 
+
+        let catKey = c.category; 
+
+        if (catKey === "Popular") { 
+
+          if (includePopularToStudentCat) catKey = stu.category; 
+
+          else continue; // skip Popular unless opted in 
+
+        } 
+
+        if (!byCat[catKey]) byCat[catKey] = {}; 
+
+        byCat[catKey][sid] = (byCat[catKey][sid] || 0) + Number(r.pointsAwarded || 0); 
+
+      } 
+
+    } 
+
+ 
+
+    const out = {}; 
+
+    for (const cat of cats) { 
+
+      const m = byCat[cat] || {}; 
+
+      const arr = Object.entries(m).map(([sid, pts])=>{ 
+
+        const stu = this.getStudent(sid); 
+
+        return { 
+
+          studentId: sid, 
+
+          name: stu?.name || sid, 
+
+          chestNo: stu?.chestNo || "", 
+
+          teamName: this.teamName(stu?.teamId), 
+
+          points: pts 
+
+        }; 
+
+      }).sort((a,b)=> b.points - a.points || a.name.localeCompare(b.name)); 
+
+      out[cat] = arr; 
+
+    } 
+
+    return out; 
+
+  }, 
+
+  setChampOption(key, val){ 
+
+    if (key === "topN") this.state.champTopN = Math.max(1, Number(val)||1); 
+
+    else if (key === "includeGroup") this.state.champIncludeGroup = !!val; 
+
+    else if (key === "includePopularToStudentCat") this.state.champIncludePopularToStudentCat = !!val; 
+
+    this.renderEventPortal(); 
+
+  }, 
+
+ 
+
+  /* ------------------------------ 
+
+     Init 
+
+  --------------------------------*/ 
+
+  init(){ this.renderHeaderSession(); this.routeHome(); this.applyBrand(); this.initGlobalSearch(); } 
+
+}; 
+
+ 
+
+window.App = App; App.init(); 
+
+</script> 
+
+</body> 
+
+</html> 
